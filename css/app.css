@@ -7,64 +7,54 @@
       top: 130px;
       left: 17px;
       z-index: 50;
-    }
-.nav>li>a{
+}
+.nav>li>a {
 	padding-right:5px;
 	padding-left:5px;
 }
-
-.esriBookmarkLabel{
-	color:#FC6 
+.esriBookmarkLabel {
+	color:#FF6600 
 }
-.agsjsTOCServiceLayer{
+.agsjsTOCServiceLayer {
 	display:none
 }
-.agsjsTOCNode{
-	color:#FC6
+.agsjsTOCNode {
+	color:#FF6600
 }
-/*.esriLegendLayerLabel{
-	display:none
-}*/
-.esriLegendService{
-	color:#FC6;
+.esriLegendService {
+	color:#FF6600;
 	padding-bottom:0px;
 }
-.esriBasemapGalleryLabelContainer{
-	color:#FC6
+.esriBasemapGalleryLabelContainer {
+	color:#FF6600
 }
 .esriMobileInfoView {
 	top:92px;
 	z-index:420;
 }
-.aboutItem, .categories{
-	color:#FC6 !important
+.aboutItem, .categories {
+	color:#FF6600 !important
 }
-
-#categoryItemsList{
+#categoryItemsList {
 	height:300px;
 	overflow: auto;
 }
-
 .navbar-default {
-background-color: #900;
+  background-color: #660000;
 }
-.navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus{
-	background-color:#933;
-	color: #FC6
+.navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+	background-color:#660000;
+	color: #FF6600
 }
-.navbar-default .navbar-brand
-{
-	background-color:#900;
-	color: #FC6 !important
+.navbar-default .navbar-brand {
+	background-color:#660000;
+	color: #FF6600 !important
 }
-
-
-
-.navbar-default  .navbar-nav>.active>a{
-	background-color:#900;
-	color: #FC6
+.navbar-default  .navbar-nav>.active>a {
+	background-color:#660000;
+	color: #FF6600
 }
-.esriMobileNavigationBar{
+.esriMobileNavigationBar {
 	top:50px;
 	z-index:410;
 }
@@ -72,49 +62,37 @@ background-color: #900;
   display: none;
 }
 .dijitTreeExpandoClosed {
-background-position: 1px 0 !important;
+  background-position: 1px 0 !important;
 }
 .dijitTreeExpando {
-background-image: url("http://js.arcgis.com/3.9compact/js/dojo/dijit/themes/claro/images/treeExpandImages.png");
-width: 16px;
-height: 16px;
-background-position: -35px 0;
+  background-image: url("http://js.arcgis.com/3.9compact/js/dojo/dijit/themes/claro/images/treeExpandImages.png");
+  width: 16px;
+  height: 16px;
+  background-position: -35px 0;
 }
-
-.dropdown-menu{
-    max-height: 300px;
-    overflow-y:scroll; 
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y:scroll; 
 	min-width: 260px;
 	padding-left:20px;
 }
-
 body {
   padding-top: 50px;
 }
-
 body > .container {
   padding-bottom: 20px;
 }
-
-table {
-  border-collapse: ;
-  border-spacing: ;
-}
-
 .starter-template {
   padding: 40px 15px;
   text-align: center;
 }
-
 .locate-button {
   position: absolute;
   top: 165px;
   left: 17px;
   z-index: 50;
 }
-
-/*.geocoder {*/
-#searchNode{
+#searchNode {
 	display: block;
 	position: absolute;
 	z-index: 2;
@@ -122,6 +100,6 @@ table {
   right: 17px;
   width:130px;
 }
-#searchField{
+#searchField {
 	width:130px
 }
