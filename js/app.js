@@ -3,8 +3,9 @@ require([
   'app/config',
   'app/widget/Map',
   'app/widget/NavBar',
+  'dojo/i18n!./js/nls/strings.js',
   'dojo/domReady!'
-], function(topic, config, Map, NavBar) {
+], function(topic, config, Map, NavBar, strings) {
   var navBar, map;
 
   navBar = new NavBar({
