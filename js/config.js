@@ -2,11 +2,11 @@ define([], function() {
   return {
     map: {
       options: {
-        basemap: 'national-geographic',
+        basemap: "national-geographic",
         center : [-80.422218,37.227590],
         zoom : 15,
         sliderStyle: "large",
-        minZoom: 12, 
+        minZoom: 12,
         logo: false,
         lods: [
           {
@@ -435,7 +435,7 @@ define([], function() {
       PictureMarker: "imgs/pictureSymbol.png"
     },
     about: {
-      moreInfoUrl: 'http://www.maps.vt.edu/'
+      moreInfoUrl: "http://www.maps.vt.edu/"
     }
   };
 });
