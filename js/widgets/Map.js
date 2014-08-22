@@ -6,12 +6,10 @@ define([
   'dijit/_TemplatedMixin',
   'esri/dijit/Scalebar',
   'esri/dijit/LocateButton',
-  'esri/dijit/Geocoder',
   "esri/dijit/HomeButton",
   'components/bootstrapmap/bootstrapmap',
-  "esri/dijit/PopupTemplate","dojo/promise/all",
+  "dojo/promise/all",
   'dojo/text!./templates/Map.html',
-  "dojo/ready",
   "esri/dijit/Bookmarks",
   "esri/Color",
   "esri/symbols/SimpleLineSymbol",
@@ -23,14 +21,11 @@ define([
   "esri/dijit/BasemapLayer",
   "esri/dijit/Basemap",
   "esri/dijit/Legend",
-  "esri/toolbars/edit",
   "esri/InfoTemplate",
   "esri/geometry/Point",
   "esri/geometry/Extent",
-  "esri/layers/FeatureLayer",
   "esri/layers/ArcGISTiledMapServiceLayer",
   "esri/layers/ArcGISDynamicMapServiceLayer",
-  "esri/tasks/locator",
   "esri/tasks/query",
   "esri/tasks/QueryTask",
   "esri/tasks/FindTask",
@@ -38,78 +33,67 @@ define([
   "esri/tasks/IdentifyTask",
   "esri/tasks/IdentifyParameters",
   "esri/graphic",
-  "esri/map",
   "esri/urlUtils",
   "esri/geometry/webMercatorUtils",
-  "dojo/data/ItemFileReadStore",
   "dojo/dom",
   "dojo/dom-construct",
-  "dojo/on",
   "dojo/parser",
   "agsjs/dijit/TOC",
   "dojo/query"
-], function(declare, array,keys, _WidgetBase, _TemplatedMixin,
-            Scalebar, LocateButton, Geocoder,HomeButton,
-            BootstrapMap,PopupTemplate, all,
-            template,ready, Bookmarks, Color, SimpleLineSymbol, 
+], function(declare, array, keys, _WidgetBase, _TemplatedMixin,
+            Scalebar, LocateButton, HomeButton,
+            BootstrapMap, all, template, Bookmarks, Color, SimpleLineSymbol, 
             SimpleMarkerSymbol, SimpleFillSymbol, PictureMarkerSymbol,
             PopupMobile, BasemapGallery, BasemapLayer, Basemap, Legend,
-            Edit, InfoTemplate, Point, Extent, FeatureLayer,
-            ArcGISTiledMapServiceLayer, ArcGISDynamicMapServiceLayer, Locator, 
-            Query, QueryTask, FindTask, FindParameters, IdentifyTask,
-            IdentifyParameters, Graphic, Map, urlUtils, webMercatorUtils,
-            ItemFileReadStore, dom, domConstruct, on, parser, TOC, dojoQuery) {
+            InfoTemplate, Point, Extent, ArcGISTiledMapServiceLayer,
+            ArcGISDynamicMapServiceLayer, Query,
+            QueryTask, FindTask, FindParameters, IdentifyTask,
+            IdentifyParameters, Graphic, urlUtils, webMercatorUtils,
+            dom, domConstruct, parser, TOC, dojoQuery) {
 	parser.parse();
-	var movable = false;
-	var loadCount = 0;
 	var vtbasemap;
 	var initExtent;
 	var clickedPoint;
-	var url = "";
-	var userCurrentAddress;
-	var bookmarks ;	
+	var bookmarks;	
 	var basemapGallery;
 	var thisObject;
-	var findTask, findParams,locator,editToolbar;
-	var picSymbol, theGraphic;
-	var plQueryTask, plQuery,bQueryTask, bQuery,bsQueryTask,
-      bsQuery, brQueryTask,brQuery;
+	var findTask, findParams;
 	var symbol;
 	var fillSymbol;
 	var layers=[];
 	var layerCount = 0;
 	var bookmarkWidget;
 	var defaultMarkerSymbol;
-	var searchResultZoom, initialMapZoom, searchResultExtentTolerance;
-	var layersData = [];
 	var identifyParams;
-	var tasks=[];
 	var identifiableLayers = [];
 	var parentLayerMap = {};
   
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
+
     postCreate: function() {
       thisObject = this;
       this.inherited(arguments);
       this.loadConfigs();
+      this._attachEventHandlers();
+    },
+
+    _attachEventHandlers: function () {
+      dojoQuery("#featuredBookmarks").on('click', this.addGraphicSymbol);
+      dojoQuery("#imgFrame").on('click', this.addGraphicSymbol);
+      dojoQuery("#locateButton").on('click', this.locate);
+      dojoQuery("#closeLink").on('click', this.hideGrid);
     },
 	
-    loadConfigs: function() {
+    loadConfig: function() {
       vtbasemap = new ArcGISTiledMapServiceLayer(this.config.map.basemaps.vtBasemap);
-      dojoQuery("#featuredBookmarks").on('click',this.addGraphicSymbol);
-      dojoQuery("#imgFrame").on('click',this.addGraphicSymbol);
-      dojoQuery("#locateButton").on('click',this.locate);
-      dojoQuery("#closeLink").on('click',this.hideGrid);
       categoriesContent = dom.byId("categoriesContent");
       categoriesContent.innerHTML = "<select id='categoriesSelect' " +
         "name='categoriesSelect' class='form-control' >" +
         "<option selected>Select Category</option></select>" +
         "<div class='itemsList' id='categoryItemsList'></div>";
-      searchResultsContent = dom.byId("searchResultsDiv");
-      searchResultsContent.innerHTML = 
-        "<div class='itemsList' id='searchResults'></div>";
-      dojoQuery("#categoriesSelect").on('change',this.updateSelect);
+      //Ashima : I'm here
+      dojoQuery("#categoriesSelect").on('change', this.updateSelect);
       dojoQuery("input[type='text']").on("keydown", function(event) {
         if(event.keyCode === keys.ENTER) {
           event.preventDefault();
@@ -393,15 +377,15 @@ define([
      * featured place selected.
      */
     addGraphicSymbol: function (evt) {
+      var placeName, selectedPlace, pt, layerUrl, bQueryTask, bQuery;
+
       thisObject.map.infoWindow.hide();
-      var placeName = "";
+
       if (evt.target.innerText) {
         placeName = evt.target.innerText;
       } else {
         placeName = evt.target.textContent;
       }
-      var selectedPlace;
-      picSymbol = defaultMarkerSymbol;		
         
       dojo.forEach(thisObject.config.map.featuredPlaces, function(place) {
         if(place.name === placeName) {
@@ -409,26 +393,36 @@ define([
           return;
         }
       });
-      var pt = webMercatorUtils.geographicToWebMercator(
-          new Point(selectedPlace.lng,selectedPlace.lat
-      ));
-      var layerUrl = thisObject.getLayerUrl("Buildings");
-      bQueryTask = new QueryTask(layerUrl+"/0");  
+
+      pt = webMercatorUtils.geographicToWebMercator(
+          new Point(selectedPlace.lng,selectedPlace.lat));
+
+      layerUrl = thisObject.getLayerUrl("Buildings");
+
+      bQueryTask = new QueryTask(layerUrl + "/0");
+
       bQuery = new Query(); 
-      bQuery.outSpatialReference = {"wkid":102100}; 
+      bQuery.outSpatialReference = { "wkid": 102100 };
       bQuery.returnGeometry = true; 
       bQuery.outFields = [
-        "BLDG_USE", "NAME", "BLDG_NUM", "STNUM", "STPREDIR", "STNAME", "STSUFFIX",
-        "STPOSTDIR","URL"
+        "BLDG_USE",
+        "NAME",
+        "BLDG_NUM",
+        "STNUM",
+        "STPREDIR",
+        "STNAME",
+        "STSUFFIX",
+        "STPOSTDIR",
+        "URL"
       ];
       bQuery.geometry = pt; 
       bQueryTask.execute(bQuery, function(fset) { 
-        thisObject.map.graphics.clear(); 
+        thisObject.map.graphics.clear();
+
         if(fset.features.length < 1) {
-          var graphic = new Graphic(pt,picSymbol);			
-          thisObject.map.graphics.add(graphic);
+          thisObject.map.graphics.add(new Graphic(pt, defaultMarkerSymbol));
         }
-        
+
         dojo.forEach(fset.features,function(feature) {
           feature.setSymbol(fillSymbol); 
           thisObject.map.graphics.add(feature); 
