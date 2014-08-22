@@ -2,16 +2,13 @@ define([
   'dojo/_base/declare',
   'dojo/query',
   'dojo/touch',
-  'dojo/topic',
-  'dojo/dom',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'dojo/text!./templates/NavBar.html',
   'bootstrap/Collapse',
   'bootstrap/Dropdown',
   'bootstrap/Modal'
-], function(declare, query, touch, topic,dom, _WidgetBase,
-            _TemplatedMixin, template) {
+], function(declare, query, touch, _WidgetBase, _TemplatedMixin, template) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
