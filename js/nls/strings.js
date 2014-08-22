@@ -1,6 +1,5 @@
 define({
   root: ({
-    appTitle: 'Interactive VT Campus Map',
     navBasemaps: 'Basemaps',
     navLegends: 'Legend',
     navBookmarks:'Featured',
