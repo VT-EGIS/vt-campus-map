@@ -1,0 +1,11 @@
+{
+  "name": "vtcampusmap",
+  "version": "0.0.0",
+  "description": "Interactive Map for Virginia Tech",
+  "author": "VT GIS",
+  "devDependencies": {
+    "grunt": "0.4.5",
+    "grunt-contrib-jshint": "0.10.0",
+    "grunt-contrib-uglify": "0.5.1"
+  }
+}

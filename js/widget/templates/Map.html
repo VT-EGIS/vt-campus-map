@@ -1,26 +1,25 @@
 <div>
   <div data-dojo-attach-point="mapNode">
-  
-    <div id="searchNode"><input type="text" id="searchField" placeholder="Search"/></div>
-    <!--<div id="searchResultsDiv">
-		<div id="close"><a id="closeLink" href="#" > x </a>	</div>
-		<div id="searchResults" class="itemsList"></div>
-	</div>-->
-    <div class="modal fade searchResults-modal" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-          <h4 class="modal-title">${strings.modalSearchResultsTitle}</h4>
+    <div id="searchNode">
+      <input type="text" id="searchField" placeholder="Search"/>
+    </div>
+    <div class="modal fade searchResults-modal"
+      style="display: none;" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close"
+              data-dismiss="modal" aria-hidden="true">
+              x
+            </button>
+            <h4 class="modal-title">${strings.modalSearchResultsTitle}</h4>
+          </div>
+          <div class="modal-body">
+            <p>${strings.modalSearchResultsContent}</p>
+          </div>
         </div>
-        <div class="modal-body">
-          <p>${strings.modalSearchResultsContent}</p>
-        </div>
-        
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
-
+      </div>
+    </div>
     <div data-dojo-attach-point="locateNode"></div>
     <div id="HomeButton"></div>
   </div>
