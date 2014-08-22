@@ -6,7 +6,6 @@ require([
   'dojo/i18n!./js/nls/strings.js',
   'dojo/domReady!'
 ], function(topic, config, Map, NavBar, strings) {
-  debugger;
   var navBar, map;
 
   navBar = new NavBar({
