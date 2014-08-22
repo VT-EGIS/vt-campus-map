@@ -432,7 +432,7 @@ define([], function() {
       searchResultZoom: 18,
       searchResultExtentTolerance: 50,
       pointTolerance: 0.8,
-      PictureMarker: "pictureSymbol.png"
+      PictureMarker: "imgs/pictureSymbol.png"
     },
     about: {
       moreInfoUrl: 'http://www.maps.vt.edu/'
