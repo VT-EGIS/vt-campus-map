@@ -3,20 +3,17 @@ require([
   'app/config',
   'app/widgets/Map',
   'app/widgets/NavBar',
-  'dojo/i18n!./js/nls/strings.js',
   'dojo/domReady!'
-], function(topic, config, Map, NavBar, strings) {
+], function(topic, config, Map, NavBar) {
   var navBar, map;
 
   navBar = new NavBar({
-    config: config,
-    strings: strings
+    config: config
   }, 'navBarNode');
   navBar.startup();
   
   map = new Map({
-    config: config,
-    strings: strings
+    config: config
   }, 'mapNode');
   map.startup();
 
