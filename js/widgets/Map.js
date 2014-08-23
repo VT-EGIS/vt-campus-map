@@ -1,45 +1,45 @@
 define([
   'dojo/_base/declare',
   'dojo/_base/array',
-  "dojo/keys",
+  'dojo/keys',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'esri/dijit/Scalebar',
   'esri/dijit/LocateButton',
-  "esri/dijit/HomeButton",
+  'esri/dijit/HomeButton',
   'components/bootstrapmap/bootstrapmap',
-  "dojo/promise/all",
+  'dojo/promise/all',
   'dojo/text!./templates/Map.html',
-  "esri/dijit/Bookmarks",
-  "esri/Color",
-  "esri/symbols/SimpleLineSymbol",
-	"esri/symbols/SimpleMarkerSymbol",
-  "esri/symbols/SimpleFillSymbol",
-  "esri/symbols/PictureMarkerSymbol",
-  "esri/dijit/PopupMobile",
-  "esri/dijit/BasemapGallery",
-  "esri/dijit/BasemapLayer",
-  "esri/dijit/Basemap",
-  "esri/dijit/Legend",
-  "esri/InfoTemplate",
-  "esri/geometry/Point",
-  "esri/geometry/Extent",
-  "esri/layers/ArcGISTiledMapServiceLayer",
-  "esri/layers/ArcGISDynamicMapServiceLayer",
-  "esri/tasks/query",
-  "esri/tasks/QueryTask",
-  "esri/tasks/FindTask",
-  "esri/tasks/FindParameters",
-  "esri/tasks/IdentifyTask",
-  "esri/tasks/IdentifyParameters",
-  "esri/graphic",
-  "esri/urlUtils",
-  "esri/geometry/webMercatorUtils",
-  "dojo/dom",
-  "dojo/dom-construct",
-  "dojo/parser",
-  "agsjs/dijit/TOC",
-  "dojo/query"
+  'esri/dijit/Bookmarks',
+  'esri/Color',
+  'esri/symbols/SimpleLineSymbol',
+	'esri/symbols/SimpleMarkerSymbol',
+  'esri/symbols/SimpleFillSymbol',
+  'esri/symbols/PictureMarkerSymbol',
+  'esri/dijit/PopupMobile',
+  'esri/dijit/BasemapGallery',
+  'esri/dijit/BasemapLayer',
+  'esri/dijit/Basemap',
+  'esri/dijit/Legend',
+  'esri/InfoTemplate',
+  'esri/geometry/Point',
+  'esri/geometry/Extent',
+  'esri/layers/ArcGISTiledMapServiceLayer',
+  'esri/layers/ArcGISDynamicMapServiceLayer',
+  'esri/tasks/query',
+  'esri/tasks/QueryTask',
+  'esri/tasks/FindTask',
+  'esri/tasks/FindParameters',
+  'esri/tasks/IdentifyTask',
+  'esri/tasks/IdentifyParameters',
+  'esri/graphic',
+  'esri/urlUtils',
+  'esri/geometry/webMercatorUtils',
+  'dojo/dom',
+  'dojo/dom-construct',
+  'dojo/parser',
+  'agsjs/dijit/TOC',
+  'dojo/query'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin,
             Scalebar, LocateButton, HomeButton,
             BootstrapMap, all, template, Bookmarks, Color, SimpleLineSymbol, 
@@ -75,14 +75,14 @@ define([
       this.PictureMarker = this.config.configs.PictureMarker;
 
       this.defaultMarkerSymbol = new PictureMarkerSymbol({
-        "angle": 0,
-        "xoffset": -12,
-        "yoffset": 12,
-        "type": "esriPMS",
-        "url": this.PictureMarker,
-        "contentType": "image/png",
-        "width": 24,
-        "height": 24
+        'angle': 0,
+        'xoffset': -12,
+        'yoffset': 12,
+        'type': 'esriPMS',
+        'url': this.PictureMarker,
+        'contentType': 'image/png',
+        'width': 24,
+        'height': 24
       });
 
       this.fillSymbol = new SimpleFillSymbol(
@@ -93,7 +93,7 @@ define([
           new Color([255,255,0,0.5])); 
 
       this.options.infoWindow =
-        new PopupMobile(null, domConstruct.create("div"));
+        new PopupMobile(null, domConstruct.create('div'));
     },
 
     templateString: template,
@@ -114,20 +114,20 @@ define([
       var _this;
      
       dojoQuery('#featuredBookmarks').on('click', dojo.hitch(this, this.addGraphicSymbol));
-      dojoQuery("#locateButton").on('click', dojo.hitch(this, this.locate));
-      dojoQuery("#closeLink").on('click', dojo.hitch(this, this.hideGrid));
-      dojoQuery("#categoriesSelect").on('change', dojo.hitch(this, this.updateSelect));
+      dojoQuery('#locateButton').on('click', dojo.hitch(this, this.locate));
+      dojoQuery('#closeLink').on('click', dojo.hitch(this, this.hideGrid));
+      dojoQuery('#categoriesSelect').on('change', dojo.hitch(this, this.updateSelect));
 
       _this = this;
-      dojoQuery("input[type='text']").on("keydown", function(event) {
+      dojoQuery('input[type="text"]').on('keydown', function(event) {
         if(event.keyCode === keys.ENTER) {
           event.preventDefault();
           dojoQuery('.searchResults-modal').modal('show');
           if (dojoQuery('.navbar-collapse.in', this.domNode).length > 0) {
             dojoQuery('.navbar-toggle', this.domNode)[0].click();
           }
-          dom.byId("searchResults").innerHTML = "";
-          dom.byId("searchResults").style.display = "none";
+          dom.byId('searchResults').innerHTML = '';
+          dom.byId('searchResults').style.display = 'none';
           _this.doFind();
         }
       });
@@ -205,7 +205,7 @@ define([
       legendDijit = new Legend({
         map: this.map,
         layerInfos: layerInfo
-      }, "legendDiv");
+      }, 'legendDiv');
 
       legendDijit.startup();
     },
@@ -217,7 +217,7 @@ define([
     _addHomeButton : function () {
       var homeButton;
 
-      homeButton = new HomeButton({ map: this.getMap() }, "HomeButton");
+      homeButton = new HomeButton({ map: this.getMap() }, 'HomeButton');
       homeButton.startup();
     },
 
@@ -245,7 +245,7 @@ define([
       bookmarkWidget = new Bookmarks({
         map: this.getMap(),
         bookmarks: bookmarks
-      }, dom.byId("featuredBookmarks"));  				
+      }, dom.byId('featuredBookmarks'));  				
     },
 
     _attachMapEventHandlers : function () {
@@ -275,7 +275,7 @@ define([
         _this._populateBookmarks();
       });
 
-      this.map.on("click", dojo.hitch(this, this.executeQueryTask));
+      this.map.on('click', dojo.hitch(this, this.executeQueryTask));
     },
 
     _setupIdentifyParams : function () {
@@ -300,15 +300,15 @@ define([
 
             _this.parentLayerMap[b.layerName] = b;
 
-            infoTemplateHTMLString = "<table>";
+            infoTemplateHTMLString = '<table>';
 
             dojo.forEach(b.fields, function (c) {
               infoTemplateHTMLString = infoTemplateHTMLString + 
-                "<tr><td style='vertical-align: text-top;padding-right:10px;'>" +
-                c.title + "</td><td> " + c.value + "</td> </tr>";
+                '<tr><td style="vertical-align: text-top;padding-right:10px;">' +
+                c.title + '</td><td> ' + c.value + '</td> </tr>';
             });
 
-            infoTemplateHTMLString += "</table>";
+            infoTemplateHTMLString += '</table>';
 
             b.infoTemplate = new esri.InfoTemplate({
               title: b.title,
@@ -320,12 +320,12 @@ define([
     },
 
     _setupSearch : function () {
-      findTask = new FindTask(_this.config.map.gazeteerLayer+"/");
+      findTask = new FindTask(_this.config.map.gazeteerLayer+'/');
       this.findParams = new FindParameters();
-      this.findParams.searchFields = ["NAME"];
+      this.findParams.searchFields = ['NAME'];
       this.findParams.returnGeometry = true;
       this.findParams.layerIds = [0];
-      this.findParams.outSpatialReference = {"wkid":102100};
+      this.findParams.outSpatialReference = {'wkid':102100};
     },
 
     _addScaleBar : function () {
@@ -365,9 +365,9 @@ define([
       });
 
       return new Basemap({
-        id:	"bmSchematic",
+        id:	'bmSchematic',
         layers: [natGeoBasemapLayer, TOBBasemapLayer, vtBasemapLayer],
-        title: "VT Campus",
+        title: 'VT Campus',
         thumbnailUrl: this.basemaps.schematicThumbnail
       });
     },
@@ -381,8 +381,8 @@ define([
 
       return new Basemap({
         layers: [pictometryImageryBasemapLayer],
-        id: "bmImagery",
-        title: "Aerial Photo",
+        id: 'bmImagery',
+        title: 'Aerial Photo',
         thumbnailUrl: _this.config.map.basemaps.pictometryThumbnail
       });
     },
@@ -397,10 +397,10 @@ define([
         showArcGISBasemaps: false,
         basemaps: [schematicBasemap, imageryBasemap],
         map: this.getMap()
-      }, "basemapGallery");
+      }, 'basemapGallery');
 
       basemapGallery.startup();
-      basemapGallery.select("bmSchematic");
+      basemapGallery.select('bmSchematic');
     },
 
     _initMap: function() {
@@ -438,19 +438,19 @@ define([
       var layerUrl, name, query, dataItems, queryTask, values, attr, _this;
 
       _this = this;
-      if (selectedItem === "Select Category") {
+      if (selectedItem === 'Select Category') {
         return;
       }
 
-      layerUrl = this.gazeteerLayer + "/0";
+      layerUrl = this.gazeteerLayer + '/0';
 
       name = selectedItem.target.value;
 
       query = new Query();  
       query.returnGeometry = false; 
-      query.outFields = ["OBJECTID_12","Name"];
-      query.where = "Category = '" + name +"'";
-      query.orderByFields = ["Name ASC"];
+      query.outFields = ['OBJECTID_12','Name'];
+      query.where = 'Category = "' + name +'"';
+      query.orderByFields = ['Name ASC'];
 
       queryTask = new QueryTask(layerUrl);
       queryTask.execute(query, function(fset) { 
@@ -464,21 +464,21 @@ define([
           };				 				  
         });
       
-        s = ["<div class='list-group'>"];
+        s = ['<div class="list-group">'];
 
         dojo.forEach(values, function(result) {
           var param;
 
           param = result.objectid;
-          s.push("<a href='#' class='list-group-item' " +
-                 "data-dismiss='modal' id='" + param+"'>" + result.name + "</a>");
+          s.push('<a href="#" class="list-group-item" ' +
+                 'data-dismiss="modal" id="' + param + '">' + result.name + '</a>');
         });
 
-        s.push("</div");
-        dom.byId("categoryItemsList").style.display = "block";
-        dom.byId("categoryItemsList").innerHTML = s.join("");
+        s.push('</div');
+        dom.byId('categoryItemsList').style.display = 'block';
+        dom.byId('categoryItemsList').innerHTML = s.join('');
         
-        dojoQuery(".list-group-item","categoryItemsList")
+        dojoQuery('.list-group-item','categoryItemsList')
           .on('click', dojo.hitch(_this, _this.zoomTo));
       });
     },
@@ -513,23 +513,23 @@ define([
       pt = webMercatorUtils.geographicToWebMercator(
           new Point(selectedPlace.lng, selectedPlace.lat));
 
-      layerUrl = this.getLayerUrl("Buildings");
+      layerUrl = this.getLayerUrl('Buildings');
 
-      bQueryTask = new QueryTask(layerUrl + "/0");
+      bQueryTask = new QueryTask(layerUrl + '/0');
 
       bQuery = new Query(); 
-      bQuery.outSpatialReference = { "wkid": 102100 };
+      bQuery.outSpatialReference = { 'wkid': 102100 };
       bQuery.returnGeometry = true; 
       bQuery.outFields = [
-        "BLDG_USE",
-        "NAME",
-        "BLDG_NUM",
-        "STNUM",
-        "STPREDIR",
-        "STNAME",
-        "STSUFFIX",
-        "STPOSTDIR",
-        "URL"
+        'BLDG_USE',
+        'NAME',
+        'BLDG_NUM',
+        'STNUM',
+        'STPREDIR',
+        'STNAME',
+        'STSUFFIX',
+        'STPOSTDIR',
+        'URL'
       ];
       bQuery.geometry = pt; 
       bQueryTask.execute(bQuery, function(fset) { 
@@ -553,10 +553,10 @@ define([
 
       query = new Query();
       query.returnGeometry = false;
-      query.outFields = ["Category"];
-      query.where = "Category is not NULL";
+      query.outFields = ['Category'];
+      query.where = 'Category is not NULL';
 
-      queryTask = new QueryTask(_this.config.map.gazeteerLayer + "/0");
+      queryTask = new QueryTask(_this.config.map.gazeteerLayer + '/0');
       queryTask.execute(query,_this.populateList);
     },
 
@@ -575,7 +575,7 @@ define([
       });
       
       values.sort(this.sortResults);      
-      selectElem = dom.byId("categoriesSelect");
+      selectElem = dom.byId('categoriesSelect');
 
       dojo.forEach(values, function(cat, index) {
         selectElem.options.add(new Option(cat.name, cat.name));
@@ -664,9 +664,9 @@ define([
     * hide the search results when the user clicks on the x button
     */
     hideGrid: function () {
-      dom.byId("searchResults").innerHTML = "";
-      dom.byId("searchText").value = "";
-      dom.byId("searchResultsDiv").style.display = "none";
+      dom.byId('searchResults').innerHTML = '';
+      dom.byId('searchText').value = '';
+      dom.byId('searchResultsDiv').style.display = 'none';
       _this.map.centerAndZoom(center,zoom);
       _this.map.graphics.clear();
     },
@@ -675,12 +675,12 @@ define([
     * searches for a building using the building name given by the user
     */
     doFind : function () {
-      dom.byId("searchResults").innerHTML = "";
-      dom.byId("searchResultsDiv").style.display = "block";
+      dom.byId('searchResults').innerHTML = '';
+      dom.byId('searchResultsDiv').style.display = 'block';
       this.findParams.searchText = dom.byId('searchField').value;
       findTask.execute(this.findParams, dojo.hitch(this, this.showResults));
       searchField = dojoQuery('#searchField')[0];
-      searchField.value = "";
+      searchField.value = '';
     },
 
     /**
@@ -692,12 +692,12 @@ define([
       _this = this;
       clickedAssetId = item.target.id;
       markerSymbol = this._getFillSymbol();
-      layer = this.gazeteerLayer + "/0";
+      layer = this.gazeteerLayer + '/0';
 
       this.map.infoWindow.hide();
 
       query = new Query(); 
-      query.outSpatialReference = {"wkid":102100}; 
+      query.outSpatialReference = {'wkid':102100}; 
       query.returnGeometry = true; 
       query.objectIds = [clickedAssetId]; 
 
@@ -710,7 +710,7 @@ define([
           var type, shapeExtent, cntrPoint;
 
           type = feature.geometry.type;
-          if (type === "point") {
+          if (type === 'point') {
             markerSymbol = _this.defaultMarkerSymbol;
             shapeExtent = _this.pointToExtent(_this.getMap(),
                 feature.geometry.x, feature.geometry.y, 80);
@@ -730,10 +730,10 @@ define([
 
     showExtent:function (extent) {
       var s;
-      s = "XMin: "+ extent.xmin + "&nbsp;" +
-          "YMin: " + extent.ymin + "&nbsp;" +
-          "XMax: " + extent.xmax + "&nbsp;" +
-          "YMax: " + extent.ymax + "&nbsp;" + extent.spatialReference.wkid;
+      s = 'XMin: '+ extent.xmin + '&nbsp;' +
+          'YMin: ' + extent.ymin + '&nbsp;' +
+          'XMax: ' + extent.xmax + '&nbsp;' +
+          'YMax: ' + extent.ymax + '&nbsp;' + extent.spatialReference.wkid;
       alert(s);
     },
 
@@ -759,7 +759,7 @@ define([
       var attribs, s;
 
       this.clearGraphics();
-      s = ["<div class='list-group'>"];
+      s = ['<div class="list-group">'];
       this.sortResults(results);
 
       dojo.forEach(results, function(result) {
@@ -767,17 +767,17 @@ define([
 
         graphic = result.feature;         
         attribs = result.feature.attributes;
-        addr = (attribs.Address.toLowerCase() !== "null") ? "<br/>" +attribs.Address : "";
-        param = attribs.OBJECTID_12 ;//+ "," + " \""+layerUrl +"\"";
-        s.push("<a href='#' class='list-group-item' " +
-               "data-dismiss='modal' id='" + param + "'>" +
-               attribs.Name + "<br/>" + attribs.Category + addr + "</a>");
+        addr = (attribs.Address.toLowerCase() !== 'null') ? '<br/>' +attribs.Address : '';
+        param = attribs.OBJECTID_12 ;
+        s.push('<a href="#" class="list-group-item" ' +
+               'data-dismiss="modal" id="' + param + '">' +
+               attribs.Name + '<br/>' + attribs.Category + addr + '</a>');
       });
     
-      s.push("</div");
-      dom.byId("searchResults").innerHTML = s.join("");
-      dom.byId("searchResults").style.display = "block";
-      dojoQuery(".list-group-item").on('click', dojo.hitch(this, this.zoomTo));
+      s.push('</div');
+      dom.byId('searchResults').innerHTML = s.join('');
+      dom.byId('searchResults').style.display = 'block';
+      dojoQuery('.list-group-item').on('click', dojo.hitch(this, this.zoomTo));
     },
   });
 });
