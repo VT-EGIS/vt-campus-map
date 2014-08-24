@@ -10,6 +10,8 @@ define([
   'components/bootstrapmap/bootstrapmap',
   'dojo/promise/all',
   'dojo/text!./templates/Map.html',
+  'dojo/text!./templates/point_of_interest_info.html',
+  'dojo/text!./templates/list_of_items_in_modal.html',
   'esri/dijit/Bookmarks',
   'esri/Color',
   'esri/symbols/SimpleLineSymbol',
@@ -38,12 +40,13 @@ define([
   'agsjs/dijit/TOC',
   'dojo/query'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
-            LocateButton, HomeButton, BootstrapMap, all, template, Bookmarks,
-            Color, SimpleLineSymbol, SimpleMarkerSymbol, SimpleFillSymbol,
-            PictureMarkerSymbol, PopupMobile, BasemapGallery, BasemapLayer,
-            Basemap, Legend, InfoTemplate, Point, Extent, EsriQuery, QueryTask,
-            FindTask, FindParameters, IdentifyParameters, Graphic, urlUtils,
-            webMercatorUtils, dom, domConstruct, parser, TOC, dojoQuery) {
+            LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
+            listItemTemplate, Bookmarks, Color, SimpleLineSymbol, SimpleMarkerSymbol,
+            SimpleFillSymbol, PictureMarkerSymbol, PopupMobile, BasemapGallery,
+            BasemapLayer, Basemap, Legend, InfoTemplate, Point, Extent,
+            EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
+            Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
+            TOC, dojoQuery) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -194,7 +197,7 @@ define([
       dojoQuery('#searchField', this.domNode)
         .on('keydown', dojo.hitch(this, this.doFind));
       dojoQuery('#featuredBookmarks')
-        .on('click', dojo.hitch(this, this.addGraphicSymbol));
+        .on('click', dojo.hitch(this, this.addGraphicSymbols));
       dojoQuery('#categoriesSelect')
         .on('change', dojo.hitch(this, this.updateSelect));
     },
@@ -353,7 +356,7 @@ define([
       });
     },
 
-    _showInfoWindow : function (point) {
+    showInfoWindow : function (point) {
       this.map.infoWindow.show(point);
     },
 
@@ -371,7 +374,7 @@ define([
     },
 
     /* Public Methods*/
-    templateString: template,
+    templateString: mapTemplate,
 
     hideInfoWindow : function () {
       this.map.infoWindow.hide();
@@ -498,24 +501,26 @@ define([
 
       _this = this;
 
-      dojo.forEach(layer.identifyLayers, function (b) {
+      dojo.forEach(layer.getIdentifyLayers(), function (identifyLayer) {
 
-        _this.identifiableLayers.push(b.layerName);
+        _this.identifiableLayers.push(identifyLayer.layerName);
 
-        _this.nameToLayer[b.layerName] = b;
+        _this.nameToLayer[identifyLayer.layerName] = identifyLayer;
 
-        infoTemplateHTMLString = '<table>';
+        infoTemplateHTMLString =
+          '<table class="table table-hover table-bordered ">';
 
-        dojo.forEach(b.fields, function (c) {
-          infoTemplateHTMLString = infoTemplateHTMLString + 
-            '<tr><td style="vertical-align: text-top;padding-right:10px;">' +
-            c.title + '</td><td> ' + c.value + '</td> </tr>';
+        dojo.forEach(identifyLayer.fields, function (field) {
+          infoTemplateHTMLString += dojo.replace(poiTemplate, {
+            title : field.title,
+            value : field.value
+          });
         });
 
         infoTemplateHTMLString += '</table>';
 
-        b.infoTemplate = new esri.InfoTemplate({
-          title: b.title,
+        identifyLayer.infoTemplate = new esri.InfoTemplate({
+          title: identifyLayer.title,
           content: infoTemplateHTMLString
         });
       });
@@ -547,15 +552,13 @@ define([
       * layer corresponding to the category selected.
       */
     updateSelect : function (selectedItem) {
-      var layerUrl, name, query, queryTask, values, _this;
+      var name, query, queryTask, values, _this;
 
       _this = this;
 
       if (selectedItem === 'Select Category') {
         return;
       }
-
-      layerUrl = this.gazeteerLayer + '/0';
 
       name = selectedItem.target.value;
 
@@ -565,32 +568,25 @@ define([
       query.where = "Category = '" + name + "'";
       query.orderByFields = ['Name ASC'];
 
-      queryTask = new QueryTask(layerUrl);
+      queryTask = new QueryTask(this.gazeteerLayer + '/0');
       queryTask.execute(query, function(fset) { 
-        var s, attr;
+        var categoryHtmlString;
+
+        categoryHtmlString = '<div class="list-group">';
 
         values = dojo.map(fset.features, function(feature) {
-          attr = feature.attributes; 
-          return {
-            objectid: attr.OBJECTID_12,
-            name: attr.NAME
-          };				 				  
-        });
-      
-        s = ['<div class="list-group">'];
-
-        dojo.forEach(values, function(result) {
-          var param;
-
-          param = result.objectid;
-          s.push('<a href="#" class="list-group-item" ' +
-                 'data-dismiss="modal" id="' + param +
-                 '">' + result.name + '</a>');
+          categoryHtmlString += dojo.replace(listItemTemplate, {
+            id : feature.attributes.OBJECTID_12,
+            name : feature.attributes.NAME,
+            category : "",
+            addr : ""
+          });
         });
 
-        s.push('</div');
+        categoryHtmlString += '</div>';
+
         dom.byId('categoryItemsList').style.display = 'block';
-        dom.byId('categoryItemsList').innerHTML = s.join('');
+        dom.byId('categoryItemsList').innerHTML = categoryHtmlString;
         
         dojoQuery('.list-group-item','categoryItemsList')
           .on('click', dojo.hitch(_this, _this.zoomTo));
@@ -600,7 +596,7 @@ define([
     /**
      * Adds a graphic symbol to the map at the selected featured place.
      */
-    addGraphicSymbol: function (evt) {
+    addGraphicSymbols: function (evt) {
       var placeName, selectedPlace, pt, bQueryTask, bQuery, _this;
 
       _this = this;
@@ -668,7 +664,7 @@ define([
           feature.setSymbol(_this.getBorderSymbol());
           feature.attributes.layerName = layerName;
 
-          if (dojo.indexOf(_this.identifiableLayers,layerName) !== -1) {
+          if (dojo.indexOf(_this.identifiableLayers, layerName) !== -1) {
             mapLayerObject = _this.nameToLayer[layerName];
             feature.setInfoTemplate(mapLayerObject.infoTemplate);
             features.push(feature);
@@ -678,7 +674,7 @@ define([
 
       if (features.length > 0) {
         this.setInfoWindowFeatures(features);
-        this._showInfoWindow(clickedPoint);
+        this.showInfoWindow(clickedPoint);
       }
     },
       
@@ -745,18 +741,17 @@ define([
         return;
       }
 
+      searchField = dom.byId('searchField');
+
       dojoQuery('.searchResults-modal').modal('show');
-      if (dojoQuery('.navbar-collapse.in', this.domNode).length > 0) {
-        dojoQuery('.navbar-toggle', this.domNode)[0].click();
-      }
       dom.byId('searchResults').innerHTML = '';
       dom.byId('searchResults').style.display = 'none';
-      dom.byId('searchResults').innerHTML = '';
       dom.byId('searchResultsDiv').style.display = 'block';
-      this.findParams.searchText = dom.byId('searchField').value;
+
+      this.findParams.searchText = searchField.value;
       this.findTask.execute(this.findParams,
           dojo.hitch(this, this.showSearchResults));
-      searchField = dojoQuery('#searchField')[0];
+
       searchField.value = '';
     },
 
@@ -803,14 +798,16 @@ define([
       });
     },
 
+    getSearchKeyword : function () {
+      return this.findParams.searchText;
+    },
     /**
     * Shows the results of searching of a building
     */
     showSearchResults: function (results) {
-      var attribs, s;
+      var searchResults;
 
       this.clearGraphics();
-      s = ['<div class="list-group">'];
 
       results.sort(function(a, b) {
         var nameA, nameB;
@@ -821,20 +818,35 @@ define([
         return (nameA === nameB ? 0 : (nameA < nameB ? -1 : 1));
       });
 
+      searchResults = '<div class="list-group">';
+
+      if(!results.length) {
+        searchResults += "Sorry! We couldn't find anything that matches '" +
+                          this.getSearchKeyword() + "' .";
+      }
+
       dojo.forEach(results, function(result) {
-        var addr, param;
+        var attribs;
 
         attribs = result.feature.attributes;
-        addr = (attribs.Address.toLowerCase() !== 'null') ? '<br/>' + attribs.Address : '';
-        param = attribs.OBJECTID_12 ;
-        s.push('<a href="#" class="list-group-item" ' +
-               'data-dismiss="modal" id="' + param + '">' +
-               attribs.Name + '<br/>' + attribs.Category + addr + '</a>');
+
+        /* TODO Use dojox/dtl/Templates instead of dojo.replace
+         * when the status changes from Experimental to Mature
+         * see http://dojotoolkit.org/reference-guide/1.9/dojox/#website-webapp-infrastructure
+         */
+        searchResults += dojo.replace(listItemTemplate, {
+          id: attribs.OBJECTID_12,
+          name : attribs.Name,
+          category : '<br>' + attribs.Category,
+          addr : attribs.Address !== 'Null' ? '<br>' + attribs.Address : ''
+        });
       });
     
-      s.push('</div');
-      dom.byId('searchResults').innerHTML = s.join('');
+      searchResults += '</div>';
+
+      dom.byId('searchResults').innerHTML = searchResults;
       dom.byId('searchResults').style.display = 'block';
+
       dojoQuery('.list-group-item').on('click', dojo.hitch(this, this.zoomTo));
     },
   });

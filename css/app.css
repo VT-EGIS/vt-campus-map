@@ -3,7 +3,7 @@
 @import url("../components/bootstrapmap/bootstrapmap.css");
 
 body {
-  font-size: 18px;
+  font-size: 18px !important;
 }
 #vt-logo {
   padding-top: 0px;
