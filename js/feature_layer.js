@@ -78,6 +78,10 @@ define([
         title : this.getLabel(),
         noLayers : true
       };
+    },
+
+    isVisibleNow : function () {
+      return this.layer.visibleAtMapScale;
     }
   });
 }); 

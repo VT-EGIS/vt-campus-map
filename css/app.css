@@ -2,6 +2,12 @@
 @import url("//js.arcgis.com/3.9/js/esri/css/esri.css");
 @import url("../components/bootstrapmap/bootstrapmap.css");
 
+body {
+  font-size: 18px;
+}
+#vt-logo {
+  padding-top: 0px;
+}
 #HomeButton {
       position: absolute;
       top: 130px;
@@ -33,7 +39,11 @@
 	z-index:420;
 }
 .aboutItem, .categories {
-	color:#FF6600 !important
+	color: #FF6600 !important; 
+}
+
+#aboutItem a:hover, #categories a:hover {
+	color: #F5F5EB !important;
 }
 #categoryItemsList {
 	height:300px;
@@ -43,12 +53,8 @@
   background-color: #660000;
 }
 .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+	color: #F5F5EB;
 	background-color:#660000;
-	color: #FF6600
-}
-.navbar-default .navbar-brand {
-	background-color:#660000;
-	color: #FF6600 !important
 }
 .navbar-default  .navbar-nav>.active>a {
 	background-color:#660000;
