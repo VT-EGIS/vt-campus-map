@@ -24,13 +24,10 @@ define([
   'esri/InfoTemplate',
   'esri/geometry/Point',
   'esri/geometry/Extent',
-  'esri/layers/ArcGISTiledMapServiceLayer',
-  'esri/layers/ArcGISDynamicMapServiceLayer',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
   'esri/tasks/FindTask',
   'esri/tasks/FindParameters',
-  'esri/tasks/IdentifyTask',
   'esri/tasks/IdentifyParameters',
   'esri/graphic',
   'esri/urlUtils',
@@ -39,21 +36,17 @@ define([
   'dojo/dom-construct',
   'dojo/parser',
   'agsjs/dijit/TOC',
-  'dojo/query',
-  'dojo',
-  'esri'
-], function(declare, array, keys, _WidgetBase, _TemplatedMixin,
-            Scalebar, LocateButton, HomeButton,
-            BootstrapMap, all, template, Bookmarks, Color, SimpleLineSymbol, 
-            SimpleMarkerSymbol, SimpleFillSymbol, PictureMarkerSymbol,
-            PopupMobile, BasemapGallery, BasemapLayer, Basemap, Legend,
-            InfoTemplate, Point, Extent, ArcGISTiledMapServiceLayer,
-            ArcGISDynamicMapServiceLayer, Query,
-            QueryTask, FindTask, FindParameters, IdentifyTask,
-            IdentifyParameters, Graphic, urlUtils, webMercatorUtils,
-            dom, domConstruct, parser, TOC, dojoQuery, dojo, esri) {
+  'dojo/query'
+], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
+            LocateButton, HomeButton, BootstrapMap, all, template, Bookmarks,
+            Color, SimpleLineSymbol, SimpleMarkerSymbol, SimpleFillSymbol,
+            PictureMarkerSymbol, PopupMobile, BasemapGallery, BasemapLayer,
+            Basemap, Legend, InfoTemplate, Point, Extent, Query, QueryTask,
+            FindTask, FindParameters, IdentifyParameters, Graphic, urlUtils,
+            webMercatorUtils, dom, domConstruct, parser, TOC, dojoQuery) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
+
     constructor: function (opts) {
       var config, _this;
 
@@ -72,32 +65,13 @@ define([
       this.parentLayerMap = {};
     },
 
+    /* Private Methods*/
     _copyProperties : function (configItem) {
       for(var property in configItem) {
         if(configItem.hasOwnProperty(property)) {
           this[property] = configItem[property];
         }
       }
-    },
-
-    templateString: template,
-
-    postCreate: function() {
-      var urlObject;
-      this.inherited(arguments);
-      this._attachEventHandlers();
-      this._setMap();
-
-      urlObject = urlUtils.urlToObject(document.location.href);
-
-      if (urlObject.query && urlObject.query.lon && urlObject.query.lat) {
-        var lon = parseFloat(urlObject.query.lon);
-        var lat = parseFloat(urlObject.query.lat);
-        this._setOption('center', [lon, lat]);
-        this._setOption('zoom', 7);
-      }
-
-      this._initMap();
     },
 
     _setMap: function () {
@@ -115,40 +89,81 @@ define([
       this.options.infoWindow = new PopupMobile(null, element);
     },
 
-    _setDefaultMarkerSymbol : function () {
-      this.defaultMarkerSymbol = new PictureMarkerSymbol({
-        'angle': 0,
-        'xoffset': -12,
-        'yoffset': 12,
-        'type': 'esriPMS',
-        'url': this.PictureMarker,
-        'contentType': 'image/png',
-        'width': 24,
-        'height': 24
-      });
+    _setDefaultMarkerSymbol : function (opts) {
+      var defaults;
+
+      opts = opts || {};
+
+      defaults = {
+        type    : 'esriPMS',
+        angle   : 0,
+        url     : this.PictureMarker,
+        width   : 24,
+        height  : 24,
+        xoffset : -12,
+        yoffset : 12,
+        contentType: 'image/png',
+        markerType : PictureMarkerSymbol
+      };
+
+      this._overwriteDefaults(defaults, opts);
+
+      this.defaultMarkerSymbol = new defaults.markerType(defaults);
     },
 
     _getDefaultMarkerSymbol : function () {
       return this.defaultMarkerSymbol;
     },
 
-    _setFillSymbol : function () {
-      var line, red, brown;
+    _overwriteDefaults : function (defaults, opts) {
+      for(var key in opts) {
+        if(opts.hasOwnProperty(key)) {
+          defaults[key] = opts[key];
+        }
+      }
+    },
 
-      red = new Color([255, 0, 0]);
-      brown = new Color([255, 255, 0, 0.5]); 
-      line = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, red, 2);
-      this.fillSymbol =
-        new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, line, brown);
+    _setFillSymbol : function (opts) {
+      var defaults, line;
+
+      opts = opts || {};
+
+      defaults = {
+        lineWidth       : 2,
+        lineColor       : new Color([255, 0, 0]),
+        fillSymbolColor : new Color([255, 255, 0, 0.5]),
+        lineStyle       : SimpleLineSymbol.STYLE_SOLID,
+        fillSymbolStyle : SimpleFillSymbol.STYLE_SOLID
+      };
+
+      this._overwriteDefaults(defaults, opts);
+
+      line = new SimpleLineSymbol(defaults.lineStyle, defaults.lineColor,
+          defaults.lineWidth);
+
+      this.fillSymbol = new SimpleFillSymbol(defaults.fillSymbolStyle, line,
+          defaults.fillSymbolColor);
     },
 
     _getFillSymbol: function () {
       return this._fillSymbol;
     },
 
-    _setPictureMarkerSymbol : function () {
+    _setPictureMarkerSymbol : function (opts) {
+      var defaults;
+
+      opts = opts || {};
+
+      defaults = {
+        url    : this.PictureMarker,
+        width  : 32,
+        height : 32
+      };
+
+      this._overwriteDefaults(defaults, opts);
+
       this.pictureMarkerSymbol =
-        new PictureMarkerSymbol(this.PictureMarker, 32, 32);
+        new PictureMarkerSymbol(defaults.url, defaults.width, defaults.height);
     },
 
     _getPictureMarkerSymbol : function () {
@@ -160,8 +175,9 @@ define([
         .on('click', dojo.hitch(this, this.locate));
       dojoQuery('#searchField', this.domNode)
         .on('keydown', dojo.hitch(this, this.doFind));
-      // The events of the NavigationBar are handled here
-      // because the handlers need to modify the Map
+      /* Note : The events of the NavigationBar are handled here because the
+       * handlers need to modify the Map
+       */
       dojoQuery('#featuredBookmarks')
         .on('click', dojo.hitch(this, this.addGraphicSymbol));
       dojoQuery('#categoriesSelect')
@@ -181,18 +197,12 @@ define([
     },
 
     _addLayers: function () {
-      var layers = [], _this;
+      var layers;
 
-      _this = this;
-
-      dojo.forEach(this.featureLayers, function(layer) {
-        var featurelayer;
-
-        featurelayer = new ArcGISDynamicMapServiceLayer(layer.url, layer);
-        //TODO : Make featureLayer a class
-        layer.layer = featurelayer;
-        layers.push(featurelayer);
+      layers = dojo.map(this.featureLayers, function(featureLayer) {
+        return featureLayer.load();
       });
+
       this.map.addLayers(layers);
     },
 
@@ -261,16 +271,6 @@ define([
       });
     },
 
-    _getLayerInfos : function () {
-      return dojo.map(this.featureLayers, function(result) {
-        return {
-          layer: result.layer,
-          title: result.label,
-          noLayers: true
-        };
-      }).reverse();
-    },
-
     _addWidgets : function () {
       var layerInfos;
 
@@ -279,7 +279,9 @@ define([
       this._addLocateButton();
       this._addBookmarkWidget();
 
-      layerInfos = this._getLayerInfos();
+      layerInfos = dojo.map(this.featureLayers, function(featureLayer) {
+        return featureLayer.getInfo();
+      }).reverse();
 
       this._addLayerTableOfContents(layerInfos); 
       this._addLegend(layerInfos);
@@ -319,31 +321,27 @@ define([
 
       _this = this;
 
-      if (layer.identifyLayers.length > 0) {
-        layer.task = new esri.tasks.IdentifyTask(layer.url);
+      dojo.forEach(layer.identifyLayers, function (b) {
 
-        dojo.forEach(layer.identifyLayers, function (b) {
+        _this.identifiableLayers.push(b.layerName);
 
-          _this.identifiableLayers.push(b.layerName);
+        _this.parentLayerMap[b.layerName] = b;
 
-          _this.parentLayerMap[b.layerName] = b;
+        infoTemplateHTMLString = '<table>';
 
-          infoTemplateHTMLString = '<table>';
-
-          dojo.forEach(b.fields, function (c) {
-            infoTemplateHTMLString = infoTemplateHTMLString + 
-              '<tr><td style="vertical-align: text-top;padding-right:10px;">' +
-              c.title + '</td><td> ' + c.value + '</td> </tr>';
-          });
-
-          infoTemplateHTMLString += '</table>';
-
-          b.infoTemplate = new esri.InfoTemplate({
-            title: b.title,
-            content: infoTemplateHTMLString
-          });
+        dojo.forEach(b.fields, function (c) {
+          infoTemplateHTMLString = infoTemplateHTMLString + 
+            '<tr><td style="vertical-align: text-top;padding-right:10px;">' +
+            c.title + '</td><td> ' + c.value + '</td> </tr>';
         });
-      }
+
+        infoTemplateHTMLString += '</table>';
+
+        b.infoTemplate = new esri.InfoTemplate({
+          title: b.title,
+          content: infoTemplateHTMLString
+        });
+      });
     },
 
     _setupSearch : function () {
@@ -447,11 +445,101 @@ define([
       numFeatureLayers = this.featureLayers.length;
 
       for (var i = 0; i < numFeatureLayers; i++) {
-        if (this.featureLayers[i].label === layerName) {
-          return this.featureLayers[i].url;
+        if (this.featureLayers[i].getLabel() === layerName) {
+          return this.featureLayers[i].getUrl();
         }
       }
     },
+
+    /**
+    * Load the Category drop down menu
+    */
+    _loadCategories: function () {
+      var queryTask, query;
+
+      query = new Query();
+      query.returnGeometry = false;
+      query.outFields = ['Category'];
+      query.where = 'Category is not NULL';
+
+      queryTask = new QueryTask(this.gazeteerLayer + '/0');
+      queryTask.execute(query, this.populateList);
+    },
+
+    populateList: function (results) {
+      var category, values, testVals, features, selectElem;
+
+      testVals = {};
+      values = [];
+      features = results.features;
+      dojo.forEach(features, function(feature) {
+        category = feature.attributes.CATEGORY;
+        if (!testVals[category]) {
+          testVals[category] = true;
+          values.push({ name: category });
+        }
+      });
+      
+      values.sort(this.sortResults);      
+      selectElem = dom.byId('categoriesSelect');
+
+      dojo.forEach(values, function(cat) {
+        selectElem.options.add(new Option(cat.name, cat.name));
+      });
+    },
+
+    _setInfoWindowFeatures : function (features) {
+        this.map.infoWindow.setFeatures(features);
+    },
+
+    _showInfoWindow : function (point) {
+      this.map.infoWindow.show(point);
+    },
+
+    _hideInfoWindow : function () {
+      this.map.infoWindow.hide();
+    },
+
+    _clearInfoWindow : function () {
+      this.map.infoWindow.clearFeatures();
+    },
+
+    _setIdentifyParams : function (opts) {
+      for(var key in opts) {
+        if(opts.hasOwnProperty(key)) {
+          this.identifyParams[key] = opts[key];
+        }
+      }
+    },
+
+    _getPixelWidth : function () {
+      return this.initExtent.getWidth() / this.map.width;
+    },
+
+    _checkQueryParameters : function () {
+      var urlObject;
+      
+      urlObject = urlUtils.urlToObject(document.location.href);
+
+      if (urlObject.query && urlObject.query.lon && urlObject.query.lat) {
+        var lon = parseFloat(urlObject.query.lon);
+        var lat = parseFloat(urlObject.query.lat);
+        this._setOption('center', [lon, lat]);
+        this._setOption('zoom', 7);
+      }
+    },
+
+    /* Public Methods*/
+    templateString: template,
+
+    postCreate: function() {
+      this.inherited(arguments);
+      this._attachEventHandlers();
+      this._checkQueryParameters();
+      this._setMap();
+      this._initMap();
+    },
+
     /**
       * Update the second drop down menu with the options corresponding
       * to the category selected in the first drop down menu.
@@ -508,21 +596,6 @@ define([
       });
     },
 
-    _setInfoWindowFeatures : function (features) {
-        this.map.infoWindow.setFeatures(features);
-    },
-
-    _showInfoWindow : function (point) {
-      this.map.infoWindow.show(point);
-    },
-
-    _hideInfoWindow : function () {
-      this.map.infoWindow.hide();
-    },
-
-    _clearInfoWindow : function () {
-      this.map.infoWindow.clearFeatures();
-    },
     /**
      * Adds a graphic symbol to the map at the position corresponding to the
      * featured place selected.
@@ -582,42 +655,6 @@ define([
         });				
       });
     },
-    /**
-    * Load the Category drop down menu
-    */
-    _loadCategories: function () {
-      var queryTask, query;
-
-      query = new Query();
-      query.returnGeometry = false;
-      query.outFields = ['Category'];
-      query.where = 'Category is not NULL';
-
-      queryTask = new QueryTask(this.gazeteerLayer + '/0');
-      queryTask.execute(query, this.populateList);
-    },
-
-    populateList: function (results) {
-      var category, values, testVals, features, selectElem;
-
-      testVals = {};
-      values = [];
-      features = results.features;
-      dojo.forEach(features, function(feature) {
-        category = feature.attributes.CATEGORY;
-        if (!testVals[category]) {
-          testVals[category] = true;
-          values.push({ name: category });
-        }
-      });
-      
-      values.sort(this.sortResults);      
-      selectElem = dom.byId('categoriesSelect');
-
-      dojo.forEach(values, function(cat) {
-        selectElem.options.add(new Option(cat.name, cat.name));
-      });
-    },
       
     showInfo: function (results, clickedPoint) {
       var features, _this;
@@ -649,14 +686,6 @@ define([
       }
     },
       
-    _setIdentifyParams : function (opts) {
-      for(var key in opts) {
-        if(opts.hasOwnProperty(key)) {
-          this.identifyParams[key] = opts[key];
-        }
-      }
-    },
-
     executeQueryTask : function (evt) { 
       var tasks, _this, deferreds, map, promises;
 
@@ -675,8 +704,8 @@ define([
 
       tasks = [];
       dojo.map(this.featureLayers, function (layer) {
-        if (layer.identifyLayers.length > 0 && layer.layer.visibleAtMapScale) {
-          tasks.push(layer.task);
+        if (layer.numIdentifyLayers() && layer.getDynamicMapServiceLayer().visibleAtMapScale) {
+          tasks.push(layer.getIdentifyTask());
         }
       });
       
@@ -687,9 +716,6 @@ define([
       promises.then(dojo.hitch(this, function(results) {
         this.showInfo(results, evt.mapPoint);
       }));
-    },
-    _getPixelWidth : function () {
-      return this.initExtent.getWidth() / this.map.width;
     },
     /**
     * a utility function that converts a point coordinates to a map extent

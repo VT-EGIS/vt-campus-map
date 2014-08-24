@@ -1,4 +1,6 @@
-define([], function() {
+define([
+  'app/feature_layer'
+], function(FeatureLayer) {
   return {
     map: {
       options: {
@@ -270,21 +272,21 @@ define([], function() {
         },
       ],
       featureLayers : [
-        {
+        new FeatureLayer({
           label: "VT Campus Grid",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer",
           visible: false,
           opacity: 1,
           identifyLayers: []
-        },
-        {
+        }),
+        new FeatureLayer({
           label: "Roads",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        },
-        {
+        }),
+        new FeatureLayer({
           label: "Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer",
           visible: true,
@@ -306,23 +308,23 @@ define([], function() {
               ]
             }
           ]
-        },
-        {
+        }),
+        new FeatureLayer({
           label: "Parking Spaces",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        },        
-        {
+        }),        
+        new FeatureLayer({
           label: "Emergency Phones",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        },
+        }),
         
-        {
+        new FeatureLayer({
           label: "Buildings",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer",
           visible: true,
@@ -357,15 +359,15 @@ define([], function() {
               ]
             }
           ]
-        },
-        {
+        }),
+        new FeatureLayer({
           label: "Athletic Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer",
           visible: false,
           opacity: 1,
           identifyLayers: []
-        },
-        {
+        }),
+        new FeatureLayer({
           label: "Alternative Transportation",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer",
           visible: true,
@@ -418,14 +420,14 @@ define([], function() {
               ]
             }
           ]
-        },
-        {
+        }),
+        new FeatureLayer({
           label: "Accessibility",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }
+        })
       ]
     },
     configs: {
