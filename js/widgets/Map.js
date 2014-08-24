@@ -39,7 +39,9 @@ define([
   'dojo/dom-construct',
   'dojo/parser',
   'agsjs/dijit/TOC',
-  'dojo/query'
+  'dojo/query',
+  'dojo',
+  'esri'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin,
             Scalebar, LocateButton, HomeButton,
             BootstrapMap, all, template, Bookmarks, Color, SimpleLineSymbol, 
@@ -49,7 +51,7 @@ define([
             ArcGISDynamicMapServiceLayer, Query,
             QueryTask, FindTask, FindParameters, IdentifyTask,
             IdentifyParameters, Graphic, urlUtils, webMercatorUtils,
-            dom, domConstruct, parser, TOC, dojoQuery) {
+            dom, domConstruct, parser, TOC, dojoQuery, dojo, esri) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor: function (opts) {
@@ -70,7 +72,7 @@ define([
       this.parentLayerMap = {};
     },
 
-    _copyProperties : function (configItem, index) {
+    _copyProperties : function (configItem) {
       for(var property in configItem) {
         if(configItem.hasOwnProperty(property)) {
           this[property] = configItem[property];
@@ -154,12 +156,16 @@ define([
     },
 
     _attachEventHandlers: function () {
-      dojoQuery('#locateButton', this.domNode).on('click', dojo.hitch(this, this.locate));
-      dojoQuery('#searchField', this.domNode).on('keydown', dojo.hitch(this, this.doFind));
+      dojoQuery('#locateButton', this.domNode)
+        .on('click', dojo.hitch(this, this.locate));
+      dojoQuery('#searchField', this.domNode)
+        .on('keydown', dojo.hitch(this, this.doFind));
       // The events of the NavigationBar are handled here
       // because the handlers need to modify the Map
-      dojoQuery('#featuredBookmarks').on('click', dojo.hitch(this, this.addGraphicSymbol));
-      dojoQuery('#categoriesSelect').on('change', dojo.hitch(this, this.updateSelect));
+      dojoQuery('#featuredBookmarks')
+        .on('click', dojo.hitch(this, this.addGraphicSymbol));
+      dojoQuery('#categoriesSelect')
+        .on('change', dojo.hitch(this, this.updateSelect));
     },
 	
     _setOption: function (key, value) {
@@ -179,8 +185,8 @@ define([
 
       _this = this;
 
-      dojo.forEach(this.featureLayers, function(layer, index) {
-        var featureLayer, layerCount;
+      dojo.forEach(this.featureLayers, function(layer) {
+        var featurelayer;
 
         featurelayer = new ArcGISDynamicMapServiceLayer(layer.url, layer);
         //TODO : Make featureLayer a class
@@ -246,12 +252,12 @@ define([
         point = new Point(bookmarkItem.lng, bookmarkItem.lat);
         geom = webMercatorUtils.geographicToWebMercator(point);
         extent = _this.pointToExtent(map, geom.x, geom.y,
-           _this.searchResultExtentTolerance)
+           _this.searchResultExtentTolerance);
 
         return {
           name : bookmarkItem.name,
           extent : extent
-        }
+        };
       });
     },
 
@@ -281,8 +287,10 @@ define([
 
     _attachMapEventHandlers : function () {
       this.map.infoWindow.on('hide', dojo.hitch(this, this._clearGraphics));
-      this.map.on('layers-add-result', dojo.hitch(this, this._initializeMapExtent));
-      this.map.on('layers-add-result', dojo.hitch(this, this._initializeIdentifyParams));
+      this.map.on('layers-add-result',
+          dojo.hitch(this, this._initializeMapExtent));
+      this.map.on('layers-add-result',
+          dojo.hitch(this, this._initializeIdentifyParams));
       this.map.on('layers-add-result', dojo.hitch(this, this._addWidgets));
       this.map.on('click', dojo.hitch(this, this.executeQueryTask));
     },
@@ -295,7 +303,8 @@ define([
       this.identifyParams = new esri.tasks.IdentifyParameters();
       this.identifyParams.tolerance = 5;
       this.identifyParams.returnGeometry = true;
-      this.identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
+      this.identifyParams.layerOption =
+        esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
       this.identifyParams.mapExtent = map.extent;
       this.identifyParams.width  = map.width;
       this.identifyParams.height = map.height;	  		
@@ -306,7 +315,7 @@ define([
     },
 
     _setInfoTemplates : function (layer) {
-      var _this;
+      var _this, infoTemplateHTMLString;
 
       _this = this;
 
@@ -419,7 +428,8 @@ define([
     },
 
     _initMap: function() {
-      dojo.forEach(this.featureLayers, dojo.hitch(this, this._setInfoTemplates));
+      dojo.forEach(this.featureLayers,
+          dojo.hitch(this, this._setInfoTemplates));
       this._attachMapEventHandlers(); 
       this._addLayers();
       this._setupSearch();
@@ -436,7 +446,7 @@ define([
 
       numFeatureLayers = this.featureLayers.length;
 
-      for (i = 0; i < numFeatureLayers; i++) {
+      for (var i = 0; i < numFeatureLayers; i++) {
         if (this.featureLayers[i].label === layerName) {
           return this.featureLayers[i].url;
         }
@@ -445,10 +455,11 @@ define([
     /**
       * Update the second drop down menu with the options corresponding
       * to the category selected in the first drop down menu.
-      * the options are retrieved by quering the mapservice layer corresponding to the category selected.
+      * the options are retrieved by quering the mapservice
+      * layer corresponding to the category selected.
       */
     updateSelect : function (selectedItem) {
-      var layerUrl, name, query, dataItems, queryTask, values, _this;
+      var layerUrl, name, query, queryTask, values, _this;
 
       _this = this;
       if (selectedItem === 'Select Category') {
@@ -484,7 +495,8 @@ define([
 
           param = result.objectid;
           s.push('<a href="#" class="list-group-item" ' +
-                 'data-dismiss="modal" id="' + param + '">' + result.name + '</a>');
+                 'data-dismiss="modal" id="' + param +
+                 '">' + result.name + '</a>');
         });
 
         s.push('</div');
@@ -586,7 +598,7 @@ define([
     },
 
     populateList: function (results) {
-      var category, values, testVals, features;
+      var category, values, testVals, features, selectElem;
 
       testVals = {};
       values = [];
@@ -602,7 +614,7 @@ define([
       values.sort(this.sortResults);      
       selectElem = dom.byId('categoriesSelect');
 
-      dojo.forEach(values, function(cat, index) {
+      dojo.forEach(values, function(cat) {
         selectElem.options.add(new Option(cat.name, cat.name));
       });
     },
@@ -646,7 +658,7 @@ define([
     },
 
     executeQueryTask : function (evt) { 
-      var tasks, _this, deferreds, map;
+      var tasks, _this, deferreds, map, promises;
 
       _this = this;
       map = this._getMap();
@@ -659,7 +671,7 @@ define([
         mapExtent : map.extent,
         geometry  : this.pointToExtent(this.map, evt.mapPoint.x,
           evt.mapPoint.y, this.pointTolerance)
-      })
+      });
 
       tasks = [];
       dojo.map(this.featureLayers, function (layer) {
@@ -697,20 +709,10 @@ define([
     },
 
     /**
-    * hide the search results when the user clicks on the x button
-    */
-    hideGrid: function () {
-      dom.byId('searchResults').innerHTML = '';
-      dom.byId('searchText').value = '';
-      dom.byId('searchResultsDiv').style.display = 'none';
-      _this.map.centerAndZoom(center,zoom);
-      _this.map.graphics.clear();
-    },
-
-    /**
     * searches for a building using the building name given by the user
     */
     doFind : function (evt) {
+      var searchField;
 
       if(evt.keyCode !== keys.ENTER) {
         return;
@@ -725,7 +727,8 @@ define([
       dom.byId('searchResults').innerHTML = '';
       dom.byId('searchResultsDiv').style.display = 'block';
       this.findParams.searchText = dom.byId('searchField').value;
-      this.findTask.execute(this.findParams, dojo.hitch(this, this.showResults));
+      this.findTask.execute(this.findParams,
+          dojo.hitch(this, this.showResults));
       searchField = dojoQuery('#searchField')[0];
       searchField.value = '';
     },
@@ -814,7 +817,7 @@ define([
 
         graphic = result.feature;         
         attribs = result.feature.attributes;
-        addr = (attribs.Address.toLowerCase() !== 'null') ? '<br/>' +attribs.Address : '';
+        addr = (attribs.Address.toLowerCase() !== 'null') ? '<br/>' + attribs.Address : '';
         param = attribs.OBJECTID_12 ;
         s.push('<a href="#" class="list-group-item" ' +
                'data-dismiss="modal" id="' + param + '">' +
