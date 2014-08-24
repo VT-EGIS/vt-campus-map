@@ -65,8 +65,8 @@ define([
 
       this.identifiableLayers = [];
       this.nameToLayer = {};
-      this.widgets = {}
-      this.layers = {}
+      this.widgets = {};
+      this.layers = {};
     },
 
     /* Private Methods*/
