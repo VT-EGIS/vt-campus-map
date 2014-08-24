@@ -33,7 +33,7 @@ define([
       });
     },
 
-    _hideDropdownNav: function(e) {
+    _hideDropdownNav: function() {
       if (query('.navbar-collapse.in', this.domNode).length > 0) {
         query('.navbar-toggle', this.domNode)[0].click();
       }

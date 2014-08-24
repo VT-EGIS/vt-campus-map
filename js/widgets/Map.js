@@ -1,539 +1,727 @@
 define([
   'dojo/_base/declare',
   'dojo/_base/array',
-  "dojo/keys",
+  'dojo/keys',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'esri/dijit/Scalebar',
   'esri/dijit/LocateButton',
-  'esri/dijit/Geocoder',
-  "esri/dijit/HomeButton",
+  'esri/dijit/HomeButton',
   'components/bootstrapmap/bootstrapmap',
-  "esri/dijit/PopupTemplate","dojo/promise/all",
+  'dojo/promise/all',
   'dojo/text!./templates/Map.html',
-  "dojo/ready",
-  "esri/dijit/Bookmarks",
-  "esri/Color",
-  "esri/symbols/SimpleLineSymbol",
-	"esri/symbols/SimpleMarkerSymbol",
-  "esri/symbols/SimpleFillSymbol",
-  "esri/symbols/PictureMarkerSymbol",
-  "esri/dijit/PopupMobile",
-  "esri/dijit/BasemapGallery",
-  "esri/dijit/BasemapLayer",
-  "esri/dijit/Basemap",
-  "esri/dijit/Legend",
-  "esri/toolbars/edit",
-  "esri/InfoTemplate",
-  "esri/geometry/Point",
-  "esri/geometry/Extent",
-  "esri/layers/FeatureLayer",
-  "esri/layers/ArcGISTiledMapServiceLayer",
-  "esri/layers/ArcGISDynamicMapServiceLayer",
-  "esri/tasks/locator",
-  "esri/tasks/query",
-  "esri/tasks/QueryTask",
-  "esri/tasks/FindTask",
-  "esri/tasks/FindParameters",
-  "esri/tasks/IdentifyTask",
-  "esri/tasks/IdentifyParameters",
-  "esri/graphic",
-  "esri/map",
-  "esri/urlUtils",
-  "esri/geometry/webMercatorUtils",
-  "dojo/data/ItemFileReadStore",
-  "dojo/dom",
-  "dojo/dom-construct",
-  "dojo/on",
-  "dojo/parser",
-  "agsjs/dijit/TOC",
-  "dojo/query"
-], function(declare, array,keys, _WidgetBase, _TemplatedMixin,
-            Scalebar, LocateButton, Geocoder,HomeButton,
-            BootstrapMap,PopupTemplate, all,
-            template,ready, Bookmarks, Color, SimpleLineSymbol, 
-            SimpleMarkerSymbol, SimpleFillSymbol, PictureMarkerSymbol,
-            PopupMobile, BasemapGallery, BasemapLayer, Basemap, Legend,
-            Edit, InfoTemplate, Point, Extent, FeatureLayer,
-            ArcGISTiledMapServiceLayer, ArcGISDynamicMapServiceLayer, Locator, 
-            Query, QueryTask, FindTask, FindParameters, IdentifyTask,
-            IdentifyParameters, Graphic, Map, urlUtils, webMercatorUtils,
-            ItemFileReadStore, dom, domConstruct, on, parser, TOC, dojoQuery) {
-	parser.parse();
-	var movable = false;
-	var loadCount = 0;
-	var vtbasemap;
-	var initExtent;
-	var clickedPoint;
-	var url = "";
-	var userCurrentAddress;
-	var bookmarks ;	
-	var basemapGallery;
-	var thisObject;
-	var findTask, findParams,locator,editToolbar;
-	var picSymbol, theGraphic;
-	var plQueryTask, plQuery,bQueryTask, bQuery,bsQueryTask,
-      bsQuery, brQueryTask,brQuery;
-	var symbol;
-	var fillSymbol;
-	var layers=[];
-	var layerCount = 0;
-	var bookmarkWidget;
-	var defaultMarkerSymbol;
-	var searchResultZoom, initialMapZoom, searchResultExtentTolerance;
-	var layersData = [];
-	var identifyParams;
-	var tasks=[];
-	var identifiableLayers = [];
-	var parentLayerMap = {};
+  'dojo/text!./templates/point_of_interest_info.html',
+  'dojo/text!./templates/list_of_items_in_modal.html',
+  'esri/dijit/Bookmarks',
+  'esri/Color',
+  'esri/symbols/SimpleLineSymbol',
+	'esri/symbols/SimpleMarkerSymbol',
+  'esri/symbols/SimpleFillSymbol',
+  'esri/symbols/PictureMarkerSymbol',
+  'esri/dijit/PopupMobile',
+  'esri/dijit/BasemapGallery',
+  'esri/dijit/BasemapLayer',
+  'esri/dijit/Basemap',
+  'esri/dijit/Legend',
+  'esri/InfoTemplate',
+  'esri/geometry/Point',
+  'esri/geometry/Extent',
+  'esri/tasks/query',
+  'esri/tasks/QueryTask',
+  'esri/tasks/FindTask',
+  'esri/tasks/FindParameters',
+  'esri/tasks/IdentifyParameters',
+  'esri/graphic',
+  'esri/urlUtils',
+  'esri/geometry/webMercatorUtils',
+  'dojo/dom',
+  'dojo/dom-construct',
+  'dojo/parser',
+  'agsjs/dijit/TOC',
+  'dojo/query'
+], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
+            LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
+            listItemTemplate, Bookmarks, Color, SimpleLineSymbol, SimpleMarkerSymbol,
+            SimpleFillSymbol, PictureMarkerSymbol, PopupMobile, BasemapGallery,
+            BasemapLayer, Basemap, Legend, InfoTemplate, Point, Extent,
+            EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
+            Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
+            TOC, dojoQuery) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
-    templateString: template,
-    postCreate: function() {
-      thisObject = this;
-      this.inherited(arguments);
-      this.loadConfigs();
+
+    constructor: function (opts) {
+      var config, _this;
+
+      config = opts.config;
+      _this = this;
+
+      dojo.forEach([config.map, config.configs],
+          dojo.hitch(this, this._copyProperties));
+
+      this.setDefaultMarkerSymbol();
+      this.setBorderSymbol();
+      this.setInfoWindow();
+
+      this.identifiableLayers = [];
+      this.nameToLayer = {};
+      this.widgets = {};
+      this.layers = {};
     },
-	
-    loadConfigs: function() {
-      vtbasemap = new ArcGISTiledMapServiceLayer(this.config.map.basemaps.vtBasemap);
-      dojoQuery("#featuredBookmarks").on('click',this.addGraphicSymbol);
-      dojoQuery("#imgFrame").on('click',this.addGraphicSymbol);
-      dojoQuery("#locateButton").on('click',this.locate);
-      dojoQuery("#closeLink").on('click',this.hideGrid);
-      categoriesContent = dom.byId("categoriesContent");
-      categoriesContent.innerHTML = "<select id='categoriesSelect' " +
-        "name='categoriesSelect' class='form-control' >" +
-        "<option selected>Select Category</option></select>" +
-        "<div class='itemsList' id='categoryItemsList'></div>";
-      searchResultsContent = dom.byId("searchResultsDiv");
-      searchResultsContent.innerHTML = 
-        "<div class='itemsList' id='searchResults'></div>";
-      dojoQuery("#categoriesSelect").on('change',this.updateSelect);
-      dojoQuery("input[type='text']").on("keydown", function(event) {
-        if(event.keyCode === keys.ENTER) {
-          event.preventDefault();
-          dojoQuery('.searchResults-modal').modal('show');
-          if (dojoQuery('.navbar-collapse.in', this.domNode).length > 0) {
-            dojoQuery('.navbar-toggle', this.domNode)[0].click();
-          }
-          dom.byId("searchResults").innerHTML = "";
-          dom.byId("searchResults").style.display = "none";
-          thisObject.doFind();
+
+    /* Private Methods*/
+    _copyProperties : function (configItem) {
+      for(var property in configItem) {
+        if(configItem.hasOwnProperty(property)) {
+          this[property] = configItem[property];
         }
-      });
-      
-      var urlObject = urlUtils.urlToObject(document.location.href);
-      if (urlObject.query && urlObject.query.lon && urlObject.query.lat) {
-        var lon = parseFloat(urlObject.query.lon);
-        var lat = parseFloat(urlObject.query.lat);
-        this.map.options.center = [lon, lat];
-        this.map.options.zoom = 7;
-      }
-
-      symbol = new SimpleMarkerSymbol(
-          SimpleFillSymbol.STYLE_SOLID, 8,
-          new SimpleLineSymbol(
-            SimpleLineSymbol.STYLE_SOLID,
-            new Color([0,255,197]), 1),
-          new Color([0,255,197, 1.00]));
-
-      fillSymbol = new SimpleFillSymbol(
-          SimpleFillSymbol.STYLE_SOLID,
-          new SimpleLineSymbol(
-            SimpleLineSymbol.STYLE_SOLID,
-            new Color([255,0,0]), 2),
-          new Color([255,255,0,0.5])); 
-
-      this.config.map.options.infoWindow =
-        new PopupMobile(null, domConstruct.create("div"));
-
-      this.map = BootstrapMap.create(this.mapNode, this.config.map.options);
-
-      if(vtbasemap.loaded) {
-        this._initMap();
-      } 
-      else {
-        vtbasemap.on('load',dojo.hitch(thisObject,this._initMap));
       }
     },
 
-    formatContent : function(key,value,data) {
-      return value.replace("Null","");
+    _registerWidget : function (name, widget) {
+      this.widgets[name] = widget;
+      if(widget.startup) {
+        widget.startup();
+      }
+    },
+
+    _getWidget : function (name) {
+      return this.widgets[name];
+    },
+
+    _overwriteDefaults : function (defaults, opts) {
+      for(var key in opts) {
+        if(opts.hasOwnProperty(key)) {
+          defaults[key] = opts[key];
+        }
+      }
+    },
+
+    _addLayers: function () {
+      var layers, _this;
+
+      _this = this;
+
+      layers = dojo.map(this.featureLayers, function(featureLayer) {
+        _this.layers[featureLayer.getLabel()] = featureLayer;
+        return featureLayer.load();
+      });
+
+      this.map.addLayers(layers);
+    },
+
+    _addLayerTableOfContents : function (layerInfo) {
+      var layerTOC;
+
+      layerTOC = new TOC({
+        map: this.getMap(),
+        layerInfos: layerInfo
+      }, 'standardDiv');
+
+      this._registerWidget('layerTOC', layerTOC);
+    },
+
+    _addLegend : function (layerInfo) {
+      var legendDijit;
+      
+      legendDijit = new Legend({
+        map: this.map,
+        layerInfos: layerInfo
+      }, 'legendDiv');
+
+      this._registerWidget('legendDijit', legendDijit);
+    },
+
+    _addHomeButton : function () {
+      var homeButton;
+
+      homeButton = new HomeButton({
+        map: this.getMap()
+      }, 'HomeButton');
+
+      this._registerWidget('homeButton', homeButton);
+    },
+
+    _initializeMapExtent : function () {
+      var map;
+
+      map = this.getMap();
+
+      this.initExtent = new Extent(map.extent.xmin, map.extent.ymin,
+          map.extent.xmax, map.extent.ymax, map.spatialReference);
+
+      map.enableScrollWheelZoom();
+    },
+
+    _addBookmarkWidget : function () {
+      var bookmarkWidget;
+
+      bookmarkWidget = new Bookmarks({
+        map: this.getMap(),
+        bookmarks: this.getBookmarks()
+      }, dom.byId('featuredBookmarks'));  				
+
+      this._registerWidget('featuredBookmarks', bookmarkWidget);
+    },
+
+    _addWidgets : function () {
+      var layerInfos;
+
+      this._addHomeButton();
+      this._addScaleBar();
+      this._addLocateButton();
+      this._addBookmarkWidget();
+
+      layerInfos = dojo.map(this.featureLayers, function(featureLayer) {
+        return featureLayer.getInfo();
+      }).reverse();
+
+      this._addLayerTableOfContents(layerInfos); 
+      this._addLegend(layerInfos);
+    },
+
+    _attachEventHandlers : function () {
+      var map;
+
+      map = this.getMap();
+
+      // Info Window Event Handlers
+      map.infoWindow.on('hide', dojo.hitch(this, this.clearGraphics));
+
+      // Map Event Handlers
+      map.on('layers-add-result', dojo.hitch(this, this._initializeMapExtent));
+      map.on('layers-add-result', dojo.hitch(this, this._addWidgets));
+      map.on('click', dojo.hitch(this, this.getInfoOnClickedPoint));
+
+      // NavBar and Search Event Handlers
+      dojoQuery('#searchField', this.domNode)
+        .on('keydown', dojo.hitch(this, this.doFind));
+      dojoQuery('#featuredBookmarks')
+        .on('click', dojo.hitch(this, this.addGraphicSymbols));
+      dojoQuery('#categoriesSelect')
+        .on('change', dojo.hitch(this, this.updateSelect));
+    },
+
+    _initializeIdentifyParams : function () {
+      var map;
+
+      map = this.getMap();
+
+      this.identifyParams = new esri.tasks.IdentifyParameters();
+      this.identifyParams.tolerance = 5;
+      this.identifyParams.returnGeometry = true;
+      this.identifyParams.layerOption =
+        esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
+      this.identifyParams.mapExtent = map.extent;
+      this.identifyParams.width  = map.width;
+      this.identifyParams.height = map.height;	  		
+    },
+
+    _setupSearch : function () {
+      this.findTask = new FindTask(this.config.map.gazeteerLayer + '/');
+      this.findParams = new FindParameters();
+      this.findParams.searchFields = ['NAME'];
+      this.findParams.returnGeometry = true;
+      this.findParams.layerIds = [0];
+      this.findParams.outSpatialReference = {'wkid': 102100};
+    },
+
+    _addScaleBar : function () {
+      var scaleBar;
+
+      scaleBar = new Scalebar({
+        map: this.getMap(),
+        scalebarUnit: 'dual'
+      });
+
+      this._registerWidget('scaleBar', scaleBar);
+    },
+
+    _addLocateButton : function () {
+      var locateButton;
+
+      locateButton = new LocateButton({
+        map: this.getMap(),
+        'class': 'locate-button',
+        scale: 10000,
+        symbol: this.getDefaultMarkerSymbol()
+      }, this.locateNode);
+
+      this._registerWidget('locateButton', locateButton);
+    },
+
+    _createSchematicBasemap : function () {
+      var vtBasemapLayer, natGeoBasemapLayer, TOBBasemapLayer;
+
+      vtBasemapLayer = new BasemapLayer({
+        url: this.basemaps.vtBasemap
+      });
+
+      natGeoBasemapLayer = new BasemapLayer({
+        url: this.basemaps.basemapNG
+      });
+
+      TOBBasemapLayer = new BasemapLayer({
+        url: this.basemaps.basemapTOB
+      });
+
+      return new Basemap({
+        id:	'bmSchematic',
+        layers: [natGeoBasemapLayer, TOBBasemapLayer, vtBasemapLayer],
+        title: 'VT Campus',
+        thumbnailUrl: this.basemaps.schematicThumbnail
+      });
+    },
+
+    _createImageryBasemap : function () {
+      var pictometryImageryBasemapLayer;
+
+      pictometryImageryBasemapLayer = new BasemapLayer({
+        url: this.basemaps.pictometry
+      });
+
+      return new Basemap({
+        layers: [pictometryImageryBasemapLayer],
+        id: 'bmImagery',
+        title: 'Aerial Photo',
+        thumbnailUrl: this.basemaps.pictometryThumbnail
+      });
+    },
+
+    _addBaseMapGallery : function () {
+      var schematicBasemap, imageryBasemap, basemapGallery;
+
+      schematicBasemap = this._createSchematicBasemap();
+      imageryBasemap = this._createImageryBasemap();
+
+      basemapGallery = new BasemapGallery({
+        showArcGISBasemaps: false,
+        basemaps: [schematicBasemap, imageryBasemap],
+        map: this.getMap()
+      }, 'basemapGallery');
+
+      basemapGallery.startup();
+      basemapGallery.select('bmSchematic');
     },
 
     _initMap: function() {
-      dojo.forEach(this.config.map.featureLayers, function(layer, index) {
-        var featurelayer = new ArcGISDynamicMapServiceLayer(
-                            layer.layerURL,
-                            {
-                              "opacity":layer.opacity,
-                              "visible":layer.visible
-                            });
-        layer.layer = featurelayer;
-        layers.push(featurelayer);
-        layerCount++;	
-        if(layerCount === thisObject.config.map.featureLayers.length) {
-          thisObject.map.addLayers(layers);
+      dojo.forEach(this.featureLayers,
+          dojo.hitch(this, this.setInfoTemplates));
+      this._attachEventHandlers(); 
+      this._initializeIdentifyParams();
+      this._addLayers();
+      this._setupSearch();
+      this._loadCategories();
+      this._addBaseMapGallery();
+    },
+
+    /**
+    * Load the Category drop down menu
+    */
+    _loadCategories: function () {
+      var queryTask, query;
+
+      query = new EsriQuery();
+      query.returnGeometry = false;
+      query.outFields = ['Category'];
+      query.where = 'Category is not NULL';
+
+      queryTask = new QueryTask(this.gazeteerLayer + '/0');
+      queryTask.execute(query, this._populateList);
+    },
+
+    _populateList: function (results) {
+      var category, values, isPresent, features, selectElem;
+
+      isPresent = {};
+      values = [];
+      features = results.features;
+
+      dojo.forEach(features, function(feature) {
+        category = feature.attributes.CATEGORY;
+        if (!isPresent[category]) {
+          isPresent[category] = true;
+          values.push({ name: category });
         }
       });
-
-      this.map.infoWindow.on('hide',function() {
-        thisObject.map.graphics.clear();
+      
+      values.sort(function(a, b) {
+        return (a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
       });
+
+      selectElem = dom.byId('categoriesSelect');
+
+      dojo.forEach(values, function(category) {
+        selectElem.options.add(new Option(category.name, category.name));
+      });
+    },
+
+    showInfoWindow : function (point) {
+      this.map.infoWindow.show(point);
+    },
+
+    _checkQueryParameters : function () {
+      var urlObject;
       
-      this.map.on('layers-add-result',function(results) {
-        var layerInfo = dojo.map(
-            thisObject.config.map.featureLayers,
-            function(result) {
-              return {
-                layer:result.layer,
-                title:result.label,
-                noLayers:true
-              };
-            });
+      urlObject = urlUtils.urlToObject(document.location.href);
 
-        layerInfo = layerInfo.reverse();
+      if (urlObject.query && urlObject.query.lon && urlObject.query.lat) {
+        var lon = parseFloat(urlObject.query.lon);
+        var lat = parseFloat(urlObject.query.lat);
+        this.setOption('center', [lon, lat]);
+        this.setOption('zoom', 7);
+      }
+    },
 
-        var standardTOC = new TOC({
-          map: thisObject.map,
-          layerInfos:layerInfo
-        }, 'standardDiv');
+    /* Public Methods*/
+    templateString: mapTemplate,
 
-        standardTOC.startup();
-      
-        if(layerInfo.length) {
-          var legendDijit = new Legend({
-            map:thisObject.map,
-            layerInfos:layerInfo
-          }, "legendDiv");
-          legendDijit.startup();
-        }		
-      
-        initExtent = new Extent(thisObject.map.extent.xmin,
-            thisObject.map.extent.ymin,
-            thisObject.map.extent.xmax,
-            thisObject.map.extent.ymax,
-            thisObject.map.spatialReference);
-        thisObject.map.enableScrollWheelZoom();
+    hideInfoWindow : function () {
+      this.map.infoWindow.hide();
+    },
 
-        var homeBttn = new HomeButton({ map: thisObject.map }, "HomeButton");
-        homeBttn.startup();
-    
-        var bookmarksExtent = [];
-        for (var i = 0; i < thisObject.config.map.featuredPlaces.length; i++) {
-          var bookmarkItem = thisObject.config.map.featuredPlaces[i];
-          var bookmarktItemExtent = {};
-          bookmarktItemExtent.name = bookmarkItem.name;
-          var geom = webMercatorUtils.geographicToWebMercator(
-              new Point(bookmarkItem.lng,bookmarkItem.lat));
-          bookmarktItemExtent.extent = thisObject.pointToExtent(
-              thisObject.map,
-              geom.x,
-              geom.y,
-              thisObject.config.configs.searchResultExtentTolerance);
-          bookmarksExtent.push(bookmarktItemExtent);
+    clearInfoWindow : function () {
+      this.map.infoWindow.clearFeatures();
+    },
+
+    clearGraphics: function () {
+      this.map.graphics.clear();
+    },
+
+    addGraphics : function (graphic) {
+      this.map.graphics.add(graphic);
+    },
+
+    setInfoWindowFeatures : function (features) {
+        this.map.infoWindow.setFeatures(features);
+    },
+
+    setIdentifyParams : function (opts) {
+      for(var key in opts) {
+        if(opts.hasOwnProperty(key)) {
+          this.identifyParams[key] = opts[key];
         }
-        bookmarks = bookmarksExtent;
-        bookmarkWidget = new Bookmarks({
-          map: thisObject.map,
-          bookmarks:bookmarks
-        }, dom.byId("featuredBookmarks"));  				
-      });
-        
-      this.map.on("click", this.executeQueryTask);
-      
-      identifyParams = new esri.tasks.IdentifyParameters();
-      identifyParams.tolerance = 5;
-      identifyParams.returnGeometry = true;
-      identifyParams.layerOption =
-        esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
-      
-      dojo.forEach(this.config.map.featureLayers, function(layer) {
-        if (layer.identifyLayers.length > 0) {
-          layer.task = new esri.tasks.IdentifyTask(layer.layerURL);
-          dojo.forEach(layer.identifyLayers, function (b) {
-            identifiableLayers.push(b.layerName);
-            parentLayerMap[b.layerName]= b;
-            infoTemplateHTMLString = "<table>";
-            dojo.forEach(b.fields, function (c) {
-              infoTemplateHTMLString = infoTemplateHTMLString + 
-                "<tr><td style='vertical-align: text-top;padding-right:10px;'>" +
-                c.title + "</td><td> " + c.value + "</td> </tr>";
-            });
-            infoTemplateHTMLString += "</table>";
-            b.infoTemplate = new esri.InfoTemplate({
-              title:b.title,
-              content:infoTemplateHTMLString
-            });
-          });
-        }
-      });
-    
-      findTask = new FindTask(this.config.map.gazeteerLayer+"/");
-      findParams = new FindParameters();
-      findParams.searchFields = ["NAME"];
-      findParams.returnGeometry = true;
-      findParams.layerIds = [0];
-      findParams.outSpatialReference = {"wkid":102100};
+      }
+    },
 
-      this.loadCategories();
-      
-      defaultMarkerSymbol = new PictureMarkerSymbol({
-        "angle":0,
-        "xoffset":-12,
-        "yoffset":12,
-        "type":"esriPMS",
-        "url":this.config.configs.PictureMarker,
-        "contentType":"image/png",
-        "width":24,
-        "height":24
-      });
+    setMap: function () {
+      this.map = BootstrapMap.create(this.mapNode, this.options);
+    },
 
-      this.scalebar = new Scalebar({
-        map: this.map,
-        scalebarUnit: 'dual'
-      });
-      this.geoLocate = new LocateButton({
-        map: this.map,
-        'class': 'locate-button',
-        scale:10000,
-        symbol:new PictureMarkerSymbol(this.config.configs.PictureMarker,32,32)
-      }, this.locateNode);
-      this.geoLocate.startup();
-        
-      var basemaps = [];
-      var vtBasemapLayer = new BasemapLayer({
-        url: thisObject.config.map.basemaps.vtBasemap
-      });
-      var natGeoBasemapLayer = new BasemapLayer({
-        url: thisObject.config.map.basemaps.basemapNG
-      });
-      var TOBBasemapLayer = new BasemapLayer({
-        url: thisObject.config.map.basemaps.basemapTOB
-      });
-      var schematicBasemap = new Basemap({
-        id:	"bmSchematic",
-        layers: [natGeoBasemapLayer,TOBBasemapLayer,vtBasemapLayer],
-        title: "VT Campus",
-        thumbnailUrl: thisObject.config.map.basemaps.schematicThumbnail
-      });
-      basemaps.push(schematicBasemap);
-      var pictometryImageryBasemapLayer = new BasemapLayer({
-        url: thisObject.config.map.basemaps.pictometry
-      });
-      var basemapImagery = new Basemap({
-        layers: [pictometryImageryBasemapLayer],
-        id: "bmImagery",
-        title: "Aerial Photo",
-        thumbnailUrl:thisObject.config.map.basemaps.pictometryThumbnail
-      });
-      basemaps.push(basemapImagery);        
-      basemapGallery = new BasemapGallery({
-        showArcGISBasemaps: false,
-        basemaps: basemaps,
-        map: thisObject.map
-      }, "basemapGallery");
-      basemapGallery.startup();
-      basemapGallery.select("bmSchematic");
+    setInfoWindow : function () {
+      var element;
+
+      element = domConstruct.create('div');
+      this.options.infoWindow = new PopupMobile(null, element);
+    },
+
+    setDefaultMarkerSymbol : function (opts) {
+      var defaults;
+
+      opts = opts || {};
+
+      defaults = {
+        url     : this.PictureMarker,
+        width   : 24,
+        height  : 38,
+        markerType : PictureMarkerSymbol
+      };
+
+      this._overwriteDefaults(defaults, opts);
+
+      this._defaultMarkerSymbol = new defaults.markerType(defaults.url,
+          defaults.width, defaults.height);
+    },
+
+    setBorderSymbol : function (opts) {
+      var defaults, line;
+
+      opts = opts || {};
+
+      defaults = {
+        lineWidth       : 5,
+        lineColor       : new Color([255, 0, 0]),
+        fillSymbolColor : new Color([255, 255, 0, 0.5]),
+        lineStyle       : SimpleLineSymbol.STYLE_SOLID,
+        fillSymbolStyle : SimpleFillSymbol.STYLE_SOLID
+      };
+
+      this._overwriteDefaults(defaults, opts);
+
+      line = new SimpleLineSymbol(defaults.lineStyle, defaults.lineColor,
+          defaults.lineWidth);
+
+      this.fillSymbol = new SimpleFillSymbol(defaults.fillSymbolStyle, line,
+          defaults.fillSymbolColor);
+    },
+
+    setOption: function (key, value) {
+      this.options[key] = value;
+    },
+
+    getPixelWidth : function () {
+      return this.initExtent.getWidth() / this.map.width;
     },
 
     /**
      * Gets the URL of the layer given the layer name.
-     * The function looks up the layername in the feature layers array.
      */
-    getLayerUrl : function (layerName) {	
-      for (i = 0; i< this.config.map.featureLayers.length; i++) {
-        if (this.config.map.featureLayers[i].label === layerName) {
-          return this.config.map.featureLayers[i].layerURL;
-        }
-      }
+    getLayerUrl : function (layerName) {
+      return this.layers[layerName].getUrl();
     },
+
+    getBookmarks : function () {
+      var _this, map;
+
+      _this = this;
+      map = this.getMap();
+
+      return dojo.map(this.featuredPlaces, function(bookmarkItem){
+        var point, mercatorGeometry, extent;
+
+        point = new Point(bookmarkItem.lng, bookmarkItem.lat);
+        mercatorGeometry = webMercatorUtils.geographicToWebMercator(point);
+        extent = _this.pointToExtent(map, mercatorGeometry.x,
+            mercatorGeometry.y, _this.searchResultExtentTolerance);
+
+        return {
+          name : bookmarkItem.name,
+          extent : extent
+        };
+      });
+    },
+
+    getIdentifyParams : function () {
+      return this.identifyParams;
+    },
+
+    setInfoTemplates : function (layer) {
+      var _this, infoTemplateHTMLString;
+
+      _this = this;
+
+      dojo.forEach(layer.getIdentifyLayers(), function (identifyLayer) {
+
+        _this.identifiableLayers.push(identifyLayer.layerName);
+
+        _this.nameToLayer[identifyLayer.layerName] = identifyLayer;
+
+        infoTemplateHTMLString =
+          '<table class="table table-hover table-bordered ">';
+
+        dojo.forEach(identifyLayer.fields, function (field) {
+          infoTemplateHTMLString += dojo.replace(poiTemplate, {
+            title : field.title,
+            value : field.value
+          });
+        });
+
+        infoTemplateHTMLString += '</table>';
+
+        identifyLayer.infoTemplate = new esri.InfoTemplate({
+          title: identifyLayer.title,
+          content: infoTemplateHTMLString
+        });
+      });
+    },
+
+    getBorderSymbol: function () {
+      return this.fillSymbol;
+    },
+
+    getMap : function () {
+      return this.map;
+    },
+
+    getDefaultMarkerSymbol : function () {
+      return this._defaultMarkerSymbol;
+    },
+
+    postCreate: function() {
+      this.inherited(arguments);
+      this._checkQueryParameters();
+      this.setMap();
+      this._initMap();
+    },
+
     /**
       * Update the second drop down menu with the options corresponding
       * to the category selected in the first drop down menu.
-      * the options are retrieved by quering the mapservice layer corresponding to the category selected.
+      * the options are retrieved by quering the mapservice
+      * layer corresponding to the category selected.
       */
     updateSelect : function (selectedItem) {
-      var layerUrl = thisObject.config.map.gazeteerLayer + "/0";
-      if (selectedItem === "Select Category") {
+      var name, query, queryTask, values, _this;
+
+      _this = this;
+
+      if (selectedItem === 'Select Category') {
         return;
       }
-      var name = selectedItem.target.value;
-      var query = new Query();  
+
+      name = selectedItem.target.value;
+
+      query = new EsriQuery();  
       query.returnGeometry = false; 
-      query.outFields = ["OBJECTID_12","Name"];
-      query.where = "Category = '" + name +"'";
-      query.orderByFields = ["Name ASC"];
-        
-      var dataItems ,values = [], attr;
-      var queryTask = new QueryTask(layerUrl );
+      query.outFields = ['OBJECTID_12','Name'];
+      query.where = "Category = '" + name + "'";
+      query.orderByFields = ['Name ASC'];
+
+      queryTask = new QueryTask(this.gazeteerLayer + '/0');
       queryTask.execute(query, function(fset) { 
-        dojo.forEach(fset.features,function(feature){
-          attr = feature.attributes; 
-          values.push({objectid:attr.OBJECTID_12, name:attr.NAME});				 				  
-        });
-      
-        var s = ["<div class='list-group'>"];
-        dojo.forEach(values,function(result){			  
-          var param = result.objectid;
-          s.push("<a href='#' class='list-group-item' " +
-                 "data-dismiss='modal' id='" + param+"'>" + result.name + "</a>");
+        var categoryHtmlString;
+
+        categoryHtmlString = '<div class="list-group">';
+
+        values = dojo.map(fset.features, function(feature) {
+          categoryHtmlString += dojo.replace(listItemTemplate, {
+            id : feature.attributes.OBJECTID_12,
+            name : feature.attributes.NAME,
+            category : "",
+            addr : ""
+          });
         });
 
-        s.push("</div");
-        dom.byId("categoryItemsList").style.display = "block";
-        dom.byId("categoryItemsList").innerHTML = s.join("");
+        categoryHtmlString += '</div>';
+
+        dom.byId('categoryItemsList').style.display = 'block';
+        dom.byId('categoryItemsList').innerHTML = categoryHtmlString;
         
-        dojoQuery(".list-group-item","categoryItemsList").on('click',thisObject.zoomTo);
+        dojoQuery('.list-group-item','categoryItemsList')
+          .on('click', dojo.hitch(_this, _this.zoomTo));
       });
     },
+
     /**
-     * Adds a graphic symbol to the map at the position corresponding to the
-     * featured place selected.
+     * Adds a graphic symbol to the map at the selected featured place.
      */
-    addGraphicSymbol: function (evt) {
-      thisObject.map.infoWindow.hide();
-      var placeName = "";
+    addGraphicSymbols: function (evt) {
+      var placeName, selectedPlace, pt, bQueryTask, bQuery, _this;
+
+      _this = this;
+
+      this.hideInfoWindow();
+
       if (evt.target.innerText) {
         placeName = evt.target.innerText;
       } else {
         placeName = evt.target.textContent;
       }
-      var selectedPlace;
-      picSymbol = defaultMarkerSymbol;		
         
-      dojo.forEach(thisObject.config.map.featuredPlaces, function(place) {
+      dojo.forEach(this.featuredPlaces, function(place) {
         if(place.name === placeName) {
           selectedPlace = place;
           return;
         }
       });
-      var pt = webMercatorUtils.geographicToWebMercator(
-          new Point(selectedPlace.lng,selectedPlace.lat
-      ));
-      var layerUrl = thisObject.getLayerUrl("Buildings");
-      bQueryTask = new QueryTask(layerUrl+"/0");  
-      bQuery = new Query(); 
-      bQuery.outSpatialReference = {"wkid":102100}; 
+
+      pt = webMercatorUtils.geographicToWebMercator(
+          new Point(selectedPlace.lng, selectedPlace.lat));
+
+      bQuery = new EsriQuery(); 
+      bQuery.outSpatialReference = { 'wkid': 102100 };
       bQuery.returnGeometry = true; 
       bQuery.outFields = [
-        "BLDG_USE", "NAME", "BLDG_NUM", "STNUM", "STPREDIR", "STNAME", "STSUFFIX",
-        "STPOSTDIR","URL"
+        'BLDG_USE',
+        'NAME',
+        'BLDG_NUM',
+        'STNUM',
+        'STPREDIR',
+        'STNAME',
+        'STSUFFIX',
+        'STPOSTDIR',
+        'URL'
       ];
       bQuery.geometry = pt; 
+
+      bQueryTask = new QueryTask(this.getLayerUrl('Buildings') + '/0');
       bQueryTask.execute(bQuery, function(fset) { 
-        thisObject.map.graphics.clear(); 
-        if(fset.features.length < 1) {
-          var graphic = new Graphic(pt,picSymbol);			
-          thisObject.map.graphics.add(graphic);
-        }
-        
-        dojo.forEach(fset.features,function(feature) {
-          feature.setSymbol(fillSymbol); 
-          thisObject.map.graphics.add(feature); 
+        _this.clearGraphics();
+
+        dojo.forEach(fset.features, function(feature) {
+          feature.setSymbol(_this.getBorderSymbol()); 
+          _this.addGraphics(feature); 
         });				
-      });
-    },
-    /**
-    * Load the Category drop down menu
-    */
-    loadCategories: function () {
-      var mapService = this.config.map.gazeteerLayer + "/0";
-      var queryTask = new QueryTask(mapService);
-      var query = new Query();
-      query.returnGeometry = false;
-      query.outFields = ["Category"];
-      query.where = "Category is not NULL";
-      queryTask.execute(query,this.populateList);
-    },
 
-    populateList: function (results) {
-      var category;
-      var values = [];
-      var testVals={};
-
-      var features = results.features;
-      dojo.forEach (features, function(feature) {
-        category = feature.attributes.CATEGORY;
-        if (!testVals[category]) {
-          testVals[category] = true;
-          values.push({name:category});
-        }
-      });
-      
-      values.sort(function(a, b) {
-         var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
-         if (nameA < nameB) {
-          return -1; 
-         }
-         if (nameA > nameB) {
-          return 1;
-         }
-         return 0;
-      });
-      
-      selectElem = dom.byId("categoriesSelect");
-      dojo.forEach (values, function(cat) {
-        selectElem.options.add(new Option(cat.name, cat.name));
+        _this.addGraphics(new Graphic(pt, _this.getDefaultMarkerSymbol()));
       });
     },
       
-    handleQueryResults: function (results) {
-        var features=[];
-        thisObject.map.infoWindow.features = [];
-        dojo.forEach(results, function (identifyResults) {
-          dojo.forEach(identifyResults, function (result) {
-            var feature = result.feature;
-            var layerName = result.layerName;
-            feature.setSymbol(fillSymbol);
-            feature.attributes.layerName = layerName;
-            if (dojo.indexOf(identifiableLayers,layerName)!==-1) {
-              var mapLayerObject = parentLayerMap[layerName];
-              feature.setInfoTemplate(mapLayerObject.infoTemplate);
-              features.push(feature);
-            }	
-          });
+    showInfo: function (results, clickedPoint) {
+      var features, _this;
+
+      features = [];
+      _this = this;
+
+      dojo.forEach(results, function (identifyResults) {
+        dojo.forEach(identifyResults, function (result) {
+          var feature, layerName, mapLayerObject;
+
+          layerName = result.layerName;
+
+          feature = result.feature;
+          feature.setSymbol(_this.getBorderSymbol());
+          feature.attributes.layerName = layerName;
+
+          if (dojo.indexOf(_this.identifiableLayers, layerName) !== -1) {
+            mapLayerObject = _this.nameToLayer[layerName];
+            feature.setInfoTemplate(mapLayerObject.infoTemplate);
+            features.push(feature);
+          }	
         });
+      });
 
       if (features.length > 0) {
-        thisObject.map.infoWindow.setFeatures(features);
-        thisObject.map.infoWindow.show(clickedPoint);
+        this.setInfoWindowFeatures(features);
+        this.showInfoWindow(clickedPoint);
       }
     },
       
-    executeQueryTask : function (evt) { 
+    getInfoOnClickedPoint : function (evt) { 
+      var tasks, _this, deferreds, map, promises;
+
+      _this = this;
+      map = this.getMap();
       tasks = [];
-      thisObject.map.infoWindow.hide(); 
-      thisObject.map.infoWindow.clearFeatures();
-      thisObject.map.graphics.clear(); 
-      featureSet = null;	
-      
-      clickedPoint = evt.mapPoint;
-      identifyParams.geometry = thisObject.pointToExtent(thisObject.map,
-                                  evt.mapPoint.x, evt.mapPoint.y,
-                                  thisObject.config.configs.pointTolerance);
-      identifyParams.mapExtent = thisObject.map.extent;
-      identifyParams.width  = thisObject.map.width;
-      identifyParams.height = thisObject.map.height;	  		
-      dojo.forEach(thisObject.config.map.featureLayers,function (layer) {
-        if (layer.identifyLayers.length > 0 && layer.layer.visibleAtMapScale) {
-          tasks.push(layer.task);
+
+      this.hideInfoWindow();
+      this.clearInfoWindow();
+      this.clearGraphics(); 
+      this.setIdentifyParams({
+        mapExtent : map.extent,
+        geometry  : this.pointToExtent(this.map, evt.mapPoint.x,
+          evt.mapPoint.y, this.pointTolerance)
+      });
+
+      dojo.map(this.featureLayers, function (layer) {
+        var task;
+
+        task = layer.getIdentifyTask();
+
+        if(task && layer.isVisibleNow()) {
+          tasks.push(task);
         }
       });
       
-      var deferreds = dojo.map(tasks,function(task){
-          return task.execute(identifyParams);
+      deferreds = dojo.map(tasks, function(task) {
+        return task.execute(_this.getIdentifyParams());
       });
+
       promises = new all(deferreds);
-      promises.then(thisObject.handleQueryResults);
+
+      promises.then(dojo.hitch(this, function(results) {
+        this.showInfo(results, evt.mapPoint);
+      }));
     },
     /**
     * a utility function that converts a point coordinates to a map extent
     */
     pointToExtent: function (map, pointX, pointY, toleranceInPixel) {
-      var pixelWidth = initExtent.getWidth() / map.width;
-      var toleraceInMapCoords = toleranceInPixel * pixelWidth;
+      var pixelWidth, toleraceInMapCoords;
+
+      pixelWidth = this.getPixelWidth();
+      toleraceInMapCoords = toleranceInPixel * pixelWidth;
+
       return new Extent(
           pointX - toleraceInMapCoords,
           pointY - toleraceInMapCoords,
@@ -543,189 +731,122 @@ define([
     },
 
     /**
-    * hide the search results when the user clicks on the x button
-    */
-    hideGrid:function () {
-      dom.byId("searchResults").innerHTML = "";
-      dom.byId("searchText").value = "";
-      dom.byId("searchResultsDiv").style.display = "none";
-      thisObject.map.centerAndZoom(center,zoom);
-      thisObject.map.graphics.clear();
-    },
-
-    /**
     * searches for a building using the building name given by the user
     */
-    doFind : function () {
-      dom.byId("searchResults").innerHTML ="";
-      dom.byId("searchResultsDiv").style.display = "block";
-      findParams.searchText = dom.byId('searchField').value;
-      findTask.execute(findParams, thisObject.showResults);
-      searchField = dojoQuery('#searchField')[0];
-      searchField.value="";
+    doFind : function (evt) {
+      var searchField;
+
+      if(evt.keyCode !== keys.ENTER) {
+        return;
+      }
+
+      searchField = dom.byId('searchField');
+
+      dojoQuery('.searchResults-modal').modal('show');
+      dom.byId('searchResults').innerHTML = '';
+      dom.byId('searchResults').style.display = 'none';
+      dom.byId('searchResultsDiv').style.display = 'block';
+
+      this.findParams.searchText = searchField.value;
+      this.findTask.execute(this.findParams,
+          dojo.hitch(this, this.showSearchResults));
+
+      searchField.value = '';
     },
 
     /**
     * Zooms to the location of the building selected in the search results
     */
-    zoomTo : function (item) {
-      clickedAssetId = item.target.id;
-      var markerSymbol = fillSymbol;
-      thisObject.map.infoWindow.hide();
-      var layer = thisObject.config.map.gazeteerLayer +"/0";
-      var queryTask = new QueryTask(layer);
-      var query = new Query(); 
-      query.outSpatialReference = {"wkid":102100}; 
+    zoomTo : function (evt) {
+      var markerSymbol, queryTask, query, _this;
+
+      _this = this;
+
+      markerSymbol = this.getBorderSymbol();
+
+      this.hideInfoWindow();
+
+      query = new EsriQuery(); 
+      query.outSpatialReference = { 'wkid': 102100 }; 
       query.returnGeometry = true; 
-      query.objectIds = [clickedAssetId]; 
+      query.objectIds = [evt.target.id];
+
+      queryTask = new QueryTask(this.gazeteerLayer + '/0');
       queryTask.execute(query, function(fset) { 
-        thisObject.map.graphics.clear(); 
-        dojo.forEach(fset.features,function(feature) {
-          var type = feature.geometry.type;
-        
-          var shapeExtent;
-          if (type === "point") {
-            markerSymbol = defaultMarkerSymbol;
-            shapeExtent = thisObject.pointToExtent(thisObject.map,
+        _this.clearGraphics();
+
+        dojo.forEach(fset.features, function(feature) {
+          var type, shapeExtent, cntrPoint;
+
+          type = feature.geometry.type;
+
+          if (type === 'point') {
+            markerSymbol = _this.getDefaultMarkerSymbol();
+            shapeExtent = _this.pointToExtent(_this.getMap(),
                 feature.geometry.x, feature.geometry.y, 80);
           } else {
-            shapeExtent = feature.geometry.getExtent();
-            var cntrPoint = shapeExtent.getCenter();
-            shapeExtent = thisObject.pointToExtent(thisObject.map, cntrPoint.x, cntrPoint.y, 80);
+            cntrPoint = feature.geometry.getExtent().getCenter();
+            shapeExtent = _this.pointToExtent(_this.getMap(), cntrPoint.x,
+                cntrPoint.y, 80);
           }
           
           feature.setSymbol(markerSymbol); 
-          thisObject.map.graphics.add(feature); 
-          thisObject.map.setExtent(shapeExtent);
+          _this.map.graphics.add(feature); 
+          _this.map.setExtent(shapeExtent);
         });				
       });
     },
 
-    showExtent:function (extent) {
-        var s = "";
-        s = "XMin: "+ extent.xmin + "&nbsp;" +
-            "YMin: " + extent.ymin + "&nbsp;" +
-            "XMax: " + extent.xmax + "&nbsp;" +
-            "YMax: " + extent.ymax + "&nbsp;" + extent.spatialReference.wkid;
-        alert(s);
+    getSearchKeyword : function () {
+      return this.findParams.searchText;
     },
-
-    sortResults:function (results) {
-      results.sort(function(a, b) {
-         var nameA = a.feature.attributes.Name.toLowerCase();
-         var nameB = b.feature.attributes.Name.toLowerCase();
-         var result = 0;
-         //sort string ascending
-         if (nameA < nameB) {
-          result =  -1;
-         } else if (nameA > nameB) {
-          result =  1;
-         }
-         return result;
-      });
-    },
-
     /**
     * Shows the results of searching of a building
     */
-    showResults:function (results) {
-      thisObject.map.graphics.clear();
-      var attribs;
-      var s = ["<div class='list-group'>"];
-      thisObject.sortResults(results);
-      dojo.forEach(results,function(result){
-        var graphic = result.feature;         
+    showSearchResults: function (results) {
+      var searchResults;
+
+      this.clearGraphics();
+
+      results.sort(function(a, b) {
+        var nameA, nameB;
+
+        nameA = a.feature.attributes.Name.toLowerCase();
+        nameB = b.feature.attributes.Name.toLowerCase();
+
+        return (nameA === nameB ? 0 : (nameA < nameB ? -1 : 1));
+      });
+
+      searchResults = '<div class="list-group">';
+
+      if(!results.length) {
+        searchResults += "Sorry! We couldn't find anything that matches '" +
+                          this.getSearchKeyword() + "' .";
+      }
+
+      dojo.forEach(results, function(result) {
+        var attribs;
+
         attribs = result.feature.attributes;
-        var addr = (attribs.Address.toLowerCase() !== "null") ? "<br/>" +attribs.Address : "";
-        var param = attribs.OBJECTID_12 ;//+ "," + " \""+layerUrl +"\"";
-        s.push("<a href='#' class='list-group-item' " +
-               "data-dismiss='modal' id='" + param + "'>" +
-               attribs.Name + "<br/>" + attribs.Category + addr + "</a>");
+
+        /* TODO Use dojox/dtl/Templates instead of dojo.replace
+         * when the status changes from Experimental to Mature
+         * see http://dojotoolkit.org/reference-guide/1.9/dojox/#website-webapp-infrastructure
+         */
+        searchResults += dojo.replace(listItemTemplate, {
+          id: attribs.OBJECTID_12,
+          name : attribs.Name,
+          category : '<br>' + attribs.Category,
+          addr : attribs.Address !== 'Null' ? '<br>' + attribs.Address : ''
+        });
       });
     
-      s.push("</div");
-      dom.byId("searchResults").innerHTML = s.join("");
-      dom.byId("searchResults").style.display = "block";
-      dojoQuery(".list-group-item").on('click',thisObject.zoomTo);
+      searchResults += '</div>';
+
+      dom.byId('searchResults').innerHTML = searchResults;
+      dom.byId('searchResults').style.display = 'block';
+
+      dojoQuery('.list-group-item').on('click', dojo.hitch(this, this.zoomTo));
     },
-    
-    clearBaseMap: function() {
-      var map = this.map;
-      if(map.basemapLayerIds.length > 0){
-        array.forEach(map.basemapLayerIds, function(lid) {
-          map.removeLayer(map.getLayer(lid));
-        });
-        map.basemapLayerIds = [];
-      } else {
-        map.removeLayer(map.getLayer(map.layerIds[0]));
-      }
-    },
-
-    setBasemap: function(basemapText) {
-      var map = this.map;
-      var l, options;
-      this.clearBaseMap();
-      switch (basemapText) {
-        case 'Water Color':
-         options = {
-            id: 'Water Color',
-            copyright: 'stamen',
-            resampling: true,
-            subDomains: ['a','b','c','d']
-         };
-         l = new WebTiledLayer('http://${subDomain}.tile.stamen.com' +
-             '/watercolor/${level}/${col}/${row}.jpg',options);
-         map.addLayer(l);
-         break;
-
-        case 'MapBox Space':
-          options = {
-            id:'mapbox-space',
-            copyright: 'MapBox',
-            resampling: true,
-            subDomains: ['a','b','c','d']
-          };
-          l = new WebTiledLayer('http://${subDomain}.tiles.mapbox.com' +
-              '/v3/eleanor.ipncow29/${level}/${col}/${row}.jpg',options);
-          map.addLayer(l);
-          break;
-
-        case 'Pinterest':
-          options = {
-            id:'mapbox-pinterest',
-            copyright: 'Pinterest/MapBox',
-            resampling: true,
-            subDomains: ['a','b','c','d']
-          };
-          l = new WebTiledLayer('http://${subDomain}.tiles.mapbox.com/v3' +
-              '/pinterest.map-ho21rkos/${level}/${col}/${row}.jpg',options);
-          map.addLayer(l);
-          break;
-
-        case 'Streets':
-          map.setBasemap('streets');
-          break;
-
-        case 'Imagery':
-          map.setBasemap('hybrid');
-          break;
-
-        case 'National Geographic':
-          map.setBasemap('national-geographic');
-          break;
-
-        case 'Topographic':
-          map.setBasemap('topo');
-          break;
-
-        case 'Gray':
-          map.setBasemap('gray');
-          break;
-
-        case 'Open Street Map':
-          map.setBasemap('osm');
-          break;
-      }
-    }
   });
 });

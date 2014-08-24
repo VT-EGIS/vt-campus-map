@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-  "use strict";
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
@@ -9,13 +8,17 @@ module.exports = function(grunt) {
         eqnull: true,
         browser: true,
         camelcase: true,
-        strict: true,
-        newcap: false,  
-        maxlen: 80
+        newcap: false,
+        undef: true,
+        unused: true,
+        latedef: true,
+        nonbsp: true,
+        dojo: true,
+        predef: ['module', 'alert', 'esri']
       },
       all: [
-        "Gruntfile.js",
-        "js/**/*.js"
+        'Gruntfile.js',
+        'js/**/*.js'
       ]
     }
   });

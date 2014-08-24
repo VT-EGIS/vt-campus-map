@@ -1,56 +1,60 @@
 <div>
-  <div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle"
-          data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+  <div class='navbar navbar-default navbar-fixed-top'>
+    <div class='container'>
+      <div class='navbar-header'>
+        <button type='button' class='navbar-toggle'
+          data-toggle='collapse' data-target='.navbar-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
         </button>
-        <img src="imgs/VT-Logo.png" class="img-responsive" /> 
+        <a class="navbar-brand" id="vt-logo" href="#">
+          <img src='imgs/VT-Logo.png' class='img-responsive' />
+        </a>
       </div>
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li class="active dropdown basemap-list">
-            <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown">${strings.navBasemaps} <b class="caret"></b>
+      <div class='collapse navbar-collapse'>
+        <ul class='nav navbar-nav'>
+          <li class='active dropdown basemap-list'>
+            <a href='#' class='dropdown-toggle'
+              data-toggle='dropdown'>Map Type <b class='caret'></b>
             </a>
-            <div class="dropdown-menu" style="overflow:scroll !important">
-              <div id="basemapGallery"></div>
+            <div class='dropdown-menu' style='overflow:scroll !important'>
+              <div id='basemapGallery'></div>
             </div>
           </li>
-          <li class="active dropdown legend-list">
-            <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown">${strings.navLegends} <b class="caret"></b>
+          <li class='active dropdown legend-list'>
+            <a href='#' class='dropdown-toggle'
+              data-toggle='dropdown'>Legend <b class='caret'></b>
             </a>
-            <div class="dropdown-menu" style="overflow:scroll !important">
-            	<div id="legendDiv"></div>
+            <div class='dropdown-menu' style='overflow:scroll !important'>
+            	<div id='legendDiv'></div>
             </div>
           </li>
-          <li class="active dropdown featured">
-            <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown">${strings.navBookmarks} <b class="caret"></b>
+          <li class='active dropdown featured'>
+            <a href='#' class='dropdown-toggle'
+              data-toggle='dropdown'>Featured <b class='caret'></b>
             </a>
-            <div class="dropdown-menu" style="overflow:scroll !important">
-            	<div id="featuredBookmarks"></div>
+            <div class='dropdown-menu' style='overflow:scroll !important'>
+            	<div id='featuredBookmarks'></div>
             </div>
           </li>
-          <li id="categories">
-            <a href="#categories" class="categories">
-              ${strings.navCategories}
+          <li id='categories'>
+            <a href='#categories' class='categories'>
+              Categories <b class='caret'></b>
             </a>
           </li>
-          <li class="active dropdown Layers">
-            <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown">${strings.navLayers} <b class="caret"></b>
+          <li class='active dropdown Layers'>
+            <a href='#' class='dropdown-toggle'
+              data-toggle='dropdown'>
+                Layers <b class='caret'></b>
             </a>
-            <div class="dropdown-menu" style="overflow:scroll !important">
-            	<div id="standardDiv"></div>
+            <div class='dropdown-menu' style='overflow:scroll !important'>
+            	<div id='standardDiv'></div>
             </div>
           </li>
-          <li>
-            <a href="#about" class="aboutItem">${strings.navAbout}
+          <li id="aboutItem">
+            <a href='#about' class='aboutItem'>
+              About <b class='caret'></b>
             </a>
           </li>
         </ul>
@@ -59,21 +63,26 @@
   </div>
   
   <!-- Categories modal -->
-  <div class="modal fade categories-modal" style="display: none;"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">
+  <div class='modal fade categories-modal' style='display: none;'
+    aria-hidden='true'>
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal'
+            aria-hidden='true'>
             x
           </button>
-          <h4 class="modal-title">
-            ${strings.modalCategoriesTitle}
+          <h4 class='modal-title'>
+            Select Category
           </h4>
         </div>
-        <div class="modal-body">
-          <p>${strings.modalCategoriesContent}</p>
+        <div class='modal-body'>
+          <div id='categoriesContent'>
+            <select id='categoriesSelect' name='categoriesSelect' class='form-control'> 
+              <option selected>Select Category</option>
+            </select>
+            <div class='itemsList' id='categoryItemsList'></div>
+          </div>
         </div>
       </div>
     </div>
@@ -81,20 +90,70 @@
   
   
   <!-- about modal -->
-  <div class="modal fade about-modal" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-          <h4 class="modal-title">${strings.modalAboutTitle}</h4>
+  <div class='modal fade about-modal' style='display: none;' aria-hidden='true'>
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>x</button>
+          <h4 class='modal-title'>About</h4>
         </div>
-        <div class="modal-body">
+        <div class='modal-body'>
+          <div id='help-content'>
+            <p>
+              This interactive map is based on data and images provided by several groups within the university.
+              The map is subject to continual change as the university grows,
+              new features are added, and outdated information is purged from the databases that supply map information.
+            </p>
+            <p>
+              Navigation features of this map (category search, featured places,
+              etc) are currently only accurate to the building level.
+              The position of the 'pointer' or other indicator graphics should
+              not be interpreted to identify the specific room in which a point of interest is located.
+            </p>
+            <p>
+              At this time, street address searches require the exact address in order to yield a result.
+              Details on the new street addresses can be found
+              <a href='http://www.vt.edu/street-address/'>here</a>.
+            </p>
+            <p>
+              The 'Find my Location' feature relies on your browser's geolocation service
+              (<a href='http://www.mozilla.org/en-US/firefox/geolocation/'>what's this?</a>)
+              to arrive at a best guess of where you are.
+              The accuracy of this estimate may vary dramatically.
+            </p>
+            <p>
+              Access routes may be blocked by construction or maintenance work
+              – users should check the
+              <a href='http://www.pdc.facilities.vt.edu/mediawiki/index.php/Main_Page'>
+                University Projects page
+              </a>,
+              <a href='http://www.facilities.vt.edu/documents/udc/wiki/landdist.pdf'>
+                Land Disturbing Projects page
+              </a> and/or the
+              <a href='http://www.hr.vt.edu/oea/ada/universal-campus-access/index.html'>
+                Universal Access Map 
+              </a>
+              to see if their planned route could be impacted.
+            </p>
+            <p>
+              We invite users to help us improve the quality and accuracy of
+              the map by letting us know of omissions, problems, or new
+              features you would like to see added to the map.
+              You can contact us by sending an email to
+              <a href='mailto:webmaster@vt.edu'>webmaster@vt.edu</a>
+              -- thank you for your valuable input!
+            </p>
+            <hr>
+          </div>
+          <div id='help-footer'>
+            This map was developed through a collaboration between University
+            Relations, Facilities Services: Engineering Operations,
+            Enterprise GIS, the Blacksburg Electronic Village,
+            and the Office of Equity and Access.
+          </div> 
           <p>
-            ${strings.modalAboutContent}
-          </p>
-          <p>
-            <a href="${config.about.moreInfoUrl}">
-              ${strings.modalAboutMoreInfo}
+            <a href='${config.about.moreInfoUrl}'>
+              More...
             </a>
           </p>
         </div>

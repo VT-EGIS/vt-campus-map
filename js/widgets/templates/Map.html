@@ -1,7 +1,7 @@
 <div>
   <div data-dojo-attach-point="mapNode">
     <div id="searchNode">
-      <input type="text" id="searchField" placeholder="Search"/>
+      <input type="search" id="searchField" placeholder="Search"/>
     </div>
     <div class="modal fade searchResults-modal"
       style="display: none;" aria-hidden="true">
@@ -12,10 +12,12 @@
               data-dismiss="modal" aria-hidden="true">
               x
             </button>
-            <h4 class="modal-title">${strings.modalSearchResultsTitle}</h4>
+            <h4 class="modal-title">Search Results</h4>
           </div>
           <div class="modal-body">
-            <p>${strings.modalSearchResultsContent}</p>
+            <div id='searchResultsDiv'>
+              <div class='itemsList' id='searchResults'></div>
+            </div>
           </div>
         </div>
       </div>
