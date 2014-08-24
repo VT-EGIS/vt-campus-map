@@ -470,7 +470,6 @@ define([
       return this.layers[layerName].getUrl();
     },
 
-    // TODO Make bookmarks/featuredPlaces a class
     getBookmarks : function () {
       var _this, map;
 
