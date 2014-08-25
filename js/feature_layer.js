@@ -6,6 +6,7 @@ define([
   return declare([], {
     constructor : function (opts) {
       this._copyParameters(opts);
+
       if(this.numIdentifyLayers()) {
         this.createIdentifyTask();
       }
@@ -28,7 +29,7 @@ define([
     },
 
     numIdentifyLayers : function () {
-      return this.identifyLayers.length;
+      return this.identifyLayers ? this.identifyLayers.length : 0;
     },
 
     getLabel : function () {
