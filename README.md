@@ -7,8 +7,8 @@ View the live map [here](http://maps.vt.edu/interactive).
 
 Setup Instructions
 ------------------
-1. Clone this repository into the place where your webserver can pick it up and serve it.
-   I usually put it in /var/www for apache to detect it.
+1. Clone this repository into the place where your webserver can pick it up and serve it.   
+   I usually put it in `/var/www` for apache to detect it.    
    `git clone git@github.com:VT-EGIS/vt-campus-map` 
 2. Open http://your-domain-name/vt-campus-map in your web browser.
 
@@ -69,4 +69,4 @@ Testing Locally
 The tests when run using grunt, execute in a headless browser called [PhantomJS](http://phantomjs.org/).
 To know more about a failure, it is better to run the tests in a normal browser like Chrome or
 Firefox. This can be done by opening http://your-domain-name/vt-campus-map/SpecRunner.html
-through your browser.
+in your browser.
