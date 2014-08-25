@@ -15,7 +15,7 @@ define([
   'esri/dijit/Bookmarks',
   'esri/Color',
   'esri/symbols/SimpleLineSymbol',
-	'esri/symbols/SimpleMarkerSymbol',
+  'esri/symbols/SimpleMarkerSymbol',
   'esri/symbols/SimpleFillSymbol',
   'esri/symbols/PictureMarkerSymbol',
   'esri/dijit/PopupMobile',
