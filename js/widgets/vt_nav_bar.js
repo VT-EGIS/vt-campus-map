@@ -20,15 +20,18 @@ define([
     _attachEventHandlers: function() {
       var _this = this;
       
-      query('a[href="#categories"]', this.domNode).on(touch.press, function(e) {
-        e.preventDefault();
-        query('.categories-modal').modal('show');
+      query('#search-by-category', this.domNode).on(touch.press, function(e) {
+        query('#search-by-category-modal').modal('show');
         _this._hideDropdownNav(e);
       });
   
       query('a[href="#about"]', this.domNode).on(touch.press, function(e) {
-        e.preventDefault();
         query('.about-modal').modal('show');
+        _this._hideDropdownNav(e);
+      });
+
+      query('#search-by-name', this.domNode).on(touch.press, function(e) {
+        query('#search-by-name-modal').modal('show');
         _this._hideDropdownNav(e);
       });
     },
