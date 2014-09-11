@@ -7,7 +7,7 @@ define([
         basemap: "national-geographic",
         center : [-80.422218,37.227590],
         zoom : 15,
-        sliderStyle: "large",
+        sliderStyle: "small",
         minZoom: 12,
         logo: false,
         lods: [
@@ -119,6 +119,38 @@ define([
         ],
         infoWindow: null,
       },
+      myBasemaps: [
+        {
+          label : "VT Campus",
+          thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg",
+          layerInfos : [
+            new FeatureLayer({
+              label: "Blacksburg",
+              url: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
+              visible: true,
+              opacity: 1
+            }),
+            new FeatureLayer({
+              label: "VT Campus",
+              url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
+              visible: true,
+              opacity: 1
+            })
+          ]
+        },
+        {
+          label : "Aerial Photo",
+          thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg",
+          layerInfos : [
+            new FeatureLayer({
+              label: "Pictometry",
+              url: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
+              visible: true,
+              opacity: 1
+            }),
+          ]
+        }
+      ],
       basemaps: {
         vtBasemap: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
         basemapNG: "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer",

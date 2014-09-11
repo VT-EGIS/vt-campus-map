@@ -1,7 +1,7 @@
 require([
   'app/config',
-  'app/widgets/Map',
-  'app/widgets/NavBar',
+  'app/widgets/vt_campus_map',
+  'app/widgets/vt_nav_bar',
   'dojo/domReady!'
 ], function(config, Map, NavBar) {
   var navBar, map;

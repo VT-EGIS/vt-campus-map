@@ -53,8 +53,7 @@ define([
     },
 
     load : function () {
-      this.layer = new ArcGISDynamicMapServiceLayer(this.getUrl(),
-          this.getJSON());
+      this.layer = new ArcGISDynamicMapServiceLayer(this.getUrl(), this.getJSON());
       return this.layer;
     },
 
