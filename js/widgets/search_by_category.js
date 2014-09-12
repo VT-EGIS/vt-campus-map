@@ -95,8 +95,8 @@ define([
           placesListTemplate += dojo.replace(listItemTemplate, {
             id : feature.attributes.OBJECTID_12,
             name : feature.attributes.NAME,
-            category : "",
-            addr : ""
+            category : '',
+            addr : ''
           });
         });
         

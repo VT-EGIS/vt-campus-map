@@ -39,7 +39,7 @@ define([
   'agsjs/dijit/TOC',
   'dojo/query',
   'app/widgets/bookmarks_dropdown',
-  'app/widgets/search_by_category_widget',
+  'app/widgets/search_by_category',
   'dojo/on',
   'dojo/text!./templates/search_by_name_modal.html'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
