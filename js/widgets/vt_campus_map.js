@@ -38,7 +38,10 @@ define([
   'dojo/parser',
   'agsjs/dijit/TOC',
   'dojo/query',
-  'app/widgets/bookmarks_dropdown'
+  'app/widgets/bookmarks_dropdown',
+  'app/widgets/search_by_category_widget',
+  'dojo/on',
+  'dojo/text!./templates/search_by_name_modal.html'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
             LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
@@ -46,7 +49,8 @@ define([
             BasemapLayer, Basemap, Legend, InfoTemplate, Point, Extent,
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
-            TOC, dojoQuery, BookmarksDropdown) {
+            TOC, dojoQuery, BookmarksDropdown, SearchByCategoryWidget, on,
+            searchByNameModal) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -70,6 +74,13 @@ define([
     },
 
     /* Private Methods*/
+    _addModals: function () {
+      dojo.create(domConstruct.toDom(searchByNameModal), null, this.domNode);
+      dojoQuery('#search-by-name-modal', this.domNode).on('shown.bs.modal', function(e) {
+        dojoQuery('input', e.target)[0].focus();
+      });
+    },
+
     _copyProperties : function (configItem) {
       for(var property in configItem) {
         if(configItem.hasOwnProperty(property)) {
@@ -183,6 +194,18 @@ define([
       this._registerWidget('featuredBookmarks', bookmarkWidget);
     },
 
+    _addSearchByCategoryWidget : function () {
+      var categoryWidget;
+
+      categoryWidget = new SearchByCategoryWidget({
+        onClickHandler : this.zoomTo,
+        gazeteerLayer  : this.gazeteerLayer,
+        mapContext     : this
+      }, 'search-by-category-modal');
+
+      this._registerWidget('searchByCategoryWidget', categoryWidget);
+    },
+
     _addWidgets : function () {
       var layerInfos;
 
@@ -190,6 +213,7 @@ define([
       this._addScaleBar();
       this._addLocateButton();
       this._addBookmarkWidget();
+      this._addSearchByCategoryWidget();
 
       layerInfos = dojo.map(this.featureLayers, function(featureLayer) {
         return featureLayer.getInfo();
@@ -215,8 +239,6 @@ define([
       // NavBar and Search Event Handlers
       dojoQuery('#searchField', this.domNode)
         .on('keydown', dojo.hitch(this, this.doFind));
-      dojoQuery('#categoriesSelect')
-        .on('change', dojo.hitch(this, this.updateSelect));
     },
 
     _initializeIdentifyParams : function () {
@@ -283,49 +305,7 @@ define([
       this._initializeIdentifyParams();
       this._addLayers();
       this._setupSearch();
-      this._loadCategories();
       this._addBaseMapGallery();
-    },
-
-    /**
-    * Load the Category drop down menu
-    */
-    _loadCategories: function () {
-      var queryTask, query;
-
-      query = new EsriQuery();
-      query.returnGeometry = false;
-      query.outFields = ['Category'];
-      query.where = 'Category is not NULL';
-
-      queryTask = new QueryTask(this.gazeteerLayer + '/0');
-      queryTask.execute(query, this._populateList);
-    },
-
-    _populateList: function (results) {
-      var category, values, isPresent, features, selectElem;
-
-      isPresent = {};
-      values = [];
-      features = results.features;
-
-      dojo.forEach(features, function(feature) {
-        category = feature.attributes.CATEGORY;
-        if (!isPresent[category]) {
-          isPresent[category] = true;
-          values.push({ name: category });
-        }
-      });
-      
-      values.sort(function(a, b) {
-        return (a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
-      });
-
-      selectElem = dom.byId('categoriesSelect');
-
-      dojo.forEach(values, function(category) {
-        selectElem.options.add(new Option(category.name, category.name));
-      });
     },
 
     showInfoWindow : function (point) {
@@ -498,6 +478,7 @@ define([
       this._checkQueryParameters();
       this.setMap();
       this._initMap();
+      this._addModals();
     },
 
     /**
@@ -506,47 +487,6 @@ define([
       * the options are retrieved by quering the mapservice
       * layer corresponding to the category selected.
       */
-    updateSelect : function (selectedItem) {
-      var name, query, queryTask, values, _this;
-
-      _this = this;
-
-      if (selectedItem === 'Select Category') {
-        return;
-      }
-
-      name = selectedItem.target.value;
-
-      query = new EsriQuery();  
-      query.returnGeometry = false; 
-      query.outFields = ['OBJECTID_12','Name'];
-      query.where = "Category = '" + name + "'";
-      query.orderByFields = ['Name ASC'];
-
-      queryTask = new QueryTask(this.gazeteerLayer + '/0');
-      queryTask.execute(query, function(fset) { 
-        var categoryHtmlString;
-
-        categoryHtmlString = '<div class="list-group">';
-
-        values = dojo.map(fset.features, function(feature) {
-          categoryHtmlString += dojo.replace(listItemTemplate, {
-            id : feature.attributes.OBJECTID_12,
-            name : feature.attributes.NAME,
-            category : "",
-            addr : ""
-          });
-        });
-
-        categoryHtmlString += '</div>';
-
-        dom.byId('categoryItemsList').style.display = 'block';
-        dom.byId('categoryItemsList').innerHTML = categoryHtmlString;
-        
-        dojoQuery('.list-group-item','categoryItemsList')
-          .on('click', dojo.hitch(_this, _this.zoomTo));
-      });
-    },
 
     showInfo: function (results, clickedPoint) {
       var features, _this;

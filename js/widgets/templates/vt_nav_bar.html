@@ -24,8 +24,18 @@
               Search <span class="caret"></span>
             </a>
             <ul class="dropdown-menu vt-background-color" role="menu">
-              <li><a href="#" id="search-by-name">Search by name</a></li>
-              <li><a href="#" id="search-by-category">Search by category</a></li>
+              <li>
+                <a href="#" id="search-by-name">
+                  Search by name &nbsp;
+                  <i class="glyphicon glyphicon-new-window"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#" id="search-by-category">
+                  Search by category &nbsp;
+                  <i class="glyphicon glyphicon-new-window"></i>
+                </a>
+              </li>
             </ul>
           </li>
           <li class='dropdown' id='featured-bookmarks'>
@@ -47,67 +57,6 @@
             About VT Campus Map
           </a>
         </p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Search by name modal-->
-  <div class='modal fade' id='search-by-name-modal'>
-    <div class='modal-dialog'>
-      <div class='modal-content'>
-        <div class='modal-header'>
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-          </button>
-          <h4 class='modal-title'>Search by name</h4>
-        </div>
-        <div class='modal-body'>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Search by category modal-->
-  <div class='modal fade' id='search-by-category-modal'>
-    <div class='modal-dialog'>
-      <div class='modal-content'>
-        <div class='modal-header'>
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-          </button>
-          <h4 class='modal-title'>Search by category</h4>
-        </div>
-        <div class='modal-body'>
-
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Categories modal -->
-  <div class='modal fade categories-modal' style='display: none;'
-    aria-hidden='true'>
-    <div class='modal-dialog'>
-      <div class='modal-content'>
-        <div class='modal-header'>
-          <button type='button' class='close' data-dismiss='modal'
-            aria-hidden='true'>
-            x
-          </button>
-          <h4 class='modal-title'>
-            Select Category
-          </h4>
-        </div>
-        <div class='modal-body'>
-          <div id='categoriesContent'>
-            <select id='categoriesSelect' name='categoriesSelect' class='form-control'> 
-              <option selected>Select Category</option>
-            </select>
-            <div class='itemsList' id='categoryItemsList'></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

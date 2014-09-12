@@ -151,3 +151,9 @@ a:hover .basemap-gallery-img {
 .basemap-gallery-selected .basemap-gallery-caption{
   color: #F5F5EB;
 }
+
+#categoryItemsList {
+  height: 250px;
+  overflow-y: scroll;
+  font-size: 14px !important;
+}
