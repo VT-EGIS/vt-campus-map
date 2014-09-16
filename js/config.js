@@ -466,7 +466,7 @@ define([
       searchResultZoom: 18,
       searchResultExtentTolerance: 50,
       pointTolerance: 0.8,
-      PictureMarker: "imgs/pictureSymbol.png"
+      PictureMarker: "imgs/vt-marker.png"
     },
     about: {
       moreInfoUrl: "http://www.maps.vt.edu/"

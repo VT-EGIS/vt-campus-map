@@ -376,7 +376,7 @@ define([
       defaults = {
         url     : this.PictureMarker,
         width   : 24,
-        height  : 38,
+        height  : 50,
         markerType : PictureMarkerSymbol
       };
 
