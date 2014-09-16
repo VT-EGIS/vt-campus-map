@@ -198,7 +198,7 @@ define([
       var categoryWidget;
 
       categoryWidget = new SearchByCategoryWidget({
-        onClickHandler : this.zoomTo,
+        onClickHandler : this.identifyOnMap,
         gazeteerLayer  : this.gazeteerLayer,
         mapContext     : this
       }, 'search-by-category-modal');
@@ -257,7 +257,7 @@ define([
     },
 
     _setupSearch : function () {
-      this.findTask = new FindTask(this.config.map.gazeteerLayer + '/');
+      this.findTask = new FindTask(this.gazeteerLayer + '/');
       this.findParams = new FindParameters();
       this.findParams.searchFields = ['NAME'];
       this.findParams.returnGeometry = true;
@@ -530,8 +530,7 @@ define([
       this.clearGraphics(); 
       this.setIdentifyParams({
         mapExtent : map.extent,
-        geometry  : this.pointToExtent(this.map, evt.mapPoint.x,
-          evt.mapPoint.y, this.pointTolerance)
+        geometry  : this.pointToExtent(evt.mapPoint, this.pointTolerance)
       });
 
       dojo.map(this.featureLayers, function (layer) {
@@ -557,11 +556,17 @@ define([
     /**
     * a utility function that converts a point coordinates to a map extent
     */
-    pointToExtent: function (map, pointX, pointY, toleranceInPixel) {
-      var pixelWidth, toleraceInMapCoords;
+    pointToExtent: function (geometry, toleranceInPixel) {
+      var pixelWidth, toleraceInMapCoords, pointX, pointY, map;
 
       pixelWidth = this.getPixelWidth();
+      map = this.getMap();
       toleraceInMapCoords = toleranceInPixel * pixelWidth;
+      if(!geometry.type || geometry.type !== 'point') {
+        geometry = this.getMercatorPoint(geometry.lng, geometry.lat);
+      }
+      pointX = geometry.x;
+      pointY = geometry.y;
 
       return new Extent(
           pointX - toleraceInMapCoords,
@@ -595,19 +600,16 @@ define([
       searchField.value = '';
     },
 
-    identifyOnMap : function(lng, lat) {
-      this.addMarkerAtPos(lng, lat);
-      this.zoomIn(lng, lat);
+    identifyOnMap : function(geometry) {
+      this.addBorderAndMarkerAtPos(geometry);
+      this.zoomToCoordinates(geometry);
     },
 
-    zoomIn : function (lng, lat) {
-      var shapeExtent, map, point;
+    zoomToCoordinates : function (geometry) {
+      var shapeExtent;
 
-      map = this.getMap();
-      point = this.getMercatorPoint(lng, lat);
-      shapeExtent = this.pointToExtent(map, point.x, point.y, 80);
-
-      map.setExtent(shapeExtent);
+      shapeExtent = this.pointToExtent(geometry, 80);
+      this.getMap().setExtent(shapeExtent);
     },
 
     getMercatorPoint : function (lng, lat) {
@@ -617,28 +619,19 @@ define([
       return webMercatorUtils.geographicToWebMercator(point);
     },
 
-    addMarkerAtPos : function (lng, lat) {
-      var map, point, buildingQuery, buildingQueryTask, _this;
+    addBorderAndMarkerAtPos : function (geometry) {
+      var map, buildingQuery, buildingQueryTask, _this;
 
       map = this.getMap();
-      point = this.getMercatorPoint(lng, lat);
+      if(!geometry.type || geometry.type !== 'point') {
+        geometry = this.getMercatorPoint(geometry.lng, geometry.lat);
+      }
       _this = this;
 
       buildingQuery = new EsriQuery(); 
       buildingQuery.outSpatialReference = {'wkid': 102100};
       buildingQuery.returnGeometry = true; 
-      buildingQuery.outFields = [
-        'BLDG_USE',
-        'NAME',
-        'BLDG_NUM',
-        'STNUM',
-        'STPREDIR',
-        'STNAME',
-        'STSUFFIX',
-        'STPOSTDIR',
-        'URL'
-      ];
-      buildingQuery.geometry = point; 
+      buildingQuery.geometry = geometry; 
 
       buildingQueryTask = new QueryTask(this.getLayerUrl('Buildings') + '/0');
       buildingQueryTask.execute(buildingQuery, function(featureSet) { 
@@ -649,50 +642,7 @@ define([
           _this.addGraphics(feature); 
         });				
 
-        _this.addGraphics(new Graphic(point, _this.getDefaultMarkerSymbol()));
-      });
-    },
-
-    /**
-    * Zooms to the location of the building selected in the search results
-    */
-    zoomTo : function (evt) {
-      var markerSymbol, queryTask, query, _this;
-
-      _this = this;
-
-      markerSymbol = this.getBorderSymbol();
-
-      this.hideInfoWindow();
-
-      query = new EsriQuery(); 
-      query.outSpatialReference = { 'wkid': 102100 }; 
-      query.returnGeometry = true; 
-      query.objectIds = [evt.target.id];
-
-      queryTask = new QueryTask(this.gazeteerLayer + '/0');
-      queryTask.execute(query, function(fset) { 
-        _this.clearGraphics();
-
-        dojo.forEach(fset.features, function(feature) {
-          var type, shapeExtent, cntrPoint;
-
-          type = feature.geometry.type;
-
-          if (type === 'point') {
-            markerSymbol = _this.getDefaultMarkerSymbol();
-            shapeExtent = _this.pointToExtent(_this.getMap(),
-                feature.geometry.x, feature.geometry.y, 80);
-          } else {
-            cntrPoint = feature.geometry.getExtent().getCenter();
-            shapeExtent = _this.pointToExtent(_this.getMap(), cntrPoint.x,
-                cntrPoint.y, 80);
-          }
-          
-          feature.setSymbol(markerSymbol); 
-          _this.map.graphics.add(feature); 
-          _this.map.setExtent(shapeExtent);
-        });				
+        _this.addGraphics(new Graphic(geometry, _this.getDefaultMarkerSymbol()));
       });
     },
 
@@ -703,7 +653,9 @@ define([
     * Shows the results of searching of a building
     */
     showSearchResults: function (results) {
-      var searchResults;
+      var searchResults, _this;
+
+      _this = this;
 
       this.clearGraphics();
 
@@ -723,7 +675,7 @@ define([
                           this.getSearchKeyword() + "' .";
       }
 
-      dojo.forEach(results, function(result) {
+      dojo.forEach(results, function(result, index) {
         var attribs;
 
         attribs = result.feature.attributes;
@@ -733,7 +685,7 @@ define([
          * see http://dojotoolkit.org/reference-guide/1.9/dojox/#website-webapp-infrastructure
          */
         searchResults += dojo.replace(listItemTemplate, {
-          id: attribs.OBJECTID_12,
+          id: 'search-result-' + index,
           name : attribs.Name,
           category : '<br>' + attribs.Category,
           addr : attribs.Address !== 'Null' ? '<br>' + attribs.Address : ''
@@ -745,7 +697,13 @@ define([
       dom.byId('searchResults').innerHTML = searchResults;
       dom.byId('searchResults').style.display = 'block';
 
-      dojoQuery('.list-group-item').on('click', dojo.hitch(this, this.zoomTo));
+      dojoQuery('.list-group').on('a:click', function(evt) {
+        var id, index;
+
+        id = evt.target.id;
+        index = id[id.length -1];
+        _this.identifyOnMap(results[index].feature.geometry);
+      });
     },
   });
 });

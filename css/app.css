@@ -19,6 +19,11 @@ body > .container {
   width: 100px;
 }
 
+#searchResults .list-group {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
 #locate-button {
   position: absolute;
   top: 165px;

@@ -18,7 +18,8 @@ define([
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
       this._copyProperties(opts, this);
-      this._categories = [];
+      this._categoryElements = {};
+      this._placeGeometries = {};
       this._currentPlacesListElement = null;
     },
 
@@ -80,10 +81,11 @@ define([
       attr = {style : 'display: none'};
 
       query = new EsriQuery();  
-      query.returnGeometry = false; 
-      query.outFields = ['OBJECTID_12','Name'];
+      query.returnGeometry = true; 
+      query.outFields = ['Name', 'OBJECTID_12'];
       query.where = "Category = '" + categoryName + "'";
       query.orderByFields = ['Name ASC'];
+      query.outSpatialReference = {'wkid': 102100};
 
       queryTask = new QueryTask(this.gazeteerLayer + '/0');
       queryTask.execute(query, function(fset) { 
@@ -93,11 +95,14 @@ define([
 
         dojo.forEach(fset.features, function(feature) {
           placesListTemplate += dojo.replace(listItemTemplate, {
-            id : feature.attributes.OBJECTID_12,
+            id : 'place-' + feature.attributes.OBJECTID_12,
             name : feature.attributes.NAME,
             category : '',
             addr : ''
           });
+
+          _this.setPlaceGeometry(feature.attributes.OBJECTID_12, feature.geometry);
+          
         });
         
         placesListTemplate += '</div>';
@@ -106,20 +111,31 @@ define([
 
         domConstruct.create(placesListElement, attr, container);
 
-        _this._registerCategory(categoryName, placesListElement);
+        _this.setCategoryElement(categoryName, placesListElement);
 
-        on(placesListElement, 'click', function (evt) {
-          _this.onClickHandler.call(_this.mapContext, evt);
+        on(placesListElement, 'a:click', function (evt) {
+          var point;
+
+          point = _this.getPlaceGeometry(evt.target.id.split('place-')[1]);
+          _this.onClickHandler.call(_this.mapContext, point);
         });
       });
     },
 
-    _registerCategory : function (categoryName, placesListElement) {
-      this._categories[categoryName] = placesListElement;
+    getPlaceGeometry : function (placeId) {
+      return this._placeGeometries[placeId];
     },
 
-    _getPlacesListElementForCategory : function (categoryName) {
-      return this._categories[categoryName];
+    setPlaceGeometry : function (placeId, geometry) {
+      this._placeGeometries[placeId] = geometry;
+    },
+
+    setCategoryElement : function (categoryName, placesListElement) {
+      this._categoryElements[categoryName] = placesListElement;
+    },
+
+    getCategoryElement : function (categoryName) {
+      return this._categoryElements[categoryName];
     },
 
     updateCurrentPlacesListElement : function (categoryName) {
@@ -129,14 +145,12 @@ define([
         dojo.setStyle(this._currentPlacesListElement, 'display', 'none');
       }
 
-      element = this._getPlacesListElementForCategory(categoryName);
-      
-      if(!element) {
-        return;
-      }
-
+      element = this.getCategoryElement(categoryName);
       this._currentPlacesListElement = element;
-      dojo.setStyle(this._currentPlacesListElement, 'display', 'block');
+      
+      if(this._currentPlacesListElement) {
+        dojo.setStyle(this._currentPlacesListElement, 'display', 'block');
+      }
     }
   });
 });
