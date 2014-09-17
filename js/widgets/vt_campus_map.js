@@ -19,8 +19,6 @@ define([
   'esri/symbols/PictureMarkerSymbol',
   'esri/dijit/PopupMobile',
   'app/widgets/basemap_gallery',
-  'esri/dijit/BasemapLayer',
-  'esri/dijit/Basemap',
   'esri/dijit/Legend',
   'esri/InfoTemplate',
   'esri/geometry/Point',
@@ -46,7 +44,7 @@ define([
             LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
             SimpleFillSymbol, PictureMarkerSymbol, PopupMobile, myBasemapGallery,
-            BasemapLayer, Basemap, Legend, InfoTemplate, Point, Extent,
+            Legend, InfoTemplate, Point, Extent,
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
             TOC, dojoQuery, BookmarksDropdown, SearchByCategoryWidget, on,
@@ -293,7 +291,7 @@ define([
       new myBasemapGallery({
         basemaps: this.myBasemaps,
         map: this.getMap(),
-        defaultBasemapIndex: 1
+        defaultBasemapIndex: 0
       }, 'basemap-gallery');
 
     },
