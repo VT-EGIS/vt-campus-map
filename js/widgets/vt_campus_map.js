@@ -131,7 +131,7 @@ define([
     },
 
     _addLegend : function (layerInfo) {
-      var legendDijit, collapsiblePanel;
+      var legendDijit;
       
       legendDijit = new Legend({
         map: this.map,
