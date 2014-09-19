@@ -139,17 +139,6 @@ define([
       }, 'legend');
 
       this._registerWidget('legendDijit', legendDijit);
-
-      dojo.addClass('close-legend', 'vtcampusmap-hidden');
-
-      collapsiblePanel = dojoQuery('#legendBody', 'collapsibleSidebar');
-
-      collapsiblePanel.on('show.bs.collapse', function() {
-        dojo.removeClass('close-legend', 'vtcampusmap-hidden');
-      });
-      collapsiblePanel.on('hide.bs.collapse', function() {
-        dojo.addClass('close-legend', 'vtcampusmap-hidden');
-      });
     },
 
     _addHomeButton : function () {
