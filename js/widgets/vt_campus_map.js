@@ -18,7 +18,7 @@ define([
   'esri/symbols/SimpleFillSymbol',
   'esri/symbols/PictureMarkerSymbol',
   'esri/dijit/PopupMobile',
-  'app/widgets/basemap_gallery',
+  'app/widgets/map_type',
   'esri/dijit/Legend',
   'esri/InfoTemplate',
   'esri/geometry/Point',
@@ -43,7 +43,7 @@ define([
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
             LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
-            SimpleFillSymbol, PictureMarkerSymbol, PopupMobile, myBasemapGallery,
+            SimpleFillSymbol, PictureMarkerSymbol, PopupMobile, mapTypeGallery,
             Legend, InfoTemplate, Point, Extent,
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
@@ -275,14 +275,15 @@ define([
       this._registerWidget('locateButton', locateButton);
     },
 
-    _addBaseMapGallery : function () {
+    _addMapTypeGallery : function () {
 
-      new myBasemapGallery({
-        basemaps: this.myBasemaps,
+      new mapTypeGallery({
+        mapTypes: this.mapTypes,
         map: this.getMap(),
-        defaultBasemapIndex: 0
-      }, 'basemap-gallery');
+        defaultMapTypeIndex: 0
+      }, 'mapType-gallery');
 
+      this._registerWidget('mapTypeGallery', mapTypeGallery);
     },
 
     _initMap: function() {
@@ -292,7 +293,7 @@ define([
       this._initializeIdentifyParams();
       this._addLayers();
       this._setupSearch();
-      this._addBaseMapGallery();
+      this._addMapTypeGallery();
     },
 
     showInfoWindow : function (point) {

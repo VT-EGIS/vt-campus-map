@@ -130,19 +130,19 @@ body > .container {
   display: none;
 }
 
-.basemap-gallery-caption {
+.mapType-caption {
   padding-left: 15px;
 }
 
-a:hover .basemap-gallery-img {
+a:hover .mapType-img {
   border: 1px solid blue;
 }
 
-.basemap-gallery-selected .basemap-gallery-img{
+.mapType-selected .mapType-img{
   border: 1px solid blue;
 }
 
-.basemap-gallery-selected .basemap-gallery-caption{
+.mapType-selected .mapType-caption{
   color: #FF6600;
 }
 

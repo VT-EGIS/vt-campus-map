@@ -4,15 +4,15 @@ define([
   'dojo/dom-construct',
   'dojo/query',
   'dojo/on',
-  'dojo/text!./templates/basemap_gallery_item.html'
-], function (declare, _WidgetBase, domConstruct, query, on, basemapGalleryItemTemplate) {
+  'dojo/text!./templates/maptype_gallery_item.html'
+], function (declare, _WidgetBase, domConstruct, query, on, mapTypeGalleryItemTemplate) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
-      this._currentBasemapIndex = -1;
-      this._basemapElements = [];
+      this._currentMapTypeIndex = -1;
+      this._mapTypeElements = [];
       this._copyProperties(opts, this);
-      this._loadBasemaps();
+      this._loadMapTypes();
       this._createGallery();
     },
 
@@ -25,11 +25,11 @@ define([
       this.inherited(arguments);
       this._getGalleryElements();
       this._attachEventHandlers();
-      this.selectBasemap(this.defaultBasemapIndex);
+      this.selectMapType(this.defaultMapTypeIndex);
     },
 
     _getGalleryElements : function () {
-      this._basemapElements = query('li', this.domNode);
+      this._mapTypeElements = query('li', this.domNode);
     },
 
     _copyProperties : function (configItem) {
@@ -40,14 +40,14 @@ define([
       }
     },
 
-    _loadBasemaps : function () {
+    _loadMapTypes : function () {
       var _this, map;
 
       _this = this;
       map = this.getMap();
 
-      dojo.forEach(this.basemaps, function(basemap) {
-        basemap.layers = dojo.map(basemap.layerInfos, function(layerInfo) {
+      dojo.forEach(this.mapTypes, function(mapType) {
+        mapType.layers = dojo.map(mapType.layerInfos, function(layerInfo) {
           var serviceLayer;
 
           serviceLayer = layerInfo.load();
@@ -72,7 +72,7 @@ define([
         id = evt.target.id;
         index = id[id.length - 1];
 
-        _this.selectBasemap(index);
+        _this.selectMapType(index);
       });
     },
 
@@ -80,48 +80,48 @@ define([
       return this.map;
     },
 
-    setCurrentBasemap : function(index) {
-      this._currentBasemapIndex = index;
-      dojo.addClass(this._basemapElements[index], 'basemap-gallery-selected');
+    setCurrentMapType : function(index) {
+      this._currentMapTypeIndex = index;
+      dojo.addClass(this._mapTypeElements[index], 'mapType-selected');
     },
 
-    selectBasemap : function (index) {
-      var map, oldBasemap, oldBasemapIndex, basemap;
+    selectMapType : function (index) {
+      var map, oldMapType, oldMapTypeIndex, mapType;
 
       map = this.getMap();
-      oldBasemapIndex = this.getCurrentBasemapIndex();
+      oldMapTypeIndex = this.getCurrentMapTypeIndex();
 
-      if(oldBasemapIndex === index) {
+      if(oldMapTypeIndex === index) {
         return;
       }
 
-      if(oldBasemapIndex !== -1) {
-        dojo.removeClass(this.getBasemapElement(oldBasemapIndex),
-            'basemap-gallery-selected');
-        oldBasemap = this.getCurrentBasemap();
-        dojo.forEach(oldBasemap.layers, function (layer) {
+      if(oldMapTypeIndex !== -1) {
+        dojo.removeClass(this.getMapTypeElement(oldMapTypeIndex),
+            'mapType-selected');
+        oldMapType = this.getCurrentMapType();
+        dojo.forEach(oldMapType.layers, function (layer) {
           layer.hide();
         });
       }
 
-      this.setCurrentBasemap(index);
+      this.setCurrentMapType(index);
 
-      basemap = this.basemaps[index];
-      dojo.forEach(basemap.layers, function (layer) {
+      mapType = this.mapTypes[index];
+      dojo.forEach(mapType.layers, function (layer) {
         layer.show();
       });
     },
 
-    getBasemapElement : function (index) {
-      return this._basemapElements[index];
+    getMapTypeElement : function (index) {
+      return this._mapTypeElements[index];
     },
 
-    getCurrentBasemap : function () {
-      return this.basemaps[this._currentBasemapIndex];
+    getCurrentMapType : function () {
+      return this.mapTypes[this._currentMapTypeIndex];
     },
 
-    getCurrentBasemapIndex : function () {
-      return this._currentBasemapIndex;
+    getCurrentMapTypeIndex : function () {
+      return this._currentMapTypeIndex;
     },
 
     _createGallery : function () {
@@ -131,13 +131,13 @@ define([
 
       _this = this;
 
-      dojo.forEach(this.basemaps, function (basemap, index) {
+      dojo.forEach(this.mapTypes, function (mapType, index) {
         var templateString;
 
-        templateString = dojo.replace(basemapGalleryItemTemplate, {
-          name : basemap.label,
-          id   : "basemap-gallery-item-" + index,
-          url  : basemap.thumbnail
+        templateString = dojo.replace(mapTypeGalleryItemTemplate, {
+          name : mapType.label,
+          id   : "mapType-gallery-item-" + index,
+          url  : mapType.thumbnail
         });
 
         dojo.create(domConstruct.toDom(templateString), null, dropdownList); 

@@ -119,7 +119,7 @@ define([
         ],
         infoWindow: null,
       },
-      myBasemaps: [
+      mapTypes: [
         {
           label : "VT Campus",
           thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg",
@@ -151,14 +151,6 @@ define([
           ]
         }
       ],
-      basemaps: {
-        vtBasemap: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
-        basemapNG: "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer",
-        basemapTOB: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
-        schematicThumbnail: "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg",
-        pictometry: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
-        pictometryThumbnail: "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg"
-      },
       locatorService: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTAddressPoints/GeocodeServer",
       gazeteerLayer: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer",
       featuredPlaces : [
