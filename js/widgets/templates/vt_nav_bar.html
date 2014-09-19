@@ -14,14 +14,18 @@
       </div>
       <div class='collapse navbar-collapse'>
         <ul class='nav navbar-nav push-right'>
-          <li class='dropdown' id='mapType-gallery'>
+          <li class='dropdown'>
             <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-              Map Type <b class='caret'></b>
+              Map Type <b class='caret hidden-xs'></b>
             </a>
+            <ul class="dropdown-menu vt-background-color"> 
+              <div class='row-fluid' id='mapType-gallery'>
+              </div>
+            </ul>
           </li>
           <li class='dropdown'>
             <a href='#' class="dropdown-toggle" data-toggle='dropdown'>
-              Search <span class="caret"></span>
+              Find Places <span class="caret hidden-xs"></span>
             </a>
             <ul class="dropdown-menu vt-background-color" role="menu">
               <li>
@@ -38,14 +42,16 @@
               </li>
             </ul>
           </li>
-          <li class='dropdown' id='featured-bookmarks'>
+          <li class='dropdown'>
             <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-              Featured <span class="caret"></span>
+              Featured <span class="caret hidden-xs"></span>
             </a>
+            <ul class="dropdown-menu vt-background-color hidden-xs" id='featured-bookmarks'> 
+            </ul>
           </li>
           <li class='dropdown'>
             <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-                Layers <b class='caret'></b>
+                Layers <b class='caret hidden-xs'></b>
             </a>
             <div class='dropdown-menu hidden-xs'>
             	<div id='layers'></div>
@@ -53,7 +59,7 @@
           </li>
           <li class='dropdown'>
             <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-                Legend <b class='caret'></b>
+                Legend <b class='caret hidden-xs'></b>
             </a>
             <div class='dropdown-menu hidden-xs'>
             	<div id='legend'></div>

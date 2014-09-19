@@ -5,7 +5,8 @@ define([
   'dojo/query',
   'dojo/on',
   'dojo/text!./templates/maptype_gallery_item.html'
-], function (declare, _WidgetBase, domConstruct, query, on, mapTypeGalleryItemTemplate) {
+], function (declare, _WidgetBase, domConstruct, query, on,
+             mapTypeGalleryItemTemplate) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
@@ -13,16 +14,11 @@ define([
       this._mapTypeElements = [];
       this._copyProperties(opts, this);
       this._loadMapTypes();
-      this._createGallery();
-    },
-
-    attrs : {
-      'class' : 'dropdown-menu vt-background-color',
-      'role'  : 'menu',
     },
 
     postCreate: function() {
       this.inherited(arguments);
+      this._createGallery();
       this._getGalleryElements();
       this._attachEventHandlers();
       this.selectMapType(this.defaultMapTypeIndex);
@@ -64,9 +60,7 @@ define([
 
       _this = this;
 
-      dropDownListElement = query('.dropdown-menu', this.domNode);
-
-      on(dropDownListElement, 'img:click', function (evt) {
+      on(this.domNode, 'img:click', function (evt) {
         var id, index;
 
         id = evt.target.id;
@@ -125,9 +119,7 @@ define([
     },
 
     _createGallery : function () {
-      var dropdownList, _this;
-
-      dropdownList = dojo.create('ul', this.attrs, this._elementID);
+      var _this;
 
       _this = this;
 
@@ -136,11 +128,11 @@ define([
 
         templateString = dojo.replace(mapTypeGalleryItemTemplate, {
           name : mapType.label,
-          id   : "mapType-gallery-item-" + index,
+          id   : 'mapType-gallery-item-' + index,
           url  : mapType.thumbnail
         });
 
-        dojo.create(domConstruct.toDom(templateString), null, dropdownList); 
+        dojo.create(domConstruct.toDom(templateString), null, _this.domNode); 
       });
     }
   });
