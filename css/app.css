@@ -39,8 +39,8 @@ body > .container {
 	color: #FF6600 !important;
 }
 
-#featured-bookmarks ul {
-  height: 200px;
+#featured-bookmarks {
+  height: 300px;
   overflow-y: scroll;
 }
 
@@ -150,4 +150,8 @@ a:hover .mapType-img {
   height: 250px;
   overflow-y: scroll;
   font-size: 14px !important;
+}
+
+#about-modal {
+  overflow-y: scroll;
 }
