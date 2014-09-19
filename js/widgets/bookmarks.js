@@ -6,33 +6,29 @@ define([
   'dojo/query',
   'dojo/on',
   'dojox/html/entities'
-], function (declare, _WidgetBase, domConstruct, bookmarkItemTemplate, query, on, entities) {
+], function (declare, _WidgetBase, domConstruct, bookmarkItemTemplate, query,
+             on, entities) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this.elementID = elementID;
       this._copyProperties(opts, this);
-      this.attrs = {
-        'class' : 'dropdown-menu',
-        'role'  : 'menu'
-      };
       this._copyProperties(opts.attrs, this.attrs);
       this._bookmarkElements = [];
       this._bookmarkDict = {};
-      this._createBookmarkList();
     },
 
     postCreate : function () {
       this.inherited(arguments);
+      this._createBookmarkList();
       this._attachEventHandlers();
     },
 
     _attachEventHandlers : function () {
-      var dropDownListElement, _this;
+      var _this;
 
       _this = this;
-      dropDownListElement = query('.dropdown-menu', this.domNode);
 
-      on(dropDownListElement, 'a:click', function (evt) {
+      on(this.domNode, 'a:click', function (evt) {
         var bookmark, bookmarkName;
 
         bookmarkName = entities.decode(evt.target.innerHTML);
@@ -46,30 +42,18 @@ define([
       return this._bookmarkDict[name];
     },
 
-    /* Private Methods*/
-    _copyProperties : function (opts, config) {
-      var classListOpts, classListConfig, delimiter;
-
-      delimiter = ' ';
-      for(var property in opts) {
-        if(opts.hasOwnProperty(property)) {
-          if(property === 'class') {
-            classListOpts = opts[property].split(delimiter);
-            classListConfig = config[property].split(delimiter);
-            config[property] = classListConfig.concat(classListOpts).join(delimiter);
-          } else {
-            config[property] = opts[property];
-          }
+    _copyProperties : function (configItem) {
+      for(var property in configItem) {
+        if(configItem.hasOwnProperty(property)) {
+          this[property] = configItem[property];
         }
       }
     },
-    
+
     _createBookmarkList : function () {
-      var dropdownList, _this;
+      var _this;
 
       _this = this;
-
-      dropdownList = dojo.create('ul', this.attrs, this.elementID);
 
       this._bookmarkElements = dojo.map(this.bookmarks, function (bookmark) {
         var bookmarkElement, templateString;
@@ -79,7 +63,7 @@ define([
         });
 
         bookmarkElement = dojo.create(domConstruct.toDom(templateString), null,
-            dropdownList);
+            _this.domNode);
 
         _this._bookmarkDict[bookmark.name] = bookmark;
         return bookmarkElement;

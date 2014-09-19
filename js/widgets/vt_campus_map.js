@@ -36,7 +36,7 @@ define([
   'dojo/parser',
   'agsjs/dijit/TOC',
   'dojo/query',
-  'app/widgets/bookmarks_dropdown',
+  'app/widgets/bookmarks',
   'app/widgets/search_by_category',
   'dojo/on',
   'dojo/text!./templates/search_by_name_modal.html'
@@ -47,7 +47,7 @@ define([
             Legend, InfoTemplate, Point, Extent,
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
-            TOC, dojoQuery, BookmarksDropdown, SearchByCategoryWidget, on,
+            TOC, dojoQuery, Bookmarks, SearchByCategoryWidget, on,
             searchByNameModal) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
@@ -169,7 +169,7 @@ define([
     _addBookmarkWidget : function () {
       var bookmarkWidget;
 
-      bookmarkWidget = new BookmarksDropdown({
+      bookmarkWidget = new Bookmarks({
         bookmarks      : this.getBookmarks(),
         onClickHandler : this.identifyOnMap,
         mapContext     : this,
@@ -280,7 +280,7 @@ define([
       new mapTypeGallery({
         mapTypes: this.mapTypes,
         map: this.getMap(),
-        defaultMapTypeIndex: 0
+        defaultMapTypeIndex: 0,
       }, 'mapType-gallery');
 
       this._registerWidget('mapTypeGallery', mapTypeGallery);
