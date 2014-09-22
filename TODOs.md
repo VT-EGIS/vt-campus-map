@@ -23,4 +23,4 @@ TODO List
   We can keep the search bar on the map for redundancy purposes.
 8. About should be a simple link instead of being part of the navigation.
 9. Make Legend, Map Type and Layers non-scrollable.
-
+10. Add documentation
