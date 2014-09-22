@@ -87,13 +87,6 @@ define([
       }
     },
 
-    _registerWidget : function (name, widget) {
-      this.widgets[name] = widget;
-      if(widget.startup) {
-        widget.startup();
-      }
-    },
-
     _getWidget : function (name) {
       return this.widgets[name];
     },
@@ -126,8 +119,6 @@ define([
         map: this.getMap(),
         layerInfos: layerInfo
       }, 'layers');
-
-      this._registerWidget('layerTOC', layerTOC);
     },
 
     _addLegend : function (layerInfo) {
@@ -137,8 +128,6 @@ define([
         map: this.map,
         layerInfos: layerInfo
       }, 'legend');
-
-      this._registerWidget('legendDijit', legendDijit);
     },
 
     _addHomeButton : function () {
@@ -147,8 +136,6 @@ define([
       homeButton = new HomeButton({
         map: this.getMap()
       }, 'home-button');
-
-      this._registerWidget('homeButton', homeButton);
     },
 
     _initializeMapExtent : function () {
@@ -177,8 +164,6 @@ define([
           'class' : 'vt-background-color'
         }
       }, 'featured-bookmarks');
-
-      this._registerWidget('featuredBookmarks', bookmarkWidget);
     },
 
     _addSearchByCategoryWidget : function () {
@@ -259,8 +244,6 @@ define([
         map: this.getMap(),
         scalebarUnit: 'dual'
       });
-
-      this._registerWidget('scaleBar', scaleBar);
     },
 
     _addLocateButton : function () {
@@ -271,8 +254,6 @@ define([
         scale: 10000,
         symbol: this.getDefaultMarkerSymbol()
       }, 'locate-button');
-
-      this._registerWidget('locateButton', locateButton);
     },
 
     _addMapTypeGallery : function () {
@@ -282,8 +263,6 @@ define([
         map: this.getMap(),
         defaultMapTypeIndex: 0,
       }, 'mapType-gallery');
-
-      this._registerWidget('mapTypeGallery', mapTypeGallery);
     },
 
     _initMap: function() {
