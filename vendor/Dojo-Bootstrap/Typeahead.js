@@ -41,7 +41,9 @@ define([
             items: 8,
             menu: '<ul class="typeahead dropdown-menu"></ul>',
             item: '<li><a href="#"></a></li>',
+            container: document.body,
             minLength: 1,
+            elQueryString: 'li',
             autocomplete: false
         },
         constructor: function (element, options) {
@@ -56,6 +58,8 @@ define([
             this.updater = this.options.updater || this.updater;
             this.menuNode = domConstruct.toDom(this.options.menu);
             this.source = this.options.source;
+            this.container = this.options.container;
+            this.elQueryString = this.options.elQueryString;
             this.shown = false;
             this.listen();
         },
@@ -70,7 +74,7 @@ define([
         },
         show: function () {
             var pos = domGeom.position(this.domNode, true);
-            domConstruct.place(this.menuNode, document.body);
+            domConstruct.place(this.menuNode, this.container);
             domStyle.set(this.menuNode, {
                 top: (pos.y + this.domNode.offsetHeight)+'px',
                 left: pos.x+'px',
@@ -129,7 +133,7 @@ define([
             items = array.map(items, function (item, i) {
                 var li = domConstruct.toDom(this.options.item);
                 domAttr.set(li, 'data-value', item);
-                query('a', li)[0].innerHTML = this.highlighter(item);
+                li.innerHTML = this.highlighter(item);
                 if (i === 0) { domClass.add(li, 'active'); }
                 return li.outerHTML;
             }, this);
@@ -142,7 +146,7 @@ define([
             var next = active.next();
 
             if (!next.length) {
-                next = query('li', this.menuNode).first();
+                next = query(this.elQueryString, this.menuNode).first();
             }
             next.addClass('active');
         },
@@ -152,19 +156,19 @@ define([
             var prev = active.prev();
 
             if (!prev.length) {
-                prev = query('li', this.menuNode).last();
+                prev = query(this.elQueryString, this.menuNode).last();
             }
             prev.addClass('active');
         },
         listen: function () {
-            on(this.domNode, 'blur', lang.hitch(this, 'blur'));
-            on(this.domNode, 'keypress', lang.hitch(this, this.keypress));
-            on(this.domNode, 'keyup', lang.hitch(this, this.keyup));
+            on(this.domNode, 'blur', lang.hitch(this, this.blurHandler));
+            on(this.domNode, 'keypress', lang.hitch(this, this.keypressHandler));
+            on(this.domNode, 'keyup', lang.hitch(this, this.keyupHandler));
             if(support.eventSupported(this.domNode, "keydown")) {
-                on(this.domNode, 'keydown', lang.hitch(this, 'keydown'));
+                on(this.domNode, 'keydown', lang.hitch(this, this.keydownHandler));
             }
-            on(this.menuNode, 'click', lang.hitch(this, 'click'));
-            on(this.menuNode, on.selector('li', 'mouseover'), lang.hitch(this, 'mouseenter'));
+            on(this.menuNode, 'click', lang.hitch(this, this.clickHandler));
+            on(this.menuNode, on.selector(this.elQueryString, 'mouseover'), lang.hitch(this, this.mouseenterHandler));
         },
         move: function (e) {
             if (!this.shown) { return; }
@@ -189,7 +193,7 @@ define([
 
             e.stopPropagation();
         },
-        keyup: function (e) {
+        keyupHandler: function (e) {
             var code = e.charCode || e.keyCode;
             switch(code) {
                 case 40: // down arrow
@@ -217,26 +221,26 @@ define([
             e.stopPropagation();
             e.preventDefault();
         },
-        keydown: function (e) {
+        keydownHandler: function (e) {
             var code = e.charCode || e.keyCode;
             this.suppressKeyPressRepeat = array.indexOf([40,38,9,13,27], code) >= 0;
             this.move(e);
         },
-        keypress: function (e) {
+        keypressHandler: function (e) {
             if (this.suppressKeyPressRepeat) { return; }
             this.move(e);
         },
-        blur: function () {
+        blurHandler: function () {
             var _this = this;
             setTimeout(function () { _this.hide(); }, 150);
         },
-        click: function (e) {
+        clickHandler: function (e) {
             e.stopPropagation();
             e.preventDefault();
             this.select();
         },
-        mouseenter: function (e) {
-            var li = query(e.target).closest('li');
+        mouseenterHandler: function (e) {
+            var li = query(e.target).closest(this.elQueryString);
             query('.active', this.menuNode).removeClass('active');
             li.addClass('active');
         }
