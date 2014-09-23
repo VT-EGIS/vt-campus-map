@@ -575,7 +575,7 @@ define([
     zoomToCoordinates : function (geometry) {
       var shapeExtent;
 
-      shapeExtent = this.pointToExtent(geometry, 80);
+      shapeExtent = this.pointToExtent(geometry, 40);
       this.getMap().setExtent(shapeExtent);
     },
 
