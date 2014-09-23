@@ -39,7 +39,7 @@ define([
   'app/widgets/bookmarks',
   'app/widgets/search_by_category',
   'dojo/on',
-  'dojo/text!./templates/search_by_name_modal.html'
+  'app/widgets/search_by_name',
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
             LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
@@ -48,7 +48,7 @@ define([
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
             TOC, dojoQuery, Bookmarks, SearchByCategoryWidget, on,
-            searchByNameModal) {
+            SearchByNameWidget) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -69,14 +69,6 @@ define([
       this.nameToLayer = {};
       this.widgets = {};
       this.layers = {};
-    },
-
-    /* Private Methods*/
-    _addModals: function () {
-      dojo.create(domConstruct.toDom(searchByNameModal), null, this.domNode);
-      dojoQuery('#search-by-name-modal', this.domNode).on('shown.bs.modal', function(e) {
-        dojoQuery('input', e.target)[0].focus();
-      });
     },
 
     _copyProperties : function (configItem) {
@@ -174,9 +166,17 @@ define([
         gazeteerLayer  : this.gazeteerLayer,
         mapContext     : this
       }, 'search-by-category-modal');
-
-      this._registerWidget('searchByCategoryWidget', categoryWidget);
     },
+
+    _addSearchByNameWidget : function () {
+      var searchByNameWidget;
+
+      searchByNameWidget = new SearchByNameWidget({
+        onClickHandler : this.identifyOnMap,
+        gazeteerLayer  : this.gazeteerLayer,
+        mapContext     : this
+      }, 'search-by-name-modal');
+    }, 
 
     _addWidgets : function () {
       var layerInfos;
@@ -186,6 +186,7 @@ define([
       this._addLocateButton();
       this._addBookmarkWidget();
       this._addSearchByCategoryWidget();
+      this._addSearchByNameWidget();
 
       layerInfos = dojo.map(this.featureLayers, function(featureLayer) {
         return featureLayer.getInfo();
@@ -445,7 +446,6 @@ define([
       this._checkQueryParameters();
       this.setMap();
       this._initMap();
-      this._addModals();
     },
 
     /**
@@ -671,6 +671,6 @@ define([
         index = id[id.length -1];
         _this.identifyOnMap(results[index].feature.geometry);
       });
-    },
+    }
   });
 });
