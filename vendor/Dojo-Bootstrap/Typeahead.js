@@ -235,7 +235,6 @@ define([
             setTimeout(function () { _this.hide(); }, 150);
         },
         clickHandler: function (e) {
-            e.stopPropagation();
             e.preventDefault();
             this.select();
         },
