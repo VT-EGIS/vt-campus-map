@@ -5,14 +5,14 @@ define([
   'dojo/text!./templates/bookmark_item.html',
   'dojo/query',
   'dojo/on',
-  'dojox/html/entities'
+  'dojox/html/entities',
+  'dojo/_base/lang'
 ], function (declare, _WidgetBase, domConstruct, bookmarkItemTemplate, query,
-             on, entities) {
+             on, entities, lang) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this.elementID = elementID;
-      this._copyProperties(opts, this);
-      this._copyProperties(opts.attrs, this.attrs);
+      lang.mixin(this, opts);
       this._bookmarkElements = [];
       this._bookmarkDict = {};
     },
@@ -40,14 +40,6 @@ define([
 
     getBookmark : function (name) {
       return this._bookmarkDict[name];
-    },
-
-    _copyProperties : function (configItem) {
-      for(var property in configItem) {
-        if(configItem.hasOwnProperty(property)) {
-          this[property] = configItem[property];
-        }
-      }
     },
 
     _createBookmarkList : function () {

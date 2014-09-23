@@ -4,15 +4,16 @@ define([
   'dojo/dom-construct',
   'dojo/query',
   'dojo/on',
+  'dojo/_base/lang',
   'dojo/text!./templates/maptype_gallery_item.html'
-], function (declare, _WidgetBase, domConstruct, query, on,
+], function (declare, _WidgetBase, domConstruct, query, on, lang,
              mapTypeGalleryItemTemplate) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
       this._currentMapTypeIndex = -1;
       this._mapTypeElements = [];
-      this._copyProperties(opts, this);
+      lang.mixin(this, opts);
       this._loadMapTypes();
     },
 
@@ -26,14 +27,6 @@ define([
 
     _getGalleryElements : function () {
       this._mapTypeElements = query('li', this.domNode);
-    },
-
-    _copyProperties : function (configItem) {
-      for(var property in configItem) {
-        if(configItem.hasOwnProperty(property)) {
-          this[property] = configItem[property];
-        }
-      }
     },
 
     _loadMapTypes : function () {

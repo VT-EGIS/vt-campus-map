@@ -9,29 +9,22 @@ define([
   'dojo/query',
   'dojo/on',
   'dojo/request/xhr',
+  'dojo/_base/lang',
   'dojo/text!./templates/search_by_category_modal.html',
   'dojo/text!./templates/list_of_items_in_modal.html'
 ], function (declare, _WidgetBase, _TemplatedMixin, EsriQuery, QueryTask,
-             dom, domConstruct, dojoQuery, on, dojoRequest, modalTemplate,
+             dom, domConstruct, dojoQuery, on, dojoRequest, lang, modalTemplate,
              listItemTemplate) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
-      this._copyProperties(opts, this);
+      lang.mixin(this, opts);
       this._categoryElements = {};
       this._placeGeometries = {};
       this._currentPlacesListElement = null;
     },
 
     templateString : modalTemplate,
-
-    _copyProperties : function (opts, config) {
-      for(var property in opts) {
-        if(opts.hasOwnProperty(property)) {
-          config[property] = opts[property];
-        }
-      }
-    },
 
     postCreate : function () {
       this.inherited(arguments);

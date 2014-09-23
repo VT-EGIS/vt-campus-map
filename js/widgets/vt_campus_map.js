@@ -40,6 +40,7 @@ define([
   'app/widgets/search_by_category',
   'dojo/on',
   'app/widgets/search_by_name',
+  'dojo/_base/lang'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
             LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
@@ -48,7 +49,7 @@ define([
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
             TOC, dojoQuery, Bookmarks, SearchByCategoryWidget, on,
-            SearchByNameWidget) {
+            SearchByNameWidget, lang) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -58,8 +59,8 @@ define([
       config = opts.config;
       _this = this;
 
-      dojo.forEach([config.map, config.configs],
-          dojo.hitch(this, this._copyProperties));
+      lang.mixin(this, config.map);
+      lang.mixin(this, config.configs);
 
       this.setDefaultMarkerSymbol();
       this.setBorderSymbol();
@@ -69,14 +70,6 @@ define([
       this.nameToLayer = {};
       this.widgets = {};
       this.layers = {};
-    },
-
-    _copyProperties : function (configItem) {
-      for(var property in configItem) {
-        if(configItem.hasOwnProperty(property)) {
-          this[property] = configItem[property];
-        }
-      }
     },
 
     _getWidget : function (name) {
