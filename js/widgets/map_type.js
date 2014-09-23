@@ -56,7 +56,7 @@ define([
     },
 
     _attachEventHandlers : function () {
-      var dropDownListElement, _this;
+      var _this;
 
       _this = this;
 
