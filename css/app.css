@@ -122,8 +122,9 @@ body > .container {
   display: none;
 }
 
-.mapType-caption {
-  padding-left: 15px;
+.mapType-item {
+  text-align: center;
+  padding-top: 7px;
 }
 
 a:hover .mapType-img {
