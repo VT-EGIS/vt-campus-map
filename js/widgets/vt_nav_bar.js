@@ -27,7 +27,7 @@ define([
         _this._hideDropdownNav();
       });
   
-      query('a[href="#about"]', this.domNode).on(touch.press, function() {
+      query('#about-nav', this.domNode).on(touch.press, function() {
         query('#about-modal').modal('show');
         _this._hideDropdownNav();
       });
