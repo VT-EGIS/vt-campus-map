@@ -40,7 +40,8 @@ define([
   'app/widgets/search_by_category',
   'dojo/on',
   'app/widgets/search_by_name',
-  'dojo/_base/lang'
+  'dojo/_base/lang',
+  'dojo/touch'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
             LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
@@ -49,7 +50,7 @@ define([
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
             TOC, dojoQuery, Bookmarks, SearchByCategoryWidget, on,
-            SearchByNameWidget, lang) {
+            SearchByNameWidget, lang, touch) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -208,9 +209,10 @@ define([
       map.on('layers-add-result', dojo.hitch(this, this._addWidgets));
       map.on('click', dojo.hitch(this, this.getInfoOnClickedPoint));
 
-      // NavBar and Search Event Handlers
-      dojoQuery('#searchField', this.domNode)
-        .on('keydown', dojo.hitch(this, this.doFind));
+      // Search Event Handler
+      dojoQuery('#searchField').on(touch.press, function () {
+        dojoQuery('#search-by-name-modal').modal('show');
+      });
     },
 
     _initializeIdentifyParams : function () {

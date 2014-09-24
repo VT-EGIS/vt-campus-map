@@ -11,14 +11,6 @@ body > .container {
   padding-bottom: 20px;
 }
 
-#searchField {
-  position: absolute;
-  top: 60px;
-  right: 15px;
-  z-index: 2;
-  width: 100px;
-}
-
 #searchResults .list-group {
   max-height: 250px;
   overflow-y: scroll;
@@ -154,4 +146,12 @@ a:hover .mapType-img {
 
 #about-modal {
   overflow-y: scroll;
+}
+
+.navbar-header button {
+	color: #D8D8BC !important;
+}
+
+.navbar-header button:hover, .navbar-header button:focus {
+  background-color: #4C0000 !important;
 }
