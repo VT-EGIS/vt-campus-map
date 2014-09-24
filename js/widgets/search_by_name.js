@@ -61,9 +61,9 @@ define([
         dojoQuery('input', evt.target)[0].focus();
       });
 
-      container = dojoQuery('.modal-body', this.domNode)[0];
+      container = dojoQuery('.modal-body', this.domNode);
 
-      on(container, 'a:click', lang.hitch(this, this._processPlace));
+      container.on('a:click', lang.hitch(this, this._processPlace));
 
       dojoQuery('input', this.domNode).typeahead({
         source : this._names,
@@ -72,7 +72,7 @@ define([
         elQueryString: 'a',
         items  : 10,
         minLength : 1,
-        container : container 
+        container : container[0] 
       });
     },
 
