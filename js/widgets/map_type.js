@@ -60,6 +60,8 @@ define([
         index = id[id.length - 1];
 
         _this.selectMapType(index);
+
+        _this.onSelectHandler();
       });
     },
 

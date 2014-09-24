@@ -6,17 +6,29 @@ define([
   'dijit/_TemplatedMixin',
   'dojo/text!./templates/vt_nav_bar.html',
   'app/google_analytics_constants',
+  'app/widgets/map_type',
+  'dojo/_base/lang',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
-], function(declare, query, touch, _WidgetBase, _TemplatedMixin, template, ga) {
+], function(declare, query, touch, _WidgetBase, _TemplatedMixin, template, ga,
+            mapTypeGallery, lang) {
   return declare([_WidgetBase, _TemplatedMixin], {
+    constructor : function (opts) {
+      lang.mixin(this, opts);
+    },
+
     templateString: template,
 
     postCreate: function() {
       this.inherited(arguments);
       this._attachEventHandlers();
+      this._addWidgets();
       this._setUpGoogleAnalyticTrackers();
+    },
+
+    _addWidgets : function () {
+      this._addMapTypeGallery();
     },
 
     _attachEventHandlers: function() {
@@ -84,6 +96,17 @@ define([
         .on(touch.press, function () {
           __gaTracker(send, evt, ga.getCat('SEARCH_NAME'), touchAct, dropdown);
         });
-    }
+    },
+
+    _addMapTypeGallery : function () {
+
+      new mapTypeGallery({
+        mapTypes: this.mapTypes,
+        map: this.map,
+        defaultMapTypeIndex: 0,
+        onSelectHandler: lang.hitch(this, this._hideDropdownNav)
+      }, 'mapType-gallery');
+    },
+
   });
 });

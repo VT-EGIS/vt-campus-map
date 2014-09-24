@@ -18,7 +18,6 @@ define([
   'esri/symbols/SimpleFillSymbol',
   'esri/symbols/PictureMarkerSymbol',
   'esri/dijit/PopupMobile',
-  'app/widgets/map_type',
   'esri/dijit/Legend',
   'esri/InfoTemplate',
   'esri/geometry/Point',
@@ -43,10 +42,10 @@ define([
   'dojo/_base/lang',
   'dojo/touch'
 ], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
-            LocateButton, HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
-            listItemTemplate, Color, SimpleLineSymbol, SimpleMarkerSymbol,
-            SimpleFillSymbol, PictureMarkerSymbol, PopupMobile, mapTypeGallery,
-            Legend, InfoTemplate, Point, Extent,
+            LocateButton, HomeButton, BootstrapMap, all, mapTemplate,
+            poiTemplate, listItemTemplate, Color, SimpleLineSymbol,
+            SimpleMarkerSymbol, SimpleFillSymbol, PictureMarkerSymbol,
+            PopupMobile, Legend, InfoTemplate, Point, Extent,
             EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
             Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
             TOC, dojoQuery, Bookmarks, SearchByCategoryWidget, on,
@@ -260,15 +259,6 @@ define([
       locateButton.startup();
     },
 
-    _addMapTypeGallery : function () {
-
-      new mapTypeGallery({
-        mapTypes: this.mapTypes,
-        map: this.getMap(),
-        defaultMapTypeIndex: 0,
-      }, 'mapType-gallery');
-    },
-
     _initMap: function() {
       dojo.forEach(this.featureLayers,
           dojo.hitch(this, this.setInfoTemplates));
@@ -276,7 +266,6 @@ define([
       this._initializeIdentifyParams();
       this._addLayers();
       this._setupSearch();
-      this._addMapTypeGallery();
     },
 
     showInfoWindow : function (point) {
