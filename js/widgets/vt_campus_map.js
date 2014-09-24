@@ -155,6 +155,12 @@ define([
           'class' : 'vt-background-color'
         }
       }, 'featured-bookmarks');
+
+      bookmarkWidget = new Bookmarks({
+        bookmarks      : this.getBookmarks(),
+        onClickHandler : this.identifyOnMap,
+        mapContext     : this
+      }, 'featured-bookmarks-modal-content');
     },
 
     _addSearchByCategoryWidget : function () {
@@ -207,11 +213,6 @@ define([
       map.on('layers-add-result', dojo.hitch(this, this._initializeMapExtent));
       map.on('layers-add-result', dojo.hitch(this, this._addWidgets));
       map.on('click', dojo.hitch(this, this.getInfoOnClickedPoint));
-
-      // Search Event Handler
-      dojoQuery('#searchField').on(touch.press, function () {
-        dojoQuery('#search-by-name-modal').modal('show');
-      });
     },
 
     _initializeIdentifyParams : function () {

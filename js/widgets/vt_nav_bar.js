@@ -39,14 +39,23 @@ define([
         _this._hideDropdownNav();
       });
   
-      query('#about-nav', this.domNode).on(touch.press, function() {
+      query('#about-nav', this.domNode).on(touch.press, function () {
         query('#about-modal').modal('show');
         _this._hideDropdownNav();
       });
 
-      query('#search-by-name', this.domNode).on(touch.press, function() {
+      query('#search-by-name', this.domNode).on(touch.press, function () {
         query('#search-by-name-modal').modal('show');
         _this._hideDropdownNav();
+      });
+
+      query('#featured-nav', this.domNode).on(touch.press, function () {
+        query('#featured-bookmarks-modal').modal('show');
+        _this._hideDropdownNav();
+      });
+
+      query('#searchField', this.domNode).on(touch.press, function () {
+        query('#search-by-name-modal').modal('show');
       });
     },
 
