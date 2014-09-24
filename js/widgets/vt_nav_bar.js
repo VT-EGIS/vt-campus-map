@@ -20,19 +20,19 @@ define([
     _attachEventHandlers: function() {
       var _this = this;
       
-      query('#search-by-category', this.domNode).on(touch.press, function(e) {
+      query('#search-by-category', this.domNode).on(touch.press, function() {
         query('#search-by-category-modal').modal('show');
-        _this._hideDropdownNav(e);
+        _this._hideDropdownNav();
       });
   
-      query('a[href="#about"]', this.domNode).on(touch.press, function(e) {
+      query('a[href="#about"]', this.domNode).on(touch.press, function() {
         query('#about-modal').modal('show');
-        _this._hideDropdownNav(e);
+        _this._hideDropdownNav();
       });
 
-      query('#search-by-name', this.domNode).on(touch.press, function(e) {
+      query('#search-by-name', this.domNode).on(touch.press, function() {
         query('#search-by-name-modal').modal('show');
-        _this._hideDropdownNav(e);
+        _this._hideDropdownNav();
       });
     },
 
