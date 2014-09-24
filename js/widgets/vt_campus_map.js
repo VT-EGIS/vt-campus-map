@@ -104,6 +104,8 @@ define([
         map: this.getMap(),
         layerInfos: layerInfo
       }, 'layers');
+
+      layerTOC.startup();
     },
 
     _addLegend : function (layerInfo) {
@@ -113,6 +115,8 @@ define([
         map: this.map,
         layerInfos: layerInfo
       }, 'legend');
+
+      legendDijit.startup();
     },
 
     _addHomeButton : function () {
@@ -121,6 +125,8 @@ define([
       homeButton = new HomeButton({
         map: this.getMap()
       }, 'home-button');
+
+      homeButton.startup();
     },
 
     _initializeMapExtent : function () {
@@ -248,6 +254,8 @@ define([
         scale: 10000,
         symbol: this.getDefaultMarkerSymbol()
       }, 'locate-button');
+
+      locateButton.startup();
     },
 
     _addMapTypeGallery : function () {
