@@ -32,14 +32,15 @@ define([
   'app/widgets/search_by_category',
   'dojo/on',
   'app/widgets/search_by_name',
-  'dojo/_base/lang'
+  'dojo/_base/lang',
+  'dojo/_base/array'
 ], function(declare, _WidgetBase, _TemplatedMixin, Scalebar, LocateButton,
             HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleFillSymbol,
             PictureMarkerSymbol, PopupMobile, Legend, InfoTemplate, Point,
             Extent, EsriQuery, QueryTask, IdentifyParameters, Graphic, urlUtils,
             webMercatorUtils, domConstruct, parser, TOC, Bookmarks,
-            SearchByCategoryWidget, on, SearchByNameWidget, lang) {
+            SearchByCategoryWidget, on, SearchByNameWidget, lang, array) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -79,7 +80,7 @@ define([
 
       _this = this;
 
-      layers = dojo.map(this.featureLayers, function(featureLayer) {
+      layers = array.map(this.featureLayers, function(featureLayer) {
         _this.layers[featureLayer.getLabel()] = featureLayer;
         return featureLayer.load();
       });
@@ -183,7 +184,7 @@ define([
       this._addSearchByCategoryWidget();
       this._addSearchByNameWidget();
 
-      layerInfos = dojo.map(this.featureLayers, function(featureLayer) {
+      layerInfos = array.map(this.featureLayers, function(featureLayer) {
         return featureLayer.getInfo();
       }).reverse();
 
@@ -197,12 +198,12 @@ define([
       map = this.getMap();
 
       // Info Window Event Handlers
-      map.infoWindow.on('hide', dojo.hitch(this, this.clearGraphics));
+      map.infoWindow.on('hide', lang.hitch(this, this.clearGraphics));
 
       // Map Event Handlers
-      map.on('layers-add-result', dojo.hitch(this, this._initializeMapExtent));
-      map.on('layers-add-result', dojo.hitch(this, this._addWidgets));
-      map.on('click', dojo.hitch(this, this.getInfoOnClickedPoint));
+      map.on('layers-add-result', lang.hitch(this, this._initializeMapExtent));
+      map.on('layers-add-result', lang.hitch(this, this._addWidgets));
+      map.on('click', lang.hitch(this, this.getInfoOnClickedPoint));
     },
 
     _initializeIdentifyParams : function () {
@@ -242,8 +243,8 @@ define([
     },
 
     _initMap: function() {
-      dojo.forEach(this.featureLayers,
-          dojo.hitch(this, this.setInfoTemplates));
+      array.forEach(this.featureLayers,
+          lang.hitch(this, this.setInfoTemplates));
       this._attachEventHandlers(); 
       this._initializeIdentifyParams();
       this._addLayers();
@@ -377,7 +378,7 @@ define([
 
       _this = this;
 
-      dojo.forEach(layer.getIdentifyLayers(), function (identifyLayer) {
+      array.forEach(layer.getIdentifyLayers(), function (identifyLayer) {
 
         _this.identifiableLayers.push(identifyLayer.layerName);
 
@@ -386,8 +387,8 @@ define([
         infoTemplateHTMLString =
           '<table class="table table-hover table-bordered ">';
 
-        dojo.forEach(identifyLayer.fields, function (field) {
-          infoTemplateHTMLString += dojo.replace(poiTemplate, {
+        array.forEach(identifyLayer.fields, function (field) {
+          infoTemplateHTMLString += lang.replace(poiTemplate, {
             title : field.title,
             value : field.value
           });
@@ -434,8 +435,8 @@ define([
       features = [];
       _this = this;
 
-      dojo.forEach(results, function (identifyResults) {
-        dojo.forEach(identifyResults, function (result) {
+      array.forEach(results, function (identifyResults) {
+        array.forEach(identifyResults, function (result) {
           var feature, layerName, mapLayerObject;
 
           layerName = result.layerName;
@@ -444,7 +445,7 @@ define([
           feature.setSymbol(_this.getBorderSymbol());
           feature.attributes.layerName = layerName;
 
-          if (dojo.indexOf(_this.identifiableLayers, layerName) !== -1) {
+          if (array.indexOf(_this.identifiableLayers, layerName) !== -1) {
             mapLayerObject = _this.nameToLayer[layerName];
             feature.setInfoTemplate(mapLayerObject.infoTemplate);
             features.push(feature);
@@ -473,7 +474,7 @@ define([
         geometry  : this.pointToExtent(evt.mapPoint, this.pointTolerance)
       });
 
-      dojo.map(this.featureLayers, function (layer) {
+      array.map(this.featureLayers, function (layer) {
         var task;
 
         task = layer.getIdentifyTask();
@@ -483,13 +484,13 @@ define([
         }
       });
       
-      deferreds = dojo.map(tasks, function(task) {
+      deferreds = array.map(tasks, function(task) {
         return task.execute(_this.getIdentifyParams());
       });
 
       promises = new all(deferreds);
 
-      promises.then(dojo.hitch(this, function(results) {
+      promises.then(lang.hitch(this, function(results) {
         this.showInfo(results, evt.mapPoint);
       }));
     },
@@ -553,7 +554,7 @@ define([
       buildingQueryTask.execute(buildingQuery, function(featureSet) { 
         _this.clearGraphics();
 
-        dojo.forEach(featureSet.features, function(feature) {
+        array.forEach(featureSet.features, function(feature) {
           feature.setSymbol(_this.getBorderSymbol()); 
           _this.addGraphics(feature); 
         });				
