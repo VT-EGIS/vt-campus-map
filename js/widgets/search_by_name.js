@@ -7,11 +7,12 @@ define([
   'dojo/keys',
   'dojo/text!./templates/search_by_name_modal.html',
   'dojo/_base/lang',
+  'dojo/_base/array',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
   'dojoBootstrap/Typeahead'
 ], function (declare, _WidgetBase, _TemplatedMixin, dojoQuery, on,
-             keys, modalTemplate, lang, EsriQuery, QueryTask) {
+             keys, modalTemplate, lang, array, EsriQuery, QueryTask) {
 
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
@@ -46,7 +47,7 @@ define([
 
       queryTask.execute(query)
         .then(function(fset) {
-          _this._names = dojo.map(fset.features, function(feature) {
+          _this._names = array.map(fset.features, function(feature) {
             return feature.attributes.NAME;
           });
         })
