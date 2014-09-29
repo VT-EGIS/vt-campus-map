@@ -63,18 +63,6 @@ define([
       this.layers = {};
     },
 
-    _getWidget : function (name) {
-      return this.widgets[name];
-    },
-
-    _overwriteDefaults : function (defaults, opts) {
-      for(var key in opts) {
-        if(opts.hasOwnProperty(key)) {
-          defaults[key] = opts[key];
-        }
-      }
-    },
-
     _addLayers: function () {
       var layers, _this;
 
@@ -322,7 +310,7 @@ define([
         markerType : PictureMarkerSymbol
       };
 
-      this._overwriteDefaults(defaults, opts);
+      lang.mixin(defaults, opts);
 
       this._defaultMarkerSymbol = new defaults.markerType(defaults.url,
           defaults.width, defaults.height);
@@ -341,7 +329,7 @@ define([
         fillSymbolStyle : SimpleFillSymbol.STYLE_SOLID
       };
 
-      this._overwriteDefaults(defaults, opts);
+      lang.mixin(defaults, opts);
 
       line = new SimpleLineSymbol(defaults.lineStyle, defaults.lineColor,
           defaults.lineWidth);
@@ -352,10 +340,6 @@ define([
 
     setOption: function (key, value) {
       this.options[key] = value;
-    },
-
-    getPixelWidth : function () {
-      return this.initExtent.getWidth() / this.map.width;
     },
 
     /**
@@ -500,7 +484,7 @@ define([
     pointToExtent: function (geometry, toleranceInPixel) {
       var pixelWidth, toleraceInMapCoords, pointX, pointY, map;
 
-      pixelWidth = this.getPixelWidth();
+      pixelWidth = this.initExtent.getWidth() / this.map.width;
       map = this.getMap();
       toleraceInMapCoords = toleranceInPixel * pixelWidth;
       if(!geometry.type || geometry.type !== 'point') {
