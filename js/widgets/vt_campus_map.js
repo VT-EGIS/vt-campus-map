@@ -1,7 +1,5 @@
 define([
   'dojo/_base/declare',
-  'dojo/_base/array',
-  'dojo/keys',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'esri/dijit/Scalebar',
@@ -14,7 +12,6 @@ define([
   'dojo/text!./templates/list_of_items_in_modal.html',
   'esri/Color',
   'esri/symbols/SimpleLineSymbol',
-  'esri/symbols/SimpleMarkerSymbol',
   'esri/symbols/SimpleFillSymbol',
   'esri/symbols/PictureMarkerSymbol',
   'esri/dijit/PopupMobile',
@@ -24,32 +21,25 @@ define([
   'esri/geometry/Extent',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
-  'esri/tasks/FindTask',
-  'esri/tasks/FindParameters',
   'esri/tasks/IdentifyParameters',
   'esri/graphic',
   'esri/urlUtils',
   'esri/geometry/webMercatorUtils',
-  'dojo/dom',
   'dojo/dom-construct',
   'dojo/parser',
   'agsjs/dijit/TOC',
-  'dojo/query',
   'app/widgets/bookmarks',
   'app/widgets/search_by_category',
   'dojo/on',
   'app/widgets/search_by_name',
-  'dojo/_base/lang',
-  'dojo/touch'
-], function(declare, array, keys, _WidgetBase, _TemplatedMixin, Scalebar,
-            LocateButton, HomeButton, BootstrapMap, all, mapTemplate,
-            poiTemplate, listItemTemplate, Color, SimpleLineSymbol,
-            SimpleMarkerSymbol, SimpleFillSymbol, PictureMarkerSymbol,
-            PopupMobile, Legend, InfoTemplate, Point, Extent,
-            EsriQuery, QueryTask, FindTask, FindParameters, IdentifyParameters,
-            Graphic, urlUtils, webMercatorUtils, dom, domConstruct, parser,
-            TOC, dojoQuery, Bookmarks, SearchByCategoryWidget, on,
-            SearchByNameWidget, lang, touch) {
+  'dojo/_base/lang'
+], function(declare, _WidgetBase, _TemplatedMixin, Scalebar, LocateButton,
+            HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
+            listItemTemplate, Color, SimpleLineSymbol, SimpleFillSymbol,
+            PictureMarkerSymbol, PopupMobile, Legend, InfoTemplate, Point,
+            Extent, EsriQuery, QueryTask, IdentifyParameters, Graphic, urlUtils,
+            webMercatorUtils, domConstruct, parser, TOC, Bookmarks,
+            SearchByCategoryWidget, on, SearchByNameWidget, lang) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -230,15 +220,6 @@ define([
       this.identifyParams.height = map.height;	  		
     },
 
-    _setupSearch : function () {
-      this.findTask = new FindTask(this.gazeteerLayer + '/');
-      this.findParams = new FindParameters();
-      this.findParams.searchFields = ['NAME'];
-      this.findParams.returnGeometry = true;
-      this.findParams.layerIds = [0];
-      this.findParams.outSpatialReference = {'wkid': 102100};
-    },
-
     _addScaleBar : function () {
       var scaleBar;
 
@@ -266,7 +247,6 @@ define([
       this._attachEventHandlers(); 
       this._initializeIdentifyParams();
       this._addLayers();
-      this._setupSearch();
     },
 
     showInfoWindow : function (point) {
@@ -536,30 +516,6 @@ define([
           map.spatialReference); 
     },
 
-    /**
-    * searches for a building using the building name given by the user
-    */
-    doFind : function (evt) {
-      var searchField;
-
-      if(evt.keyCode !== keys.ENTER) {
-        return;
-      }
-
-      searchField = dom.byId('searchField');
-
-      dojoQuery('.searchResults-modal').modal('show');
-      dom.byId('searchResults').innerHTML = '';
-      dom.byId('searchResults').style.display = 'none';
-      dom.byId('searchResultsDiv').style.display = 'block';
-
-      this.findParams.searchText = searchField.value;
-      this.findTask.execute(this.findParams,
-          dojo.hitch(this, this.showSearchResults));
-
-      searchField.value = '';
-    },
-
     identifyOnMap : function(geometry) {
       this.addBorderAndMarkerAtPos(geometry);
       this.zoomToCoordinates(geometry);
@@ -603,66 +559,6 @@ define([
         });				
 
         _this.addGraphics(new Graphic(geometry, _this.getDefaultMarkerSymbol()));
-      });
-    },
-
-    getSearchKeyword : function () {
-      return this.findParams.searchText;
-    },
-    /**
-    * Shows the results of searching of a building
-    */
-    showSearchResults: function (results) {
-      var searchResults, _this;
-
-      _this = this;
-
-      this.clearGraphics();
-
-      results.sort(function(a, b) {
-        var nameA, nameB;
-
-        nameA = a.feature.attributes.Name.toLowerCase();
-        nameB = b.feature.attributes.Name.toLowerCase();
-
-        return (nameA === nameB ? 0 : (nameA < nameB ? -1 : 1));
-      });
-
-      searchResults = '<div class="list-group">';
-
-      if(!results.length) {
-        searchResults += "Sorry! We couldn't find anything that matches '" +
-                          this.getSearchKeyword() + "' .";
-      }
-
-      dojo.forEach(results, function(result, index) {
-        var attribs;
-
-        attribs = result.feature.attributes;
-
-        /* TODO Use dojox/dtl/Templates instead of dojo.replace
-         * when the status changes from Experimental to Mature
-         * see http://dojotoolkit.org/reference-guide/1.9/dojox/#website-webapp-infrastructure
-         */
-        searchResults += dojo.replace(listItemTemplate, {
-          id: 'search-result-' + index,
-          name : attribs.Name,
-          category : '<br>' + attribs.Category,
-          addr : attribs.Address !== 'Null' ? '<br>' + attribs.Address : ''
-        });
-      });
-    
-      searchResults += '</div>';
-
-      dom.byId('searchResults').innerHTML = searchResults;
-      dom.byId('searchResults').style.display = 'block';
-
-      dojoQuery('.list-group').on('a:click', function(evt) {
-        var id, index;
-
-        id = evt.target.id;
-        index = id[id.length -1];
-        _this.identifyOnMap(results[index].feature.geometry);
       });
     }
   });
