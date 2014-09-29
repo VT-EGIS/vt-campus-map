@@ -125,28 +125,26 @@ define([
       }, 'mapType-gallery');
     },
 
-    getBookmarks : function () {
-      return this.featuredPlaces;
-    },
-
     _addBookmarkWidgets : function () {
+      // The Normal Dropdown visible on larger screens
       new Bookmarks({
-        bookmarks      : this.getBookmarks(),
+        bookmarks      : this.featuredPlaces,
         onClickHandler : this.onClickHandler,
         attrs          : {
           'class' : 'vt-background-color'
         }
       }, 'featured-bookmarks');
 
+      // The Mobile Modal
       new Bookmarks({
-        bookmarks      : this.getBookmarks(),
+        bookmarks      : this.featuredPlaces,
         onClickHandler : this.onClickHandler,
       }, 'featured-bookmarks-modal-content');
     },
 
     // NOTE: This is a hack/workaround and is dependent on the fact
     // that we use a bootstrap navbar that has atleast one
-    // button in it that is visible in smaller screens only
+    // button in it which is visible on smaller screens only
     _isMobile : function () {
       var mobileMenuButton;
       mobileMenuButton = query('.navbar-header button')[0];
