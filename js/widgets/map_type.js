@@ -5,9 +5,11 @@ define([
   'dojo/query',
   'dojo/on',
   'dojo/_base/lang',
+  'dojo/_base/array',
+  'dojo/dom-class',
   'dojo/text!./templates/maptype_gallery_item.html'
 ], function (declare, _WidgetBase, domConstruct, query, on, lang,
-             mapTypeGalleryItemTemplate) {
+             array, domClass, mapTypeGalleryItemTemplate) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
@@ -35,8 +37,8 @@ define([
       _this = this;
       map = this.getMap();
 
-      dojo.forEach(this.mapTypes, function(mapType) {
-        mapType.layers = dojo.map(mapType.layerInfos, function(layerInfo) {
+      array.forEach(this.mapTypes, function(mapType) {
+        mapType.layers = array.map(mapType.layerInfos, function(layerInfo) {
           var serviceLayer;
 
           serviceLayer = layerInfo.load();
@@ -71,7 +73,7 @@ define([
 
     setCurrentMapType : function(index) {
       this._currentMapTypeIndex = index;
-      dojo.addClass(this._mapTypeElements[index], 'mapType-selected');
+      domClass.add(this._mapTypeElements[index], 'mapType-selected');
     },
 
     selectMapType : function (index) {
@@ -85,10 +87,10 @@ define([
       }
 
       if(oldMapTypeIndex !== -1) {
-        dojo.removeClass(this.getMapTypeElement(oldMapTypeIndex),
+        domClass.remove(this.getMapTypeElement(oldMapTypeIndex),
             'mapType-selected');
         oldMapType = this.getCurrentMapType();
-        dojo.forEach(oldMapType.layers, function (layer) {
+        array.forEach(oldMapType.layers, function (layer) {
           layer.hide();
         });
       }
@@ -96,7 +98,7 @@ define([
       this.setCurrentMapType(index);
 
       mapType = this.mapTypes[index];
-      dojo.forEach(mapType.layers, function (layer) {
+      array.forEach(mapType.layers, function (layer) {
         layer.show();
       });
     },
@@ -118,16 +120,16 @@ define([
 
       _this = this;
 
-      dojo.forEach(this.mapTypes, function (mapType, index) {
+      array.forEach(this.mapTypes, function (mapType, index) {
         var templateString;
 
-        templateString = dojo.replace(mapTypeGalleryItemTemplate, {
+        templateString = lang.replace(mapTypeGalleryItemTemplate, {
           name : mapType.label,
           id   : 'mapType-gallery-item-' + index,
           url  : mapType.thumbnail
         });
 
-        dojo.create(domConstruct.toDom(templateString), null, _this.domNode); 
+        domConstruct.create(domConstruct.toDom(templateString), null, _this.domNode); 
       });
     }
   });
