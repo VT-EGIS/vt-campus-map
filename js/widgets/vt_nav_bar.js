@@ -8,11 +8,12 @@ define([
   'app/google_analytics_constants',
   'app/widgets/map_type',
   'dojo/_base/lang',
+  'dojo/dom-style',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function(declare, query, touch, _WidgetBase, _TemplatedMixin, template, ga,
-            mapTypeGallery, lang) {
+            mapTypeGallery, lang, domStyle) {
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
       lang.mixin(this, opts);
@@ -52,10 +53,12 @@ define([
         _this._hideDropdownNav();
       });
 
-      query('#featured-nav', this.domNode).on(touch.press, function () {
-        query('#featured-bookmarks-modal').modal('show');
-        _this._hideDropdownNav();
-      });
+      if(this._isMobile()) {
+        query('#featured-nav', this.domNode).on(touch.press, function () {
+          query('#featured-bookmarks-modal').modal('show');
+          _this._hideDropdownNav();
+        });
+      }
 
       query('#searchField', this.domNode).on(touch.press, function () {
         query('#search-by-name-modal').modal('show');
@@ -120,5 +123,13 @@ define([
       }, 'mapType-gallery');
     },
 
+    // NOTE: This is a hack/workaround and is dependent on the fact
+    // that we use a bootstrap navbar that has atleast one
+    // button in it that is visible in smaller screens only
+    _isMobile : function () {
+      var mobileMenuButton;
+      mobileMenuButton = query('.navbar-header button')[0];
+      return domStyle.get(mobileMenuButton, 'display') !== 'none';
+    }
   });
 });

@@ -36,6 +36,11 @@ body > .container {
   overflow-y: scroll;
 }
 
+#featured-bookmarks-modal-content {
+  height: 300px;
+  overflow-y: scroll;
+}
+
 #vt-logo {
   padding-top: 0px;
 }
