@@ -14,7 +14,9 @@ require([
   navBar = new NavBar({
     map: vtMap.getMap(),
     mapTypes : config.map.mapTypes,
-    moreInfoUrl : config.about.moreInfoUrl
+    moreInfoUrl : config.about.moreInfoUrl,
+    featuredPlaces : config.map.featuredPlaces,
+    onClickHandler : vtMap.getOnClickHandler() 
   }, 'navBarNode');
   navBar.startup();
 });

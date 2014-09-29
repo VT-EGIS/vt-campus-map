@@ -9,11 +9,12 @@ define([
   'app/widgets/map_type',
   'dojo/_base/lang',
   'dojo/dom-style',
+  'app/widgets/bookmarks',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function(declare, query, touch, _WidgetBase, _TemplatedMixin, template, ga,
-            mapTypeGallery, lang, domStyle) {
+            mapTypeGallery, lang, domStyle, Bookmarks) {
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
       lang.mixin(this, opts);
@@ -30,6 +31,7 @@ define([
 
     _addWidgets : function () {
       this._addMapTypeGallery();
+      this._addBookmarkWidgets();
     },
 
     _attachEventHandlers: function() {
@@ -121,6 +123,25 @@ define([
         defaultMapTypeIndex: 0,
         onSelectHandler: lang.hitch(this, this._hideDropdownNav)
       }, 'mapType-gallery');
+    },
+
+    getBookmarks : function () {
+      return this.featuredPlaces;
+    },
+
+    _addBookmarkWidgets : function () {
+      new Bookmarks({
+        bookmarks      : this.getBookmarks(),
+        onClickHandler : this.onClickHandler,
+        attrs          : {
+          'class' : 'vt-background-color'
+        }
+      }, 'featured-bookmarks');
+
+      new Bookmarks({
+        bookmarks      : this.getBookmarks(),
+        onClickHandler : this.onClickHandler,
+      }, 'featured-bookmarks-modal-content');
     },
 
     // NOTE: This is a hack/workaround and is dependent on the fact

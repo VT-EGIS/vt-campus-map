@@ -34,7 +34,7 @@ define([
 
         bookmarkName = entities.decode(evt.target.innerHTML);
         bookmark = _this.getBookmark(bookmarkName);
-        _this.onClickHandler.call(_this.mapContext, bookmark.geometry);
+        _this.onClickHandler(bookmark.geometry);
       }); 
 
     },

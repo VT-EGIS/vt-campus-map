@@ -28,7 +28,6 @@ define([
   'dojo/dom-construct',
   'dojo/parser',
   'agsjs/dijit/TOC',
-  'app/widgets/bookmarks',
   'app/widgets/search_by_category',
   'dojo/on',
   'app/widgets/search_by_name',
@@ -39,7 +38,7 @@ define([
             listItemTemplate, Color, SimpleLineSymbol, SimpleFillSymbol,
             PictureMarkerSymbol, PopupMobile, Legend, InfoTemplate, Point,
             Extent, EsriQuery, QueryTask, IdentifyParameters, Graphic, urlUtils,
-            webMercatorUtils, domConstruct, parser, TOC, Bookmarks,
+            webMercatorUtils, domConstruct, parser, TOC,
             SearchByCategoryWidget, on, SearchByNameWidget, lang, array) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
@@ -119,29 +118,6 @@ define([
       map.enableScrollWheelZoom();
     },
 
-    getBookmarks : function () {
-      return this.featuredPlaces;
-    },
-
-    _addBookmarkWidget : function () {
-      var bookmarkWidget;
-
-      bookmarkWidget = new Bookmarks({
-        bookmarks      : this.getBookmarks(),
-        onClickHandler : this.identifyOnMap,
-        mapContext     : this,
-        attrs          : {
-          'class' : 'vt-background-color'
-        }
-      }, 'featured-bookmarks');
-
-      bookmarkWidget = new Bookmarks({
-        bookmarks      : this.getBookmarks(),
-        onClickHandler : this.identifyOnMap,
-        mapContext     : this
-      }, 'featured-bookmarks-modal-content');
-    },
-
     _addSearchByCategoryWidget : function () {
       var categoryWidget;
 
@@ -150,6 +126,10 @@ define([
         gazeteerLayer  : this.gazeteerLayer,
         mapContext     : this
       }, 'search-by-category-modal');
+    },
+
+    getOnClickHandler : function () {
+      return this.identifyOnMap.bind(this);
     },
 
     _addSearchByNameWidget : function () {
@@ -168,7 +148,6 @@ define([
       this._addHomeButton();
       this._addScaleBar();
       this._addLocateButton();
-      this._addBookmarkWidget();
       this._addSearchByCategoryWidget();
       this._addSearchByNameWidget();
 
