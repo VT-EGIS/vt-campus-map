@@ -100,7 +100,7 @@ define([
       queryTask = new QueryTask(this.gazeteerLayer + '/0');
 
       queryTask.execute(query).then(lang.hitch(this, function (fset) {
-        this.onClickHandler.call(this.mapContext, fset.features[0].geometry);
+        this.onClickHandler(fset.features[0].geometry);
       }));
     }
   }); 

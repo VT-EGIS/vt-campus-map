@@ -10,11 +10,14 @@ define([
   'dojo/_base/lang',
   'dojo/dom-style',
   'app/widgets/bookmarks',
+  'app/widgets/search_by_category',
+  'app/widgets/search_by_name',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function(declare, query, touch, _WidgetBase, _TemplatedMixin, template, ga,
-            mapTypeGallery, lang, domStyle, Bookmarks) {
+            mapTypeGallery, lang, domStyle, Bookmarks, SearchByCategoryWidget,
+            SearchByNameWidget) {
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
       lang.mixin(this, opts);
@@ -32,6 +35,8 @@ define([
     _addWidgets : function () {
       this._addMapTypeGallery();
       this._addBookmarkWidgets();
+      this._addSearchByCategoryWidget();
+      this._addSearchByNameWidget();
     },
 
     _attachEventHandlers: function() {
@@ -141,6 +146,20 @@ define([
         onClickHandler : this.onClickHandler,
       }, 'featured-bookmarks-modal-content');
     },
+
+    _addSearchByCategoryWidget : function () {
+      new SearchByCategoryWidget({
+        onClickHandler : this.onClickHandler,
+        gazeteerLayer  : this.gazeteerLayer
+      }, 'search-by-category-modal');
+    },
+
+    _addSearchByNameWidget : function () {
+      new SearchByNameWidget({
+        onClickHandler : this.onClickHandler,
+        gazeteerLayer  : this.gazeteerLayer,
+      }, 'search-by-name-modal');
+    }, 
 
     // NOTE: This is a hack/workaround and is dependent on the fact
     // that we use a bootstrap navbar that has atleast one

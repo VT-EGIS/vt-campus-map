@@ -28,9 +28,7 @@ define([
   'dojo/dom-construct',
   'dojo/parser',
   'agsjs/dijit/TOC',
-  'app/widgets/search_by_category',
   'dojo/on',
-  'app/widgets/search_by_name',
   'dojo/_base/lang',
   'dojo/_base/array'
 ], function(declare, _WidgetBase, _TemplatedMixin, Scalebar, LocateButton,
@@ -39,7 +37,7 @@ define([
             PictureMarkerSymbol, PopupMobile, Legend, InfoTemplate, Point,
             Extent, EsriQuery, QueryTask, IdentifyParameters, Graphic, urlUtils,
             webMercatorUtils, domConstruct, parser, TOC,
-            SearchByCategoryWidget, on, SearchByNameWidget, lang, array) {
+            on, lang, array) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -118,29 +116,9 @@ define([
       map.enableScrollWheelZoom();
     },
 
-    _addSearchByCategoryWidget : function () {
-      var categoryWidget;
-
-      categoryWidget = new SearchByCategoryWidget({
-        onClickHandler : this.identifyOnMap,
-        gazeteerLayer  : this.gazeteerLayer,
-        mapContext     : this
-      }, 'search-by-category-modal');
-    },
-
     getOnClickHandler : function () {
       return this.identifyOnMap.bind(this);
     },
-
-    _addSearchByNameWidget : function () {
-      var searchByNameWidget;
-
-      searchByNameWidget = new SearchByNameWidget({
-        onClickHandler : this.identifyOnMap,
-        gazeteerLayer  : this.gazeteerLayer,
-        mapContext     : this
-      }, 'search-by-name-modal');
-    }, 
 
     _addWidgets : function () {
       var layerInfos;
@@ -148,8 +126,6 @@ define([
       this._addHomeButton();
       this._addScaleBar();
       this._addLocateButton();
-      this._addSearchByCategoryWidget();
-      this._addSearchByNameWidget();
 
       layerInfos = array.map(this.featureLayers, function(featureLayer) {
         return featureLayer.getInfo();

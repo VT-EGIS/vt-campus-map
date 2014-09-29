@@ -16,6 +16,7 @@ require([
     mapTypes : config.map.mapTypes,
     moreInfoUrl : config.about.moreInfoUrl,
     featuredPlaces : config.map.featuredPlaces,
+    gazeteerLayer  : config.map.gazeteerLayer,
     onClickHandler : vtMap.getOnClickHandler() 
   }, 'navBarNode');
   navBar.startup();

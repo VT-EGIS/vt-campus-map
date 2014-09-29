@@ -112,7 +112,7 @@ define([
           var point;
 
           point = _this.getPlaceGeometry(evt.target.id.split('place-')[1]);
-          _this.onClickHandler.call(_this.mapContext, point);
+          _this.onClickHandler(point);
         });
       });
     },
