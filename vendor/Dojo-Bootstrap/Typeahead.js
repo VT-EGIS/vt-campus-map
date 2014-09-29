@@ -218,7 +218,6 @@ define([
                 default:
                     this.lookup();
             }
-            e.stopPropagation();
             e.preventDefault();
         },
         keydownHandler: function (e) {

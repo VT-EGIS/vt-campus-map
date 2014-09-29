@@ -4,13 +4,14 @@ define([
   'dijit/_TemplatedMixin',
   'dojo/query',
   'dojo/on',
+  'dojo/keys',
   'dojo/text!./templates/search_by_name_modal.html',
   'dojo/_base/lang',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
   'dojoBootstrap/Typeahead'
 ], function (declare, _WidgetBase, _TemplatedMixin, dojoQuery, on,
-             modalTemplate, lang, EsriQuery, QueryTask) {
+             keys, modalTemplate, lang, EsriQuery, QueryTask) {
 
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
@@ -64,6 +65,12 @@ define([
       container = dojoQuery('.modal-body', this.domNode);
 
       container.on('a:click', lang.hitch(this, this._processPlace));
+      on(container, 'keyup', lang.hitch(this, function (evt) {
+        if(evt.keyCode === keys.ENTER || evt.charCode === keys.ENTER) {
+          this._processPlace(evt);
+          dojoQuery.NodeList([this.domNode]).modal('hide');
+        }
+      }));
 
       dojoQuery('input', this.domNode).typeahead({
         source : this._names,

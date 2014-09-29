@@ -44,7 +44,10 @@ define([
         _this._hideDropdownNav();
       });
 
-      query('#search-by-name', this.domNode).on(touch.press, function () {
+      // XXX For some reason, registering on the touch.press event
+      // does not close the main dropdown when 'enter' is used to
+      // select the place. So, we're using touch.release
+      query('#search-by-name', this.domNode).on(touch.release, function () {
         query('#search-by-name-modal').modal('show');
         _this._hideDropdownNav();
       });
