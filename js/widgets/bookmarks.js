@@ -6,9 +6,10 @@ define([
   'dojo/query',
   'dojo/on',
   'dojox/html/entities',
-  'dojo/_base/lang'
+  'dojo/_base/lang',
+  'dojo/_base/array'
 ], function (declare, _WidgetBase, domConstruct, bookmarkItemTemplate, query,
-             on, entities, lang) {
+             on, entities, lang, array) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this.elementID = elementID;
@@ -47,14 +48,14 @@ define([
 
       _this = this;
 
-      this._bookmarkElements = dojo.map(this.bookmarks, function (bookmark) {
+      this._bookmarkElements = array.map(this.bookmarks, function (bookmark) {
         var bookmarkElement, templateString;
 
-        templateString = dojo.replace(bookmarkItemTemplate, {
+        templateString = lang.replace(bookmarkItemTemplate, {
           name : bookmark.name
         });
 
-        bookmarkElement = dojo.create(domConstruct.toDom(templateString), null,
+        bookmarkElement = domConstruct.create(domConstruct.toDom(templateString), null,
             _this.domNode);
 
         _this._bookmarkDict[bookmark.name] = bookmark;
