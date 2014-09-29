@@ -10,11 +10,13 @@ define([
   'dojo/on',
   'dojo/request/xhr',
   'dojo/_base/lang',
+  'dojo/_base/array',
+  'dojo/dom-style',
   'dojo/text!./templates/search_by_category_modal.html',
   'dojo/text!./templates/list_of_items_in_modal.html'
 ], function (declare, _WidgetBase, _TemplatedMixin, EsriQuery, QueryTask,
-             dom, domConstruct, dojoQuery, on, dojoRequest, lang, modalTemplate,
-             listItemTemplate) {
+             dom, domConstruct, dojoQuery, on, dojoRequest, lang, array,
+             domStyle, modalTemplate, listItemTemplate) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
     constructor : function (opts) {
@@ -59,7 +61,7 @@ define([
           return (a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
         });
         selectElem = dojoQuery('select', this.domNode)[0];
-        dojo.forEach(categories, function(category) {
+        array.forEach(categories, function(category) {
           selectElem.add(new Option(category.name, category.name));
           _this._loadPlacesInCategory(category.name, container);
         });
@@ -86,8 +88,8 @@ define([
 
         placesListTemplate = '<div class="list-group">';
 
-        dojo.forEach(fset.features, function(feature) {
-          placesListTemplate += dojo.replace(listItemTemplate, {
+        array.forEach(fset.features, function(feature) {
+          placesListTemplate += lang.replace(listItemTemplate, {
             id : 'place-' + feature.attributes.OBJECTID_12,
             name : feature.attributes.NAME,
             category : '',
@@ -135,14 +137,14 @@ define([
       var element;
 
       if(this._currentPlacesListElement) {
-        dojo.setStyle(this._currentPlacesListElement, 'display', 'none');
+        domStyle.set(this._currentPlacesListElement, 'display', 'none');
       }
 
       element = this.getCategoryElement(categoryName);
       this._currentPlacesListElement = element;
       
       if(this._currentPlacesListElement) {
-        dojo.setStyle(this._currentPlacesListElement, 'display', 'block');
+        domStyle.set(this._currentPlacesListElement, 'display', 'block');
       }
     }
   });
