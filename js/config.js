@@ -1,13 +1,11 @@
-define([
-  'app/feature_layer'
-], function(FeatureLayer) {
+define([], function() {
   return {
     map: {
       options: {
         basemap: "national-geographic",
         center : [-80.422218,37.227590],
         zoom : 15,
-        sliderStyle: "large",
+        sliderStyle: "small",
         minZoom: 12,
         logo: false,
         lods: [
@@ -119,174 +117,254 @@ define([
         ],
         infoWindow: null,
       },
-      basemaps: {
-        vtBasemap: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
-        basemapNG: "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer",
-        basemapTOB: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
-        schematicThumbnail: "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg",
-        pictometry: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
-        pictometryThumbnail: "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg"
-      },
+      mapTypes: [
+        {
+          label : "VT Campus",
+          thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg",
+          layerInfos : [
+            {
+              label: "Blacksburg",
+              url: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
+              visible: true,
+              opacity: 1
+            },
+            {
+              label: "VT Campus",
+              url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
+              visible: true,
+              opacity: 1
+            }
+          ]
+        },
+        {
+          label : "Aerial Photo",
+          thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg",
+          layerInfos : [
+            {
+              label: "Pictometry",
+              url: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
+              visible: true,
+              opacity: 1
+            },
+          ]
+        }
+      ],
       locatorService: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTAddressPoints/GeocodeServer",
       gazeteerLayer: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer",
       featuredPlaces : [
         {
-          "lat": 37.225351,
-          "lng":-80.423796,
-          "name":"Ag Quad"
+          name : 'Ag Quad',
+          geometry : {
+            lat : 37.225351,
+            lng : -80.423796
+          }
         },
         {
-          "lat": 37.229054,
-          "lng":-80.423769,
-          "name":"Burruss Hall"
+          name : 'Burruss Hall',
+          geometry : {
+            lat : 37.229054,
+            lng : -80.423769
+          },
         },
         {
-          "lat": 37.222537,
-          "lng":-80.419021,
-          "name":"Cassell Coliseum"
+          name : 'Cassell Coliseum',
+          geometry : {
+            lat : 37.222537,
+            lng : -80.419021
+          }
         },
         {
-          "lat": 37.231783,
-          "lng":-80.418371,
-          "name":"Center for the Arts"
+          name : 'Center for the Arts',
+          geometry : {
+            lat : 37.231783,
+            lng :-80.418371
+          }
         },
         {
-          "lat": 37.229922,
-          "lng":-80.424688,
-          "name":"Cowgill Hall"
+          name : 'Cowgill Hall',
+          geometry : {
+            lat : 37.229922,
+            lng : -80.424688
+          }
         },
         {
-          "lat": 37.228995,
-          "lng":-80.425622,
-          "name":"Derring Hall"
+          name : 'Derring Hall',
+          geometry : {
+            lat : 37.228995,
+            lng : -80.425622
+          }
         },
         {
-          "lat": 37.224545,
-          "lng":-80.421081,
-          "name":"Dietrick Hall"
+          name : 'Dietrick Hall',
+          geometry : {
+            lat : 37.224545,
+            lng : -80.421081
+          }
         },
         {
-          "lat": 37.227429,
-          "lng":-80.42223,
-          "name":"Drillfield"
+          name : 'Drillfield',
+          geometry : {
+            lat : 37.227429,
+            lng : -80.42223
+          }
         },
         { 
-          "lat": 37.225941,
-          "lng":-80.428249,
-          "name":"Duck Pond"
+          name : 'Duck Pond',
+          geometry : {
+            lat : 37.225941,
+            lng : -80.428249
+          }
         },
         {
-          "lat": 37.228272,
-          "lng":-80.417516,
-          "name":"Graduate Life Center"
+          name : 'Graduate Life Center',
+          geometry : {
+            lat : 37.228272,
+            lng : -80.417516
+          }
         },
         {
-          "lat": 37.219414,
-          "lng":-80.424276,
-          "name":"Hahn Horticulture Garden"
+          name : 'Hahn Horticulture Garden',
+          geometry : {
+            lat : 37.219414,
+            lng : -80.424276
+          }
         },
         {
-          "lat": 37.230347,
-          "lng":-80.416911,
-          "name":"Henderson Hall"
+          name : 'Henderson Hall',
+          geometry : {
+            lat : 37.230347,
+            lng : -80.416911
+          }
         },
         {
-          "lat": 37.229782,
-          "lng":-80.429599,
-          "name":"Inn at Virginia Tech & Skelton Conference Center"
+          name : 'Inn at Virginia Tech & Skelton Conference Center',
+          geometry : {
+            lat : 37.229782,
+            lng : -80.429599
+          }
         },
         {
-          "lat": 37.219889,
-          "lng":-80.418098,
-          "name":"Lane Stadium"
+          name : 'Lane Stadium',
+          geometry : {
+            lat : 37.219889,
+            lng : -80.418098
+          }
         },
         {
-          "lat": 37.231212,
-          "lng":-80.422828,
-          "name":"Lavery Hall"
+          name : 'Lavery Hall',
+          geometry : {
+            lat : 37.231212,
+            lng : -80.422828
+          }
         },
         {
-          "lat": 37.224503,
-          "lng":-80.418505,
-          "name":"Lee Hall"
+          name : 'Lee Hall',
+          geometry : {
+            lat : 37.224503,
+            lng : -80.418505
+          }
         },
         {
-          "lat": 37.220246,
-          "lng":-80.422537,
-          "name":"McComas Hall"
+          name : 'McComas Hall',
+          geometry : {
+            lat : 37.220246,
+            lng : -80.422537
+          }
         },
         {
-          "lat": 37.221544,
-          "lng":-80.419101,
-          "name":"Merryman Center"
+          name : 'Merryman Center',
+          geometry : {
+            lat : 37.221544,
+            lng : -80.419101
+          }
         },
         {
-          "lat": 37.228932,
-          "lng":-80.419217,
-          "name":"Newman Library"
+          name : 'Newman Library',
+          geometry : {
+            lat : 37.228932,
+            lng : -80.419217
+          }
         },
         {
-          "lat": 37.226624,
-          "lng":-80.418956,
-          "name":"Owens Hall"
+          name : 'Owens Hall',
+          geometry : {
+            lat : 37.226624,
+            lng : -80.418956
+          }
         },
         {
-          "lat": 37.216069,
-          "lng":-80.418329,
-          "name":"Parking Services"
+          name : 'Parking Services',
+          geometry : {
+            lat : 37.216069,
+            lng : -80.418329
+          }
         },
         {
-          "lat": 37.230637,
-          "lng":-80.420873,
-          "name":"Performing Arts Building"
+          name : 'Performing Arts Building',
+          geometry : {
+            lat : 37.230637,
+            lng : -80.420873
+          }
         },
         {
-          "lat": 37.228909,
-          "lng":-80.420342,
-          "name":"Pylons"
+          name : 'Pylons',
+          geometry : {
+            lat : 37.228909,
+            lng : -80.420342
+          }
         },
         {
-          "lat": 37.217958,
-          "lng":-80.432142,
-          "name":"Smithfield Plantation"
+          name : 'Smithfield Plantation',
+          geometry : {
+            lat : 37.217958,
+            lng : -80.432142
+          }
         },
         {
-          "lat": 37.229557,
-          "lng":-80.418021,
-          "name":"Squires Student Center"
+          name : 'Squires Student Center',
+          geometry : {
+            lat : 37.229557,
+            lng : -80.418021
+          }
         },
         {
-          "lat": 37.222099,
-          "lng":-80.421803,
-          "name":"Student Services Building"
+          name : 'Student Services Building',
+          geometry : {
+            lat : 37.222099,
+            lng : -80.421803
+          }
         },
         {
-          "lat":37.230269,
-          "lng":-80.416352,
-          "name":"Theatre 101"
+          name : 'Theatre 101',
+          geometry : {
+            lat : 37.230269,
+            lng : -80.416352
+          }
         },
         {
-          "lat":37.217624,
-          "lng":-80.427927,
-          "name":"Veterinary Teaching Hospital"
+          name : 'Veterinary Teaching Hospital',
+          geometry : {
+            lat : 37.217624,
+            lng : -80.427927
+          }
         },
       ],
-      featureLayers : [
-        new FeatureLayer({
+      featureLayerInfos : [
+        {
           label: "VT Campus Grid",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer",
           visible: false,
           opacity: 1,
           identifyLayers: []
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Roads",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer",
           visible: true,
@@ -308,23 +386,22 @@ define([
               ]
             }
           ]
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Parking Spaces",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }),        
-        new FeatureLayer({
+        },        
+        {
           label: "Emergency Phones",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }),
-        
-        new FeatureLayer({
+        },
+        {
           label: "Buildings",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer",
           visible: true,
@@ -359,15 +436,15 @@ define([
               ]
             }
           ]
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Athletic Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer",
           visible: false,
           opacity: 1,
           identifyLayers: []
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Alternative Transportation",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer",
           visible: true,
@@ -420,21 +497,21 @@ define([
               ]
             }
           ]
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Accessibility",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        })
+        }
       ]
     },
     configs: {
       searchResultZoom: 18,
       searchResultExtentTolerance: 50,
       pointTolerance: 0.8,
-      PictureMarker: "imgs/pictureSymbol.png"
+      PictureMarker: "imgs/vt-marker.png"
     },
     about: {
       moreInfoUrl: "http://www.maps.vt.edu/"

@@ -1,18 +1,23 @@
 require([
   'app/config',
-  'app/widgets/Map',
-  'app/widgets/NavBar',
+  'app/widgets/vt_campus_map',
+  'app/widgets/vt_nav_bar',
   'dojo/domReady!'
-], function(config, Map, NavBar) {
-  var navBar, map;
+], function(config, VTMap, NavBar) {
+  var navBar, vtMap;
 
-  navBar = new NavBar({
-    config: config
-  }, 'navBarNode');
-  navBar.startup();
-  
-  map = new Map({
+  vtMap = new VTMap({
     config: config
   }, 'mapNode');
-  map.startup();
+  vtMap.startup();
+
+  navBar = new NavBar({
+    map: vtMap.getMap(),
+    mapTypes : config.map.mapTypes,
+    moreInfoUrl : config.about.moreInfoUrl,
+    featuredPlaces : config.map.featuredPlaces,
+    gazeteerLayer  : config.map.gazeteerLayer,
+    onClickHandler : vtMap.getOnClickHandler() 
+  }, 'navBarNode');
+  navBar.startup();
 });
