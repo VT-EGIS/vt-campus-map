@@ -52,6 +52,16 @@ define([
         _this._hideDropdownNav();
       });
 
+      query('#legend-nav', this.domNode).on(touch.press, function () {
+        query('#legend-modal').modal('show');
+        _this._hideDropdownNav();
+      });
+
+      query('#layers-nav', this.domNode).on(touch.press, function () {
+        query('#layers-modal').modal('show');
+        _this._hideDropdownNav();
+      });
+
       // XXX For some reason, registering on the touch.press event
       // does not close the main dropdown when 'enter' is used to
       // select the place. So, we're using touch.release

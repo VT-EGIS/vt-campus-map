@@ -15,7 +15,7 @@
         <ul class='nav navbar-nav push-right'>
           <li class='dropdown'>
             <a href='#' class='dropdown-toggle' id='map-type-nav' data-toggle='dropdown'>
-              Map Type <b class='caret hidden-xs'></b>
+              Map Type <b class='caret'></b>
             </a>
             <ul class="dropdown-menu vt-background-color" role="menu"> 
               <div class='row' id='mapType-gallery'>
@@ -24,19 +24,21 @@
           </li>
           <li class='dropdown'>
             <a href='#' class="dropdown-toggle" id="find-places-nav" data-toggle='dropdown'>
-              Find Places <span class="caret hidden-xs"></span>
+              Find Places <span class="caret"></span>
             </a>
             <ul class="dropdown-menu vt-background-color" role="menu">
               <li>
                 <a href="#" id="search-by-name">
+                  <i class="glyphicon glyphicon-chevron-right visible-xs-inline-block"></i>
                   Search by name &nbsp;
-                  <i class="glyphicon glyphicon-new-window"></i>
+                  <i class="glyphicon glyphicon-new-window hidden-xs"></i>
                 </a>
               </li>
               <li>
                 <a href="#" id="search-by-category">
+                  <i class="glyphicon glyphicon-chevron-right visible-xs-inline-block"></i>
                   Search by category &nbsp;
-                  <i class="glyphicon glyphicon-new-window"></i>
+                  <i class="glyphicon glyphicon-new-window hidden-xs"></i>
                 </a>
               </li>
             </ul>
@@ -49,27 +51,33 @@
             </ul>
           </li>
           <li class='dropdown'>
-            <a href='#' class='dropdown-toggle' id='layers-nav' data-toggle='dropdown'>
-                Layers <b class='caret hidden-xs'></b>
+            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
+                Help <b class='caret'></b>
             </a>
-            <div class='dropdown-menu hidden-xs'>
-            	<div id='layers'></div>
-            </div>
+            <ul class="dropdown-menu vt-background-color" role="menu">
+              <li>
+                <a href='#about' id='about-nav'>
+                  <i class="glyphicon glyphicon-chevron-right visible-xs-inline-block"></i>
+                  About &nbsp;
+                  <i class="glyphicon glyphicon-new-window hidden-xs"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#" id="legend-nav">
+                  <i class="glyphicon glyphicon-chevron-right visible-xs-inline-block"></i>
+                  Legend &nbsp;
+                  <i class="glyphicon glyphicon-new-window hidden-xs"></i>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class='dropdown'>
-            <a href='#' class='dropdown-toggle' id='legend-nav' data-toggle='dropdown'>
-                Legend <b class='caret hidden-xs'></b>
+            <a href='#' id='layers-nav'>
+                Layers
+                <i class="glyphicon glyphicon-new-window hidden-xs"></i>
             </a>
-            <div class='dropdown-menu hidden-xs'>
-            	<div id='legend'></div>
-            </div>
           </li>
         </ul>
-        <p class="navbar-right navbar-text">
-          <a href='#about' id='about-nav' class='navbar-link vt-nav-link vt-foreground-color'>
-            About VT Campus Map
-          </a>
-        </p>
       </div>
     </div>
   </div>
@@ -80,7 +88,7 @@
   <div id="search-by-category-modal"></div>
   <!-- Modal Holders End-->
 
-  <!-- about modal -->
+  <!-- About Modal -->
   <div class='modal fade' id='about-modal' style='display: none;' aria-hidden='true'>
     <div class='modal-dialog'>
       <div class='modal-content'>
@@ -151,6 +159,7 @@
       </div>
     </div>
   </div>
+  <!-- About Modal End-->
 
   <!-- Featured Bookmark Modal -->
   <div class="modal fade" class=".visible-xs-block" id="featured-bookmarks-modal">
@@ -172,4 +181,38 @@
     </div>
   </div>
   <!-- Featured Bookmark Modal End-->
+
+  <!-- Legend Modal -->
+  <div class="modal fade" class=".visible-xs-block" id="legend-modal">
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class='modal-title'>Legend</h4>
+        </div>
+        <div class='modal-body' id='legend'></div>
+      </div>
+    </div>
+  </div>
+  <!-- Legend Modal End-->
+
+  <!-- Layers Modal -->
+  <div class="modal fade" class=".visible-xs-block" id="layers-modal">
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class='modal-title'>Legend</h4>
+        </div>
+        <div class='modal-body' id='layers'></div>
+      </div>
+    </div>
+  </div>
+  <!-- Layers Modal End-->
 </div>

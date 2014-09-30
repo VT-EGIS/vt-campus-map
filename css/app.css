@@ -41,6 +41,16 @@ body > .container {
   overflow-y: scroll;
 }
 
+#layers-modal .modal-body{
+  height: 300px;
+  overflow-y: scroll;
+}
+
+#legend-modal .modal-body {
+  height: 300px;
+  overflow-y: scroll;
+}
+
 #vt-logo {
   padding-top: 0px;
 }
@@ -150,7 +160,8 @@ a:hover .mapType-img {
   font-size: 14px !important;
 }
 
-#about-modal {
+#about-modal .modal-body{
+  height: 300px;
   overflow-y: scroll;
 }
 
