@@ -20,21 +20,10 @@ module.exports = function(grunt) {
         'Gruntfile.js',
         'js/**/*.js'
       ]
-    },
-    mocha: {
-      test: {
-        options: {
-          run: false,
-          reporter: 'Spec',
-          log: true
-        },
-        src: ['SpecRunner.html']
-      }
     }
   });
-  grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('test', ['jshint', 'mocha']);
+  grunt.registerTask('test', ['jshint']);
   grunt.registerTask('default', ['test']);
 };
