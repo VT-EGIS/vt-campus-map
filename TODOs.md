@@ -19,3 +19,4 @@ TODO List
 8. Add roads in the gazeteer layer.
 9. Add documentation.
 10. Formulate an API.
+11. Move legend and layer widgets into navigation bar.
