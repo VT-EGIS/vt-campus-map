@@ -13,7 +13,7 @@ TODO List
   link.
 3. Use [Intern](http://theintern.io/) as the testing framework.
 4. Finalize the architecture and deployment procedure.
-5. Make the Legend and the Layers widget in-house.
+5. Make the Layers widget in-house.
 6. Update the analytics as per discussion.
 7. Add lavery hall in the buildings layer and CRC in the category list.
 8. Add roads in the gazeteer layer.
