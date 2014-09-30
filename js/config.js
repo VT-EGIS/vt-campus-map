@@ -1,6 +1,4 @@
-define([
-  'app/feature_layer'
-], function(FeatureLayer) {
+define([], function() {
   return {
     map: {
       options: {
@@ -124,30 +122,30 @@ define([
           label : "VT Campus",
           thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg",
           layerInfos : [
-            new FeatureLayer({
+            {
               label: "Blacksburg",
               url: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
               visible: true,
               opacity: 1
-            }),
-            new FeatureLayer({
+            },
+            {
               label: "VT Campus",
               url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
               visible: true,
               opacity: 1
-            })
+            }
           ]
         },
         {
           label : "Aerial Photo",
           thumbnail : "http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg",
           layerInfos : [
-            new FeatureLayer({
+            {
               label: "Pictometry",
               url: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
               visible: true,
               opacity: 1
-            }),
+            },
           ]
         }
       ],
@@ -351,22 +349,22 @@ define([
           }
         },
       ],
-      featureLayers : [
-        new FeatureLayer({
+      featureLayerInfos : [
+        {
           label: "VT Campus Grid",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer",
           visible: false,
           opacity: 1,
           identifyLayers: []
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Roads",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer",
           visible: true,
@@ -388,23 +386,22 @@ define([
               ]
             }
           ]
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Parking Spaces",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }),        
-        new FeatureLayer({
+        },        
+        {
           label: "Emergency Phones",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        }),
-        
-        new FeatureLayer({
+        },
+        {
           label: "Buildings",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer",
           visible: true,
@@ -439,15 +436,15 @@ define([
               ]
             }
           ]
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Athletic Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer",
           visible: false,
           opacity: 1,
           identifyLayers: []
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Alternative Transportation",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer",
           visible: true,
@@ -500,14 +497,14 @@ define([
               ]
             }
           ]
-        }),
-        new FeatureLayer({
+        },
+        {
           label: "Accessibility",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer",
           visible: true,
           opacity: 1,
           identifyLayers: []
-        })
+        }
       ]
     },
     configs: {

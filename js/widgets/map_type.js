@@ -7,9 +7,11 @@ define([
   'dojo/_base/lang',
   'dojo/_base/array',
   'dojo/dom-class',
-  'dojo/text!./templates/maptype_gallery_item.html'
-], function (declare, _WidgetBase, domConstruct, query, on, lang,
-             array, domClass, mapTypeGalleryItemTemplate) {
+  'dojo/text!./templates/maptype_gallery_item.html',
+  'esri/layers/ArcGISDynamicMapServiceLayer'
+], function (declare, _WidgetBase, domConstruct, query, on, lang, array,
+             domClass, mapTypeGalleryItemTemplate,
+             ArcGISDynamicMapServiceLayer) {
   return declare([_WidgetBase], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
@@ -41,7 +43,7 @@ define([
         mapType.layers = array.map(mapType.layerInfos, function(layerInfo) {
           var serviceLayer;
 
-          serviceLayer = layerInfo.load();
+          serviceLayer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
           serviceLayer.hide();
           map.addLayer(serviceLayer, 1);
 

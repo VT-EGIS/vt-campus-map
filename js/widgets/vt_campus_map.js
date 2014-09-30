@@ -30,14 +30,15 @@ define([
   'agsjs/dijit/TOC',
   'dojo/on',
   'dojo/_base/lang',
-  'dojo/_base/array'
+  'dojo/_base/array',
+  'esri/layers/ArcGISDynamicMapServiceLayer'
 ], function(declare, _WidgetBase, _TemplatedMixin, Scalebar, LocateButton,
             HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleFillSymbol,
             PictureMarkerSymbol, PopupMobile, Legend, InfoTemplate, Point,
             Extent, EsriQuery, QueryTask, IdentifyParameters, Graphic, urlUtils,
             webMercatorUtils, domConstruct, parser, TOC,
-            on, lang, array) {
+            on, lang, array, ArcGISDynamicMapServiceLayer) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -57,18 +58,28 @@ define([
       this.identifiableLayers = [];
       this.nameToLayer = {};
       this.widgets = {};
-      this.layers = {};
+      this._layerInfos = {};
+    },
+
+    registerLayerInfo : function (label, layerInfo) {
+      this._layerInfos[label] = layerInfo;
+      layerInfo.task = new esri.tasks.IdentifyTask(layerInfo.url);
+    },
+
+    getLayerInfos : function () {
+      return this._layerInfos;
     },
 
     _addLayers: function () {
-      var layers, _this;
+      var layers;
 
-      _this = this;
-
-      layers = array.map(this.featureLayers, function(featureLayer) {
-        _this.layers[featureLayer.getLabel()] = featureLayer;
-        return featureLayer.load();
-      });
+      layers = array.map(this.featureLayerInfos,
+        lang.hitch(this, function(flInfo) {
+          this.registerLayerInfo(flInfo.label, flInfo);
+          flInfo.layer = new ArcGISDynamicMapServiceLayer(flInfo.url, flInfo);
+          return flInfo.layer;
+        })
+      );
 
       this.map.addLayers(layers);
     },
@@ -127,8 +138,12 @@ define([
       this._addScaleBar();
       this._addLocateButton();
 
-      layerInfos = array.map(this.featureLayers, function(featureLayer) {
-        return featureLayer.getInfo();
+      layerInfos = array.map(this.featureLayerInfos, function(flInfo) {
+        return {
+          layer : flInfo.layer,
+          title : flInfo.label,
+          noLayers : true 
+        };
       }).reverse();
 
       this._addLayerTableOfContents(layerInfos); 
@@ -186,7 +201,7 @@ define([
     },
 
     _initMap: function() {
-      array.forEach(this.featureLayers,
+      array.forEach(this.featureLayerInfos,
           lang.hitch(this, this.setInfoTemplates));
       this._attachEventHandlers(); 
       this._initializeIdentifyParams();
@@ -300,28 +315,22 @@ define([
     /**
      * Gets the URL of the layer given the layer name.
      */
-    getLayerUrl : function (layerName) {
-      return this.layers[layerName].getUrl();
-    },
-
-    getFeatureLayers : function () {
-      return this.featureLayers;
+    getLayerUrl : function (label) {
+      return this._layerInfos[label].url;
     },
 
     getIdentifyParams : function () {
       return this.identifyParams;
     },
 
-    setInfoTemplates : function (layer) {
-      var _this, infoTemplateHTMLString;
+    setInfoTemplates : function (flInfo) {
+      var infoTemplateHTMLString;
 
-      _this = this;
+      array.forEach(flInfo.identifyLayers, lang.hitch(this, function (identifyLayer) {
 
-      array.forEach(layer.getIdentifyLayers(), function (identifyLayer) {
+        this.identifiableLayers.push(identifyLayer.layerName);
 
-        _this.identifiableLayers.push(identifyLayer.layerName);
-
-        _this.nameToLayer[identifyLayer.layerName] = identifyLayer;
+        this.nameToLayer[identifyLayer.layerName] = identifyLayer;
 
         infoTemplateHTMLString =
           '<table class="table table-hover table-bordered ">';
@@ -339,7 +348,7 @@ define([
           title: identifyLayer.title,
           content: infoTemplateHTMLString
         });
-      });
+      }));
     },
 
     getBorderSymbol: function () {
@@ -399,7 +408,7 @@ define([
     },
       
     getInfoOnClickedPoint : function (evt) { 
-      var tasks, _this, deferreds, map, promises;
+      var tasks, _this, deferreds, map, promises, layerInfos, layerInfo;
 
       _this = this;
       map = this.getMap();
@@ -413,15 +422,13 @@ define([
         geometry  : this.pointToExtent(evt.mapPoint, this.pointTolerance)
       });
 
-      array.map(this.featureLayers, function (layer) {
-        var task;
-
-        task = layer.getIdentifyTask();
-
-        if(task && layer.isVisibleNow()) {
-          tasks.push(task);
+      layerInfos = this.getLayerInfos();
+      for(var label in layerInfos) {
+        layerInfo = layerInfos[label];
+        if(layerInfo.task && layerInfo.layer.visibleAtMapScale) {
+          tasks.push(layerInfo.task);
         }
-      });
+      }
       
       deferreds = array.map(tasks, function(task) {
         return task.execute(_this.getIdentifyParams());
