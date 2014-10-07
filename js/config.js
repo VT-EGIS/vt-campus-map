@@ -126,13 +126,15 @@ define([], function() {
               label: "Blacksburg",
               url: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
               visible: true,
-              opacity: 1
+              opacity: 1,
+              usesCache: false
             },
             {
               label: "VT Campus",
               url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
               visible: true,
-              opacity: 1
+              opacity: 1,
+              usesCache: true
             }
           ]
         },
@@ -144,7 +146,8 @@ define([], function() {
               label: "Pictometry",
               url: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
               visible: true,
-              opacity: 1
+              opacity: 1,
+              usesCache: true
             },
           ]
         }

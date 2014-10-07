@@ -8,11 +8,13 @@ define([
   'dojo/_base/array',
   'dojo/dom-class',
   'dojo/text!./templates/maptype_gallery_item.html',
+  'esri/layers/ArcGISTiledMapServiceLayer',
   'esri/layers/ArcGISDynamicMapServiceLayer',
   'dojo/Evented'
 ], function (declare, _WidgetBase, domConstruct, query, on, lang, array,
              domClass, mapTypeGalleryItemTemplate,
-             ArcGISDynamicMapServiceLayer, Evented) {
+             ArcGISTiledMapServiceLayer, ArcGISDynamicMapServiceLayer,
+             Evented) {
   return declare([_WidgetBase, Evented], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
@@ -44,7 +46,11 @@ define([
         mapType.layers = array.map(mapType.layerInfos, function(layerInfo) {
           var serviceLayer;
 
-          serviceLayer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
+          if(layerInfo.usesCache) {
+            serviceLayer = new ArcGISTiledMapServiceLayer(layerInfo.url, layerInfo);
+          } else {
+            serviceLayer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
+          }
           serviceLayer.hide();
           map.addLayer(serviceLayer, 1);
 
