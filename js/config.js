@@ -125,16 +125,14 @@ define([], function() {
             {
               label: "Blacksburg",
               url: "http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer",
-              visible: true,
-              opacity: 1,
-              usesCache: false
+              usesCache: false,
+              visible: true
             },
             {
               label: "VT Campus",
               url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer",
-              visible: true,
-              opacity: 1,
-              usesCache: true
+              usesCache: true,
+              visible: true
             }
           ]
         },
@@ -145,9 +143,8 @@ define([], function() {
             {
               label: "Pictometry",
               url: "http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer",
-              visible: true,
-              opacity: 1,
-              usesCache: true
+              usesCache: true,
+              visible: true
             },
           ]
         }
@@ -357,21 +354,18 @@ define([], function() {
           label: "VT Campus Grid",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer",
           visible: false,
-          opacity: 1,
           identifyLayers: []
         },
         {
           label: "Roads",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer",
           visible: true,
-          opacity: 1,
           identifyLayers: []
         },
         {
           label: "Parking Lots",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer",
           visible: true,
-          opacity: 1,
           identifyLayers: [
             {
               layerId: 0,
@@ -394,21 +388,18 @@ define([], function() {
           label: "Parking Spaces",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer",
           visible: true,
-          opacity: 1,
           identifyLayers: []
         },        
         {
           label: "Emergency Phones",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer",
           visible: true,
-          opacity: 1,
           identifyLayers: []
         },
         {
           label: "Buildings",
           url: "http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer",
           visible: true,
-          opacity: 1,
           identifyLayers: [
             {
               layerId: 0,

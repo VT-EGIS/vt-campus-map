@@ -44,10 +44,9 @@ define([
   return declare([_WidgetBase, _TemplatedMixin], {
 
     constructor: function (opts) {
-      var config, _this;
+      var config;
 
       config = opts.config;
-      _this = this;
 
       lang.mixin(this, config.map);
       lang.mixin(this, config.configs);
