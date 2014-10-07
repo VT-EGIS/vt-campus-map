@@ -1,24 +1,20 @@
 define([], function () {
-  var constants, labels, categories, actions, values;
-
-  actions = {
-    TOUCH : 'touch'
-  };
+  var constants, categories, actions, values;
 
   categories = {
-    ABOUT       : 'About',
-    LAYERS      : 'Layers',
-    LEGEND      : 'Legend',
-    MAP_TYPE    : 'Map Type',
-    FEATURED    : 'Featured',
-    FIND_PLACES : 'Find Places',
-    SEARCH_NAME : 'Search by Name',
-    SEARCH_CATEGORY : 'Search by Category'
+    MAP_OBJ_SEL  : 'Map Object Selection',
+    MAP_VIEW_CTL : 'Map View Control'
   };
 
-  labels = {
-    LINK         : 'Link',
-    NAV_DROPDOWN : 'Navigation Dropdown'
+  actions = {
+    SEL_SEARCHCAT_CAT    : 'Select Search-Category Category',
+    SEL_FEATURED_PLACE   : 'Select Featured Place',
+    SEL_MAP_PLACE        : 'Select Map Place',
+    SEL_SEARCHCAT_PLACE  : 'Select Search-Category Place',
+    SEL_SEARCHNAME_PLACE : 'Select Search-Name Place',
+    SEL_MAP_TYPE         : 'Select Map Type',
+    TURNON_LAYER         : 'Turn-On Layer',
+    TURNOFF_LAYER        : 'Turn-Off Layer'
   };
 
   values = {};
@@ -29,16 +25,6 @@ define([], function () {
   };
 
   return {
-    getLbl : function (name) {
-      if(labels[name]) {
-        return labels[name];
-      } else {
-        throw {
-          name : 'Invalid Label',
-          message : name + ' is not a valid google analytics label'
-        };
-      }
-    },
     getCat : function (name) {
       if(categories[name]) {
         return categories[name];

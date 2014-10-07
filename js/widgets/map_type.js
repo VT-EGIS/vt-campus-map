@@ -8,11 +8,12 @@ define([
   'dojo/_base/array',
   'dojo/dom-class',
   'dojo/text!./templates/maptype_gallery_item.html',
-  'esri/layers/ArcGISDynamicMapServiceLayer'
+  'esri/layers/ArcGISDynamicMapServiceLayer',
+  'dojo/Evented'
 ], function (declare, _WidgetBase, domConstruct, query, on, lang, array,
              domClass, mapTypeGalleryItemTemplate,
-             ArcGISDynamicMapServiceLayer) {
-  return declare([_WidgetBase], {
+             ArcGISDynamicMapServiceLayer, Evented) {
+  return declare([_WidgetBase, Evented], {
     constructor : function (opts, elementID) {
       this._elementID = elementID;
       this._currentMapTypeIndex = -1;
@@ -103,6 +104,8 @@ define([
       array.forEach(mapType.layers, function (layer) {
         layer.show();
       });
+
+      this.emit('mapTypeChanged', mapType.label);
     },
 
     getMapTypeElement : function (index) {

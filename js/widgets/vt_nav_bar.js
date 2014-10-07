@@ -29,7 +29,6 @@ define([
       this.inherited(arguments);
       this._attachEventHandlers();
       this._addWidgets();
-      this._setUpGoogleAnalyticTrackers();
     },
 
     _addWidgets : function () {
@@ -88,61 +87,27 @@ define([
       }
     },
 
-    _setUpGoogleAnalyticTrackers : function () {
-      var send, evt, touchAct, dropdown;
-
-      send = ga.getCst('SEND');
-      evt  = ga.getCst('EVENT');
-      touchAct = ga.getAct('TOUCH');
-      dropdown = ga.getLbl('NAV_DROPDOWN');
-
-      query('#map-type-nav.dropdown-toggle', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('MAP_TYPE'), touchAct, dropdown);
-        });
-      query('#find-places-nav.dropdown-toggle', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('FIND_PLACES'), touchAct, dropdown);
-        });
-      query('#featured-nav.dropdown-toggle', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('FEATURED'), touchAct, dropdown);
-        });
-      query('#legend-nav.dropdown-toggle', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('LEGEND'), touchAct, dropdown);
-        });
-      query('#layers-nav.dropdown-toggle', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('LEGEND'), touchAct, dropdown);
-        });
-      query('#about-nav', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('ABOUT'), touchAct, dropdown);
-        });
-      query('#search-by-category', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('SEARCH_CATEGORY'), touchAct, dropdown);
-        });
-      query('#search-by-name', this.domNode)
-        .on(touch.press, function () {
-          __gaTracker(send, evt, ga.getCat('SEARCH_NAME'), touchAct, dropdown);
-        });
-    },
-
     _addMapTypeGallery : function () {
+      var gallery;
 
-      new mapTypeGallery({
+      gallery = new mapTypeGallery({
         mapTypes: this.mapTypes,
         map: this.map,
         defaultMapTypeIndex: 0,
         onSelectHandler: lang.hitch(this, this._hideDropdownNav)
       }, 'mapType-gallery');
+
+      gallery.on('mapTypeChanged', function (label) {
+        __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+            ga.getCat('MAP_VIEW_CTL'), ga.getAct('SEL_MAP_TYPE'), label);
+      });
     },
 
     _addBookmarkWidgets : function () {
+      var bookmarkDropDown, bookmarkModal;
+
       // The Normal Dropdown visible on larger screens
-      new Bookmarks({
+      bookmarkDropDown = new Bookmarks({
         bookmarks      : this.featuredPlaces,
         onClickHandler : this.onClickHandler,
         attrs          : {
@@ -150,25 +115,54 @@ define([
         }
       }, 'featured-bookmarks');
 
+      bookmarkDropDown.on('bookmarkSelected', function (bookmarkName) {
+        __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+            ga.getCat('MAP_OBJ_SEL'), ga.getAct('SEL_FEATURED_PLACE'), bookmarkName);
+      });
+
       // The Mobile Modal
-      new Bookmarks({
+      bookmarkModal = new Bookmarks({
         bookmarks      : this.featuredPlaces,
         onClickHandler : this.onClickHandler,
       }, 'featured-bookmarks-modal-content');
+
+      bookmarkModal.on('bookmarkSelected', function (bookmarkName) {
+        __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+            ga.getCat('MAP_OBJ_SEL'), ga.getAct('SEL_FEATURED_PLACE'), bookmarkName);
+      });
+
     },
 
     _addSearchByCategoryWidget : function () {
-      new SearchByCategoryWidget({
+      var searchByCategoryWidget;
+
+      searchByCategoryWidget = new SearchByCategoryWidget({
         onClickHandler : this.onClickHandler,
         gazeteerLayer  : this.gazeteerLayer
       }, 'search-by-category-modal');
+
+      searchByCategoryWidget.on('categorySelected', function (categoryName) {
+        __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+            ga.getCat('MAP_OBJ_SEL'), ga.getAct('SEL_SEARCHCAT_CAT'), categoryName);
+      });
+      searchByCategoryWidget.on('placeSelected', function (placeName) {
+        __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+            ga.getCat('MAP_OBJ_SEL'), ga.getAct('SEL_SEARCHCAT_PLACE'), placeName);
+      });
     },
 
     _addSearchByNameWidget : function () {
-      new SearchByNameWidget({
+      var searchByNameWidget;
+      
+      searchByNameWidget = new SearchByNameWidget({
         onClickHandler : this.onClickHandler,
         gazeteerLayer  : this.gazeteerLayer,
       }, 'search-by-name-modal');
+
+      searchByNameWidget.on('placeSelected', function (placeName) {
+        __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+            ga.getCat('MAP_OBJ_SEL'), ga.getAct('SEL_SEARCHNAME_PLACE'), placeName);
+      });
     }, 
 
     // NOTE: This is a hack/workaround and is dependent on the fact

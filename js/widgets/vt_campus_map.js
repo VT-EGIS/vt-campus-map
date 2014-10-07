@@ -31,14 +31,15 @@ define([
   'dojo/on',
   'dojo/_base/lang',
   'dojo/_base/array',
-  'esri/layers/ArcGISDynamicMapServiceLayer'
+  'esri/layers/ArcGISDynamicMapServiceLayer',
+  'app/google_analytics_constants'
 ], function(declare, _WidgetBase, _TemplatedMixin, Scalebar, LocateButton,
             HomeButton, BootstrapMap, all, mapTemplate, poiTemplate,
             listItemTemplate, Color, SimpleLineSymbol, SimpleFillSymbol,
             PictureMarkerSymbol, PopupMobile, Legend, InfoTemplate, Point,
             Extent, EsriQuery, QueryTask, IdentifyParameters, Graphic, urlUtils,
             webMercatorUtils, domConstruct, parser, TOC,
-            on, lang, array, ArcGISDynamicMapServiceLayer) {
+            on, lang, array, ArcGISDynamicMapServiceLayer, ga) {
   
   return declare([_WidgetBase, _TemplatedMixin], {
 
@@ -402,6 +403,10 @@ define([
       });
 
       if (features.length > 0) {
+        array.forEach(features, function (feature) {
+          __gaTracker(ga.getCst('SEND'), ga.getCst('EVENT'),
+              ga.getCat('MAP_OBJ_SEL'), ga.getAct('SEL_MAP_PLACE'), feature.attributes.NAME);
+        });
         this.setInfoWindowFeatures(features);
         this.showInfoWindow(clickedPoint);
       }

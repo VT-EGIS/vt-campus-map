@@ -10,11 +10,12 @@ define([
   'dojo/_base/array',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
+  'dojo/Evented',
   'dojoBootstrap/Typeahead'
-], function (declare, _WidgetBase, _TemplatedMixin, dojoQuery, on,
-             keys, modalTemplate, lang, array, EsriQuery, QueryTask) {
+], function (declare, _WidgetBase, _TemplatedMixin, dojoQuery, on, keys,
+             modalTemplate, lang, array, EsriQuery, QueryTask, Evented) {
 
-  return declare([_WidgetBase, _TemplatedMixin], {
+  return declare([_WidgetBase, _TemplatedMixin, Evented], {
     constructor : function (opts) {
       this._names = [];
       this._inputBox = null;
@@ -91,6 +92,8 @@ define([
       this._inputBox.value = '';
 
       _this = this;
+
+      this.emit('placeSelected', searchText);
 
       query = new EsriQuery();
       query.returnGeometry = true;

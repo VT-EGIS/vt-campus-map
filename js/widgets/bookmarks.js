@@ -7,10 +7,11 @@ define([
   'dojo/on',
   'dojox/html/entities',
   'dojo/_base/lang',
-  'dojo/_base/array'
+  'dojo/_base/array',
+  'dojo/Evented'
 ], function (declare, _WidgetBase, domConstruct, bookmarkItemTemplate, query,
-             on, entities, lang, array) {
-  return declare([_WidgetBase], {
+             on, entities, lang, array, Evented) {
+  return declare([_WidgetBase, Evented], {
     constructor : function (opts, elementID) {
       this.elementID = elementID;
       lang.mixin(this, opts);
@@ -25,17 +26,14 @@ define([
     },
 
     _attachEventHandlers : function () {
-      var _this;
-
-      _this = this;
-
-      on(this.domNode, 'a:click', function (evt) {
+      on(this.domNode, 'a:click', lang.hitch(this, function (evt) {
         var bookmark, bookmarkName;
 
         bookmarkName = entities.decode(evt.target.innerHTML);
-        bookmark = _this.getBookmark(bookmarkName);
-        _this.onClickHandler(bookmark.geometry);
-      }); 
+        this.emit('bookmarkSelected', bookmarkName);
+        bookmark = this.getBookmark(bookmarkName);
+        this.onClickHandler(bookmark.geometry);
+      })); 
 
     },
 
