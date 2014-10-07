@@ -13,12 +13,13 @@ define([
   'dojo/_base/array',
   'dojo/dom-style',
   'dojo/text!./templates/search_by_category_modal.html',
-  'dojo/text!./templates/list_of_items_in_modal.html'
+  'dojo/text!./templates/list_of_items_in_modal.html',
+  'dojo/Evented'
 ], function (declare, _WidgetBase, _TemplatedMixin, EsriQuery, QueryTask,
              dom, domConstruct, dojoQuery, on, dojoRequest, lang, array,
-             domStyle, modalTemplate, listItemTemplate) {
+             domStyle, modalTemplate, listItemTemplate, Evented) {
   
-  return declare([_WidgetBase, _TemplatedMixin], {
+  return declare([_WidgetBase, _TemplatedMixin, Evented], {
     constructor : function (opts) {
       lang.mixin(this, opts);
       this._categoryElements = {};
@@ -34,13 +35,10 @@ define([
     },
 
     _attachEventHandlers : function () {
-      var _this;
-
-      _this = this;
-
-      dojoQuery('select', this.domNode).on('change', function(evt) {
-        _this.updateCurrentPlacesListElement(evt.target.value);
-      });
+      dojoQuery('select', this.domNode).on('change', lang.hitch(this, function(evt) {
+        this.emit('categorySelected', evt.target.value);
+        this.updateCurrentPlacesListElement(evt.target.value);
+      }));
     },
 
     _loadCategories: function () {
@@ -113,6 +111,7 @@ define([
 
           point = _this.getPlaceGeometry(evt.target.id.split('place-')[1]);
           _this.onClickHandler(point);
+          _this.emit('placeSelected', evt.target.innerHTML.trim());
         });
       });
     },
