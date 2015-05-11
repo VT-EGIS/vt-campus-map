@@ -61,8 +61,6 @@ A common routine would go like this.
 11. After at least 1 team member has approved your code, you can finally merge your changes
   to master by clicking on the merge button.
 
-![](https://i.imgflip.com/8jkzg.jpg)
-
 Testing Locally
 ---------------
 `grunt test` or simply `grunt` will lint all the JavaScript and run all the tests.     
