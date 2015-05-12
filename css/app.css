@@ -1,0 +1,41 @@
+@import url("//js.arcgis.com/3.13/dijit/themes/claro/claro.css");
+@import url("//js.arcgis.com/3.13/esri/css/esri.css");
+@import "../vendor/bootstrap-3.2.0-dist/css/bootstrap.min.css";
+@import "../vendor/bootstrap-map/css/bootstrapmap.css";
+
+body {
+  font-size: 16px !important;
+}
+
+#home-button {
+  position: absolute;
+  top: 130px;
+  left: 17px;
+  z-index: 2;
+}
+
+#locate-button {
+  position: absolute;
+  top: 165px;
+  left: 17px;
+  z-index: 3;
+}
+
+#vt-campus-map_zoom_slider {
+  position: absolute;
+  top: 60px;
+  left: 17px;
+  z-index:3
+}
+
+.vt-foreground-color {
+  color: #D8D8BC !important; 
+}
+
+.vt-background-color {
+  background-color: #660000 !important;
+}
+
+.push-right {
+  padding-left: 10px;
+}

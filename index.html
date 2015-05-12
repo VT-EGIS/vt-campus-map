@@ -10,6 +10,9 @@
 
     <title>Interactive VT Campus Map</title>
 
+    <link rel='stylesheet' href='./css/app.css'>
+    <link rel='stylesheet' href='./css/navbar.css'>
+
     <!-- Google Analytics -->
     <!-- UNCOMMENT AFTER REFACTOR
     <script>
@@ -27,7 +30,11 @@
   </head>
 
   <body>
-
+    <div id='vt-campus-map'>
+      <div id='vt-navbar'></div>
+      <div id='home-button'></div>
+      <div id='locate-button'></div>
+    </div>
     <script>
       (function() {
         var packagePath = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
