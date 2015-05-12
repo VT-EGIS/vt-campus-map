@@ -15,7 +15,7 @@ define([
              ArcGISDynamicMapServiceLayer, Evented) {
   return declare([_WidgetBase, Evented], {
 
-    constructor : function (opts) {
+    constructor : function () {
       this.currentMapTypeIndex = -1;
       this.mapTypeElements = [];
     },
@@ -56,7 +56,7 @@ define([
     },
 
     selectMapType : function (index) {
-      var map, oldMapType, oldMapTypeIndex, mapType;
+      var oldMapType, oldMapTypeIndex, mapType;
 
       oldMapTypeIndex = this.currentMapTypeIndex;
 

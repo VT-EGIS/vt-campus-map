@@ -29,11 +29,12 @@ define([
     },
 
     addLayers: function () {
-      for(var layerType in config.layers) {
-        array.forEach(config.layers[layerType], lang.hitch(this, function (url) {
+      for(var layerType in config.layerInfos) {
+        array.forEach(config.layerInfos[layerType], lang.hitch(this, function (layerInfo) {
           switch(layerType) {
             case 'featureLayers':
-              this.layers.push(new ArcGISDynamicMapServiceLayer(url));
+              layerInfo.layer = new ArcGISDynamicMapServiceLayer(layerInfo.url);
+              this.layers.push(layerInfo.layer);
               break;
             default:
               throw new ex.ValueError('Incorrect layer type "' + layerType + '"');
@@ -51,7 +52,7 @@ define([
     },
 
     addNavbar: function () {
-      new NavBar({ map: this.map }, 'vt-navbar');
+      new NavBar({ map: this.map, layerInfos: config.layerInfos.featureLayers}, 'vt-navbar');
     },
 
     addScalebar: function () {

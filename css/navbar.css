@@ -40,3 +40,8 @@ a:hover .mapType-img {
   color: #FF6600;
 }
 /* End Map Type Styles */
+
+.modal-short.modal-body {
+  height: 300px;
+  overflow-y: scroll;
+}
