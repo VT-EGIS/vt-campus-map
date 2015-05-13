@@ -1,7 +1,6 @@
 define([
-  'dojo/_base/declare',
-  'esri/layers/ArcGISDynamicMapServiceLayer'
-], function (declare, ArcGISDynamicMapServiceLayer) {
+  'dojo/_base/declare'
+], function (declare) {
   return declare([], {
     constructor: function (parentLayer) {
       this._parentLayer = parentLayer;

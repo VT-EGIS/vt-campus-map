@@ -1,7 +1,6 @@
 define([
-  'dojo/_base/declare',
-  'esri/layers/FeatureLayer'
-], function (declare, FeatureLayer) {
+  'dojo/_base/declare'
+], function (declare) {
   return declare([], {
     constructor: function (layer) {
       this._layer = layer;
