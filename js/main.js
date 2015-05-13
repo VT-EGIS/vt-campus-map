@@ -53,6 +53,7 @@ define([
       new NavBar({
         map: this.map,
         layerInfos: config.layerInfos.featureLayers,
+        layers: this.layers,
         markerSymbol: this.markerSymbol
       }, 'vt-navbar');
     },

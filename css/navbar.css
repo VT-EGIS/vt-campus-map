@@ -41,7 +41,33 @@ a:hover .mapType-img {
 }
 /* End Map Type Styles */
 
+/* Modal Styles */
 .modal-short.modal-body, .short {
   height: 300px;
   overflow-y: scroll;
 }
+/* End Modal Styles */
+
+/* Layers Styles */
+
+#layers-modal .modal-dialog{
+  width: 400px;
+  line-height: 1.7em;
+}
+
+#layers-modal ul {
+  padding-left: 20px;
+}
+
+.layers-list {
+  list-style-type: none;
+}
+
+.hidden-layer, .hidden-layer:active, .hidden-layer:visited{
+  color: #888;
+}
+
+#layers-modal a:hover {
+  text-decoration: none;
+}
+/* End Layers Styles */

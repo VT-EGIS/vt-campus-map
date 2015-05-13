@@ -9,6 +9,7 @@ define([
   './widgets/about/main',
   './widgets/featured_places/main',
   './widgets/featured_places_modal/main',
+  './widgets/layers_modal/main',
   'dojo/query',
   'dojo/_base/lang',
   'dojo/dom-style',
@@ -17,7 +18,7 @@ define([
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
-             query, lang, domStyle) {
+             LayersModal, query, lang, domStyle) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -30,6 +31,21 @@ define([
       this.addLegendModal();
       this.addAboutModal();
       this.addFeaturedPlaceWidget();
+      this.addLayersModal();
+    },
+
+    addLayersModal: function () {
+      var layersModal;
+
+      layersModal = new LayersModal({ layers: this.layers, id: 'layers-modal' });
+
+      this.domNode.appendChild(layersModal.domNode);
+
+      query('#layers-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
+        evt.preventDefault();
+        layersModal.open();
+        this.hideDropdownNavbar();
+      }));
     },
 
     addFeaturedPlaceWidget: function () {
