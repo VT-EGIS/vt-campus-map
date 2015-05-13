@@ -20,7 +20,8 @@ define([
       this.markerSymbol = new PictureMarkerSymbol(config.markerSymbol, 24, 50);
       this.layers = [];
       this.addEventListeners();
-      this.addLayers();
+      for(var layerType in config.layerInfos) { this.addLayers(layerType); }
+      this.map.addLayers(this.layers);
     },
 
     addEventListeners: function () {
@@ -28,20 +29,17 @@ define([
       this.map.on('layers-add-result', lang.hitch(this, 'addWidgets')); 
     },
 
-    addLayers: function () {
-      for(var layerType in config.layerInfos) {
-        array.forEach(config.layerInfos[layerType], lang.hitch(this, function (layerInfo) {
-          switch(layerType) {
-            case 'featureLayers':
-              layerInfo.layer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
-              this.layers.push(layerInfo.layer);
-              break;
-            default:
-              throw new ex.ValueError('Incorrect layer type "' + layerType + '"');
-          }
-        }));
-      }
-      this.map.addLayers(this.layers);
+    addLayers: function (layerType) {
+      array.forEach(config.layerInfos[layerType], lang.hitch(this, function (layerInfo) {
+        switch(layerType) {
+          case 'featureLayers':
+            layerInfo.layer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
+            this.layers.push(layerInfo.layer);
+            break;
+          default:
+            throw new ex.ValueError('Incorrect layer type "' + layerType + '"');
+        }
+      }));
     },
 
     addWidgets: function () {

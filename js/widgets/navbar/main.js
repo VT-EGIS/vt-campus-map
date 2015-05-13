@@ -8,13 +8,16 @@ define([
   './widgets/legend/main',
   './widgets/about/main',
   './widgets/featured_places/main',
+  './widgets/featured_places_modal/main',
   'dojo/query',
   'dojo/_base/lang',
+  'dojo/dom-style',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
-             config, LegendModal, AboutModal, FeaturedPlaceWidget, query, lang) {
+             config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
+             query, lang, domStyle) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -30,11 +33,28 @@ define([
     },
 
     addFeaturedPlaceWidget: function () {
-      new FeaturedPlaceWidget({
-        featuredPlaces: config.featuredPlaces,
-        map: this.map,
-        markerSymbol: this.markerSymbol
-      }, 'featured-places');
+      var featuredPlacesModal;
+
+      if(this.isMobile()) {
+        featuredPlacesModal = new FeaturedPlacesModal({
+          featuredPlaces: config.featuredPlaces,
+          map: this.map,
+          markerSymbol: this.markerSymbol
+        }); 
+        this.domNode.appendChild(featuredPlacesModal.domNode);
+
+        query('#featured-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
+          evt.preventDefault();
+          featuredPlacesModal.open();
+          this.hideDropdownNavbar();
+        }));
+      } else {
+        new FeaturedPlaceWidget({
+          featuredPlaces: config.featuredPlaces,
+          map: this.map,
+          markerSymbol: this.markerSymbol
+        }, 'featured-places');
+      }
     },
 
     addMapTypeGallery: function () {
@@ -81,6 +101,13 @@ define([
       if (query('.navbar-collapse.in', this.domNode).length > 0) {
         query('.navbar-toggle', this.domNode)[0].click();
       }
+    },
+
+    isMobile: function () {
+      var mobileMenuButton;
+
+      mobileMenuButton = query('.navbar-header button')[0];
+      return domStyle.get(mobileMenuButton, 'display') !== 'none';
     }
   });
 });
