@@ -35,39 +35,39 @@ define([], function () {
       featureLayers: [
         {
           url:'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
-          title: 'VT Campus Grid'
+          id: 'VT Campus Grid'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer',
-          title: 'Roads'
+          id: 'Roads'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
-          title: 'Parking Lots'
+          id: 'Parking Lots'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer',
-          title: 'Parking Spaces'
+          id: 'Parking Spaces'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer',
-          title: 'Emergency Phones'
+          id: 'Emergency Phones'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
-          title: 'Buildings'
+          id: 'Buildings'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer',
-          title: 'Athletic Parking Lots'
+          id: 'Athletic Parking Lots'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
-          title: 'Alternate Transportation'
+          id: 'Alternate Transportation'
         },
         {
           url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer',
-          title: 'Accessibility'
+          id: 'Accessibility'
         }
       ]
     },
@@ -88,6 +88,37 @@ define([], function () {
         ]
       }
     ],
-    markerSymbol: 'imgs/vt-marker.png'
+    markerSymbol: 'imgs/vt-marker.png',
+    featuredPlaces : [
+      { name : 'Ag Quad', geometry : { lat : 37.225351, lng : -80.423796 } },
+      { name : 'Burruss Hall', geometry : { lat : 37.229054, lng : -80.423769 }, },
+      { name : 'Cassell Coliseum', geometry : { lat : 37.222537, lng : -80.419021 } },
+      { name : 'Center for the Arts', geometry : { lat : 37.231783, lng :-80.418371 } },
+      { name : 'Cowgill Hall', geometry : { lat : 37.229922, lng : -80.424688 } },
+      { name : 'Derring Hall', geometry : { lat : 37.228995, lng : -80.425622 } },
+      { name : 'Dietrick Hall', geometry : { lat : 37.224545, lng : -80.421081 } },
+      { name : 'Drillfield', geometry : { lat : 37.227429, lng : -80.42223 } },
+      { name : 'Duck Pond', geometry : { lat : 37.225941, lng : -80.428249 } },
+      { name : 'Graduate Life Center', geometry : { lat : 37.228272, lng : -80.417516 } },
+      { name : 'Hahn Horticulture Garden', geometry : { lat : 37.219414, lng : -80.424276 } },
+      { name : 'Henderson Hall', geometry : { lat : 37.230347, lng : -80.416911 } },
+      { name : 'Inn at Virginia Tech & Skelton Conference Center', geometry : { lat : 37.229782, lng : -80.429599 } },
+      { name : 'Lane Stadium', geometry : { lat : 37.219889, lng : -80.418098 } },
+      { name : 'Lavery Hall', geometry : { lat : 37.231212, lng : -80.422828 } },
+      { name : 'Lee Hall', geometry : { lat : 37.224503, lng : -80.418505 } },
+      { name : 'McComas Hall', geometry : { lat : 37.220246, lng : -80.422537 } },
+      { name : 'Merryman Center', geometry : { lat : 37.221544, lng : -80.419101 } },
+      { name : 'Newman Library', geometry : { lat : 37.228932, lng : -80.419217 } },
+      { name : 'Owens Hall', geometry : { lat : 37.226624, lng : -80.418956 } },
+      { name : 'Parking Services', geometry : { lat : 37.216069, lng : -80.418329 } },
+      { name : 'Performing Arts Building', geometry : { lat : 37.230637, lng : -80.420873 } },
+      { name : 'Pylons', geometry : { lat : 37.228909, lng : -80.420342 } },
+      { name : 'Smithfield Plantation', geometry : { lat : 37.217958, lng : -80.432142 } },
+      { name : 'Squires Student Center', geometry : { lat : 37.229557, lng : -80.418021 } },
+      { name : 'Student Services Building', geometry : { lat : 37.222099, lng : -80.421803 } },
+      { name : 'Theatre 101', geometry : { lat : 37.230269, lng : -80.416352 } },
+      { name : 'Veterinary Teaching Hospital', geometry : { lat : 37.217624, lng : -80.427927 } },
+    ],
+    spatialReference: { wkid: 102100 }
   };
 });

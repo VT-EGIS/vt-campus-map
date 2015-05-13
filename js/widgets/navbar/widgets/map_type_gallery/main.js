@@ -87,7 +87,7 @@ define([
           url  : mapType.thumbnail
         });
 
-        domConstruct.create(domConstruct.toDom(templateString), null, this.domNode); 
+        domConstruct.place(domConstruct.toDom(templateString), this.domNode); 
       }));
 
       this.mapTypeElements = query('li', this.domNode);

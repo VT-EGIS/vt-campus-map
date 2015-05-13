@@ -33,7 +33,7 @@ define([
         array.forEach(config.layerInfos[layerType], lang.hitch(this, function (layerInfo) {
           switch(layerType) {
             case 'featureLayers':
-              layerInfo.layer = new ArcGISDynamicMapServiceLayer(layerInfo.url);
+              layerInfo.layer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
               this.layers.push(layerInfo.layer);
               break;
             default:
@@ -52,7 +52,11 @@ define([
     },
 
     addNavbar: function () {
-      new NavBar({ map: this.map, layerInfos: config.layerInfos.featureLayers}, 'vt-navbar');
+      new NavBar({
+        map: this.map,
+        layerInfos: config.layerInfos.featureLayers,
+        markerSymbol: this.markerSymbol
+      }, 'vt-navbar');
     },
 
     addScalebar: function () {

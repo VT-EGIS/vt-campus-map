@@ -7,13 +7,14 @@ define([
   'vtCampusMap/config',
   './widgets/legend/main',
   './widgets/about/main',
+  './widgets/featured_places/main',
   'dojo/query',
   'dojo/_base/lang',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
-             config, LegendModal, AboutModal, query, lang) {
+             config, LegendModal, AboutModal, FeaturedPlaceWidget, query, lang) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -25,6 +26,15 @@ define([
       this.addMapTypeGallery();
       this.addLegendModal();
       this.addAboutModal();
+      this.addFeaturedPlaceWidget();
+    },
+
+    addFeaturedPlaceWidget: function () {
+      new FeaturedPlaceWidget({
+        featuredPlaces: config.featuredPlaces,
+        map: this.map,
+        markerSymbol: this.markerSymbol
+      }, 'featured-places');
     },
 
     addMapTypeGallery: function () {

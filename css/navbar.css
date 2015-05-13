@@ -41,7 +41,7 @@ a:hover .mapType-img {
 }
 /* End Map Type Styles */
 
-.modal-short.modal-body {
+.modal-short.modal-body, .short {
   height: 300px;
   overflow-y: scroll;
 }
