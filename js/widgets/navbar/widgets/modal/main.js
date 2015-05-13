@@ -12,6 +12,7 @@ define([
     postCreate: function () {
       this.title = query('.modal-title', this.domNode)[0];
       this.body = query('.modal-body', this.domNode)[0];
+      this.nodeList = query(this.domNode);
     },
     
     setTitle: function (value) {
@@ -20,6 +21,13 @@ define([
 
     setBody: function (value) {
       html.set(this.body, value);
+    },
+
+    open: function () {
+      this.nodeList.modal({
+        show: true,
+        backdrop: false
+      });
     }
   });
 });

@@ -6,13 +6,14 @@ define([
   './widgets/map_type_gallery/main',
   'vtCampusMap/config',
   './widgets/legend/main',
+  './widgets/about/main',
   'dojo/query',
   'dojo/_base/lang',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
-             config, LegendModal, query, lang) {
+             config, LegendModal, AboutModal, query, lang) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -23,6 +24,7 @@ define([
     addWidgets: function () {
       this.addMapTypeGallery();
       this.addLegendModal();
+      this.addAboutModal();
     },
 
     addMapTypeGallery: function () {
@@ -34,13 +36,12 @@ define([
     },
 
     addLegendModal: function () {
-      var legendModal, nodeList;
+      var legendModal;
 
       legendModal = new LegendModal({
         map: this.map,
         layerInfos: this.layerInfos
       });
-      nodeList = query(legendModal.domNode);
 
       this.domNode.appendChild(legendModal.domNode);
 
@@ -48,7 +49,20 @@ define([
 
       query('#legend-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        nodeList.modal('show');
+        legendModal.open();
+        this.hideDropdownNavbar();
+      }));
+    },
+
+    addAboutModal: function () {
+      var aboutModal;
+
+      aboutModal = new AboutModal();
+      this.domNode.appendChild(aboutModal.domNode);
+
+      query('#about-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
+        evt.preventDefault();
+        aboutModal.open();
         this.hideDropdownNavbar();
       }));
     },
