@@ -9,9 +9,5 @@ define([
       this.setTitle('About');
       this.setBody(content);
     },
-
-    startup: function () {
-      this.dijit.startup();
-    }
   });
 });
