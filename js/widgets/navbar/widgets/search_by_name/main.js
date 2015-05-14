@@ -101,7 +101,7 @@ define([
         }) 
       },
 
-      annyang.addCommands(commands);
+      annyang && annyang.addCommands(commands);
     }
   }); 
 });
