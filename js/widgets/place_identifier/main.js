@@ -15,7 +15,7 @@ define([
              SimpleFillSymbol, lang, Color, Graphic, webMercatorUtils, Point,
              array) {
   return declare([], {
-    zoomLevel: 17,
+    zoomLevel: 18,
 
     lineColor: new Color([255, 0, 0]),
 

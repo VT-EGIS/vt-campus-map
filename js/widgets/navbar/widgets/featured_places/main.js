@@ -19,7 +19,7 @@ define([
     },
 
     postCreate : function () {
-      this.buildingIdentifier = new PlaceIdentifier({
+      this.placeIdentifier = new PlaceIdentifier({
         map: this.map,
         markerSymbol: this.markerSymbol
       });
@@ -35,7 +35,7 @@ define([
         name = query(evt.target).text().trim();
         featuredPlace = this.featuredPlaceDict[name];
         this.emit('featuredPlaceSelected', name);
-        this.buildingIdentifier.identify(featuredPlace.geometry);
+        this.placeIdentifier.identify(featuredPlace.geometry);
       })); 
     },
 

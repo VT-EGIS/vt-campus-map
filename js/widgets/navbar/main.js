@@ -13,12 +13,13 @@ define([
   'dojo/query',
   'dojo/_base/lang',
   'dojo/dom-style',
+  './widgets/search_by_name/main',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
-             LayersModal, query, lang, domStyle) {
+             LayersModal, query, lang, domStyle, SearchByNameWidget) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -32,6 +33,24 @@ define([
       this.addAboutModal();
       this.addFeaturedPlaceWidget();
       this.addLayersModal();
+      this.addSearchByNameWidget();
+    },
+
+    addSearchByNameWidget: function () {
+      var searchByNameWidget;
+
+      searchByNameWidget = new SearchByNameWidget({
+        map: this.map,
+        markerSymbol: this.markerSymbol
+      });
+
+      this.domNode.appendChild(searchByNameWidget.domNode);
+
+      query('#search-by-name', this.domNode).on('click', lang.hitch(this, function (evt) {
+        evt.preventDefault();
+        searchByNameWidget.open();
+        this.hideDropdownNavbar();
+      }));
     },
 
     addLayersModal: function () {

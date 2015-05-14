@@ -119,6 +119,7 @@ define([], function () {
       { name : 'Theatre 101', geometry : { lat : 37.230269, lng : -80.416352 } },
       { name : 'Veterinary Teaching Hospital', geometry : { lat : 37.217624, lng : -80.427927 } },
     ],
-    spatialReference: { wkid: 102100 }
+    spatialReference: { wkid: 102100 },
+    gazeteerLayerUrl: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer'
   };
 });

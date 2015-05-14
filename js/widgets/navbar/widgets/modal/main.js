@@ -13,6 +13,10 @@ define([
       this.title = query('.modal-title', this.domNode)[0];
       this.body = query('.modal-body', this.domNode)[0];
       this.nodeList = query(this.domNode);
+      this.modal = this.nodeList.modal({
+        show: false,
+        backdrop: false 
+      });
     },
     
     setTitle: function (value) {
@@ -24,10 +28,11 @@ define([
     },
 
     open: function () {
-      this.nodeList.modal({
-        show: true,
-        backdrop: false
-      });
+      this.modal.modal('show');
+    },
+
+    close: function () {
+      this.modal.modal('hide');
     }
   });
 });

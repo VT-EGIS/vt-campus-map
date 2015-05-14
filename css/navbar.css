@@ -43,7 +43,7 @@ a:hover .mapType-img {
 
 /* Modal Styles */
 .modal-short.modal-body, .short {
-  height: 300px;
+  max-height: 300px;
   overflow-y: scroll;
 }
 /* End Modal Styles */
