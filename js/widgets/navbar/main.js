@@ -51,6 +51,11 @@ define([
         searchByNameWidget.open();
         this.hideDropdownNavbar();
       }));
+
+      query('#searchField', this.domNode).on('click', function (evt) {
+        evt.preventDefault();
+        searchByNameWidget.open();
+      });
     },
 
     addLayersModal: function () {

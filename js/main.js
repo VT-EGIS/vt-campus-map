@@ -22,6 +22,7 @@ define([
       this.addEventListeners();
       for(var layerType in config.layerInfos) { this.addLayers(layerType); }
       this.map.addLayers(this.layers);
+      annyang.start();
     },
 
     addEventListeners: function () {

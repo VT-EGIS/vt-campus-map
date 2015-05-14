@@ -40,16 +40,6 @@ define([
       on(this.inputBox, 'changed', lang.hitch(this, 'processPlace'));
     },
 
-    open: function () {
-      this.inherited(arguments);
-      annyang.resume();
-    },
-
-    close: function () {
-      this.inherited(arguments);
-      annyang.pause();
-    },
-
     getNames : function () {
       var query, queryTask;
 
