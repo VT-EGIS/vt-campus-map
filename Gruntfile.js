@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         expr: true,
         nonbsp: true,
         dojo: true,
-        predef: ['module', 'alert', 'esri', '__gaTracker']
+        predef: ['module', 'alert', 'esri', '__gaTracker', 'annyang']
       },
       all: [
         'Gruntfile.js',

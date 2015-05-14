@@ -29,6 +29,7 @@ define([
       this.getNames()
         .then(lang.hitch(this, 'initializeTypeahead'))
         .then(lang.hitch(this, 'attachEventHandlers'));
+      this.addVoiceCommands();
     },
 
     attachEventHandlers: function () {
@@ -37,6 +38,16 @@ define([
       }));
 
       on(this.inputBox, 'changed', lang.hitch(this, 'processPlace'));
+    },
+
+    open: function () {
+      this.inherited(arguments);
+      annyang.resume();
+    },
+
+    close: function () {
+      this.inherited(arguments);
+      annyang.pause();
     },
 
     getNames : function () {
@@ -58,7 +69,8 @@ define([
     },
 
     initializeTypeahead : function (names) {
-      dojoQuery(this.inputBox).typeahead({
+      this.names = names;
+      this.typeahead = dojoQuery(this.inputBox).typeahead({
         source : names,
         items  : 100,
         minLength : 1,
@@ -69,7 +81,7 @@ define([
       });
     },
 
-    processPlace : function (evt) {
+    processPlace : function () {
       var searchText, query, queryTask;
 
       searchText = this.inputBox.value;
@@ -87,6 +99,19 @@ define([
       queryTask.execute(query).then(lang.hitch(this, function (fset) {
         this.placeIdentifier.identify(fset.features[0].geometry);
       }));
+    },
+
+    addVoiceCommands: function () {
+      var commands;
+
+      commands = {
+        'show me *place': lang.hitch(this, function (place) {
+          this.inputBox.value = place;
+          this.typeahead.data('typeahead')[0].lookup();
+        }) 
+      },
+
+      annyang.addCommands(commands);
     }
   }); 
 });
