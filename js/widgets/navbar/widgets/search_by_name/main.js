@@ -95,7 +95,7 @@ define([
       var commands;
 
       commands = {
-        '*place': lang.hitch(this, function (place) {
+        'show *place': lang.hitch(this, function (place) {
           this.inputBox.value = place;
           this.typeahead.data('typeahead')[0].lookup();
         }) 
