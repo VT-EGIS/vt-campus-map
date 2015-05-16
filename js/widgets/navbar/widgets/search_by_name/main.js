@@ -51,17 +51,17 @@ define([
 
       queryTask = new QueryTask(config.gazeteerLayerUrl + '/0');
 
-      return queryTask.execute(query).then(function(fset) {
-        return array.map(fset.features, function(feature) {
+      return queryTask.execute(query).then(lang.hitch(this, function(fset) {
+        this.features = fset.features;
+        this.names = array.map(fset.features, function(feature) {
           return feature.attributes.NAME;
         });
-      });
+      }));
     },
 
-    initializeTypeahead : function (names) {
-      this.names = names;
+    initializeTypeahead : function () {
       this.typeahead = dojoQuery(this.inputBox).typeahead({
-        source : names,
+        source : this.names,
         items  : 100,
         minLength : 1,
         item: '<a href="#" class="list-group-item" data-dismiss="modal"></a>',
@@ -72,23 +72,21 @@ define([
     },
 
     processPlace : function () {
-      var searchText, query, queryTask;
+      var searchText, features;
 
       searchText = this.inputBox.value;
       this.inputBox.value = '';
 
+      features = array.filter(this.features, function (feature) {
+        return (feature.attributes.NAME === searchText);
+      });
+
+      array.forEach(features, lang.hitch(this, function (feature) {
+        this.placeIdentifier.identify(feature.geometry);
+      }));
+
       this.emit('placeSelected', searchText);
       this.close();
-
-      query = new EsriQuery();
-      query.returnGeometry = true;
-      query.where = "Name = '" + searchText + "'";
-      query.outSpatialReference = config.spatialReference;
-
-      queryTask = new QueryTask(config.gazeteerLayerUrl + '/0');
-      queryTask.execute(query).then(lang.hitch(this, function (fset) {
-        this.placeIdentifier.identify(fset.features[0].geometry);
-      }));
     },
 
     addVoiceCommands: function () {
