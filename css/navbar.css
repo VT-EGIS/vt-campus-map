@@ -70,3 +70,15 @@ a:hover .mapType-img {
   text-decoration: none;
 }
 /* End Layers Styles */
+
+/* Search by Category */
+#search-by-category-modal .modal-body {
+  max-height: 300px;
+  overflow-y: hidden;
+}
+
+#category-items-list {
+  overflow-y: scroll;
+  max-height: 250px;
+}
+/* End Search by Category */

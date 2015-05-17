@@ -19,7 +19,7 @@ define([
   return declare([Modal, Evented], {
     postCreate : function () {
       this.inherited(arguments);
-      this.setTitle('Search');
+      this.setTitle('Search by Name');
       this.setBody(template);
       this.placeIdentifier = new PlaceIdentifier({
         map: this.map,
@@ -49,7 +49,7 @@ define([
       query.where = '1=1';
       query.outSpatialReference = {'wkid': 102100};
 
-      queryTask = new QueryTask(config.gazeteerLayerUrl + '/0');
+      queryTask = new QueryTask(config.gazeteerLayerUrl);
 
       return queryTask.execute(query).then(lang.hitch(this, function(fset) {
         this.features = fset.features;

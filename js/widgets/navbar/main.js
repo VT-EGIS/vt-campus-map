@@ -14,12 +14,13 @@ define([
   'dojo/_base/lang',
   'dojo/dom-style',
   './widgets/search_by_name/main',
+  './widgets/search_by_category/main',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
-             LayersModal, query, lang, domStyle, SearchByNameWidget) {
+             LayersModal, query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -34,6 +35,7 @@ define([
       this.addFeaturedPlaceWidget();
       this.addLayersModal();
       this.addSearchByNameWidget();
+      this.addSearchByCategoryWidget();
     },
 
     addSearchByNameWidget: function () {
@@ -56,6 +58,24 @@ define([
         evt.preventDefault();
         searchByNameWidget.open();
       });
+    },
+
+    addSearchByCategoryWidget: function () {
+      var searchByCategoryWidget;
+
+      searchByCategoryWidget = new SearchByCategoryWidget({
+        map: this.map,
+        markerSymbol: this.markerSymbol,
+        id: 'search-by-category-modal'
+      });
+
+      this.domNode.appendChild(searchByCategoryWidget.domNode);
+
+      query('#search-by-category', this.domNode).on('click', lang.hitch(this, function (evt) {
+        evt.preventDefault();
+        searchByCategoryWidget.open();
+        this.hideDropdownNavbar();
+      }));
     },
 
     addLayersModal: function () {

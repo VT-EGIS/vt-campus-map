@@ -120,6 +120,6 @@ define([], function () {
       { name : 'Veterinary Teaching Hospital', geometry : { lat : 37.217624, lng : -80.427927 } },
     ],
     spatialReference: { wkid: 102100 },
-    gazeteerLayerUrl: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer'
+    gazeteerLayerUrl: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer/0'
   };
 });
