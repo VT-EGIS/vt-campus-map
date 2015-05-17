@@ -31,46 +31,93 @@ define([], function () {
         { level : 20, resolution : 0.14929107082380833, scale : 564.248588 }
       ]
     },
-    layerInfos: {
-      featureLayers: [
-        {
-          url:'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
-          id: 'VT Campus Grid'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer',
-          id: 'Roads'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
-          id: 'Parking Lots'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer',
-          id: 'Parking Spaces'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer',
-          id: 'Emergency Phones'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
-          id: 'Buildings'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer',
-          id: 'Athletic Parking Lots'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
-          id: 'Alternate Transportation'
-        },
-        {
-          url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer',
-          id: 'Accessibility'
-        }
-      ]
-    },
+    layerInfos: [
+      {
+        url:'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
+        id: 'VT Campus Grid',
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer',
+        id: 'Roads'
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
+        id: 'Parking Lots',
+        identifyLayers: [
+          {
+            infoTemplateTitle: '${LOT_NAME} Parking Lot',
+            infoTemplateFields: [
+              { title: 'Lot Name', value: '${LOT_NAME}' },
+              { title: 'Lot Number', value: '${LOT_NUMBER}' }
+            ]
+          }
+        ],
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer',
+        id: 'Parking Spaces'
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer',
+        id: 'Emergency Phones'
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
+        id: 'Buildings',
+        identifyLayers: [
+          {
+            infoTemplateTitle: '${NAME}',
+            infoTemplateFields: [
+              { title: 'Building Use', value: '${BLDG_USE}' },
+              { title: 'Building Name', value: '${NAME}' },
+              { title: 'Building Number', value: '${BLDG_NUM}' },
+              { title: 'Address', value: '${STNUM} ${STPREDIR} ${STNAME} ${STSUFFIX} ${STPOSTDIR}' },
+              { title: 'URL', value: '<a href="${URL}" target = "_blank" > ${URL} </a>' }
+            ]
+          }
+        ]
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer',
+        id: 'Athletic Parking Lots'
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
+        id: 'Alternate Transportation',
+        identifyLayers: [
+          {
+            layerName: 'Bus Stops',
+            infoTemplateTitle: 'Bus Stop ${ID}',
+            infoTemplateFields: [
+              { title: 'ID', value: '${ID}' },
+              { title: 'Bench', value: '${BENCH}' },
+              { title: 'Bench Count', value: '${BENCHCOUNT}' },
+              { title: 'Have Shelter', value: '${SHELTER}' },
+              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
+            ]
+          },
+          {
+            layerName: 'Bike Racks',
+            infoTemplateTitle: 'Bike Rack ${ID}',
+            infoTemplateFields: [
+              { title: 'ID', value: '${ID}' },
+              { title: 'Condition', value: '${CONDITION}' },
+              { title: 'Covered', value: '${COVERED}' },
+              { title: 'Max Park Size', value: '${MAXPARK}' },
+              { title: 'Number of Bikes', value: '${NUMBIKES}' },
+              { title: 'Rack Style', value: '${RACKSTYLE}' },
+              { title: 'Number of Racks', value: '${RACKS}' },
+              { title: 'Rack Type', value: '${RACKTYPE}' },
+              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
+            ]
+          }
+        ]
+      },
+      {
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer',
+        id: 'Accessibility'
+      }
+    ],
     mapTypes: [
       {
         label : 'Schematic',

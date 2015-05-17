@@ -3,31 +3,18 @@ define([
   'esri/tasks/query',
   'esri/tasks/QueryTask',
   'vtCampusMap/config',
-  'esri/symbols/SimpleLineSymbol',
-  'esri/symbols/SimpleFillSymbol',
   'dojo/_base/lang',
-  'esri/Color',
   'esri/graphic',
   'esri/geometry/webMercatorUtils',
   'esri/geometry/Point',
   'dojo/_base/array'
-], function (declare, EsriQuery, QueryTask, config, SimpleLineSymbol,
-             SimpleFillSymbol, lang, Color, Graphic, webMercatorUtils, Point,
-             array) {
+], function (declare, EsriQuery, QueryTask, config, lang, Graphic,
+             webMercatorUtils, Point, array) {
   return declare([], {
     zoomLevel: 18,
 
-    lineColor: new Color([255, 0, 0]),
-
-    fillColor: new Color([255, 255, 0, 0.5]),
-
     constructor: function (opts) {
       lang.mixin(this, opts);
-
-      this.borderSymbol = new SimpleFillSymbol(
-          SimpleFillSymbol.STYLE_SOLID,
-          new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, this.lineColor, 5),
-          this.fillColor);
     },
 
     getBuildingInfo: function (geometry) {
@@ -44,6 +31,7 @@ define([
 
     addBorderAndMarker: function (featureSet, geometry) {
       this.map.graphics.clear();
+      this.map.infoWindow.hide();
 
       array.forEach(featureSet.features, lang.hitch(this, function (feature) {
         feature.setSymbol(this.borderSymbol);

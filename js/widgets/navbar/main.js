@@ -43,7 +43,8 @@ define([
 
       searchByNameWidget = new SearchByNameWidget({
         map: this.map,
-        markerSymbol: this.markerSymbol
+        markerSymbol: this.markerSymbol,
+        borderSymbol: this.borderSymbol
       });
 
       this.domNode.appendChild(searchByNameWidget.domNode);
@@ -66,6 +67,7 @@ define([
       searchByCategoryWidget = new SearchByCategoryWidget({
         map: this.map,
         markerSymbol: this.markerSymbol,
+        borderSymbol: this.borderSymbol,
         id: 'search-by-category-modal'
       });
 
@@ -99,7 +101,8 @@ define([
         featuredPlacesModal = new FeaturedPlacesModal({
           featuredPlaces: config.featuredPlaces,
           map: this.map,
-          markerSymbol: this.markerSymbol
+          markerSymbol: this.markerSymbol,
+          borderSymbol: this.borderSymbol
         }); 
         this.domNode.appendChild(featuredPlacesModal.domNode);
 
@@ -112,7 +115,8 @@ define([
         new FeaturedPlaceWidget({
           featuredPlaces: config.featuredPlaces,
           map: this.map,
-          markerSymbol: this.markerSymbol
+          markerSymbol: this.markerSymbol,
+          borderSymbol: this.borderSymbol
         }, 'featured-places');
       }
     },

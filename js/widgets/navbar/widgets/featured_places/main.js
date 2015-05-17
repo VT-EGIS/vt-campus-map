@@ -21,7 +21,8 @@ define([
     postCreate : function () {
       this.placeIdentifier = new PlaceIdentifier({
         map: this.map,
-        markerSymbol: this.markerSymbol
+        markerSymbol: this.markerSymbol,
+        borderSymbol: this.borderSymbol
       });
       this.createFeaturedPlaceList();
       this.attachEventHandlers();

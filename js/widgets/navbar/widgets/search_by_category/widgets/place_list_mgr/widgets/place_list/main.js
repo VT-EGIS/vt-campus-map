@@ -25,7 +25,8 @@ define([
       }));
       this.placeIdentifier = new PlaceIdentifier({
         map: this.map,
-        markerSymbol: this.markerSymbol
+        markerSymbol: this.markerSymbol,
+        borderSymbol: this.borderSymbol
       });
       this.hide();
       this.attachEventHandlers();

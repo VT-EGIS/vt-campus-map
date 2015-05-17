@@ -23,7 +23,8 @@ define([
       this.setBody(template);
       this.placeIdentifier = new PlaceIdentifier({
         map: this.map,
-        markerSymbol: this.markerSymbol
+        markerSymbol: this.markerSymbol,
+        borderSymbol: this.borderSymbol
       });
       this.inputBox = query('input', this.domNode)[0];
       this.getNames()
