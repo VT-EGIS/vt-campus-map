@@ -7,24 +7,50 @@ module.exports = function(grunt) {
         eqeqeq: true,
         eqnull: true,
         browser: true,
-        camelcase: true,
         newcap: false,
         undef: true,
         unused: true,
-        latedef: true,
         expr: true,
+        latedef: true,
         nonbsp: true,
         dojo: true,
         predef: ['module', 'alert', 'esri', '__gaTracker', 'annyang']
       },
       all: [
         'Gruntfile.js',
-        'js/**/*.js'
+        'js/**/*.js',
+        'tests/**/*.js'
       ]
+    },
+    esri_slurp: {
+      options: {
+        version: '3.11',
+      },
+      dev: {
+        dest: 'lib/esri'
+      }
+    },
+    intern: {
+      prod: {
+        options: {
+          runType: 'runner',
+          config: 'tests/intern',
+          reporters: ['console', 'lcov']
+        }
+      }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('intern');
+  
+  //Esri slurp causes annoying error
+  //to: wrong arguments
+  //
+  //toEnd: wrong arguments
+  //
+  grunt.loadNpmTasks('grunt-esri-slurp');
 
-  grunt.registerTask('test', ['jshint']);
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('slurp', ['esri_slurp:dev']);
+  grunt.registerTask('test', ['intern']);
+  grunt.registerTask('default', ['jshint', 'test']);
 };

@@ -4,3 +4,7 @@
 
 # node modules
 node_modules
+
+# test related stuff
+lcov.info
+lib
