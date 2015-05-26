@@ -9,9 +9,11 @@ define([
   'dojo/_base/array',
   'dojo/Evented',
   'vtCampusMap/google_analytics_manager',
+  'esri/geometry/webMercatorUtils',
+  'esri/geometry/Point',
   'dojo/NodeList-manipulate'
 ], function (declare, _WidgetBase, domConstruct, featuredPlaceItemTemplate, query,
-             on, lang, array, Evented, ga) {
+             on, lang, array, Evented, ga, webMercatorUtils, Point) {
   return declare([_WidgetBase, Evented], {
     constructor : function () {
       this.featuredPlaceElements = [];
@@ -37,10 +39,12 @@ define([
 
     createFeaturedPlaceList : function () {
       this.featuredPlaceElements = array.map(this.featuredPlaces, lang.hitch(this, function (featuredPlace) {
-        var featuredPlaceElement, templateString;
+        var featuredPlaceElement, templateString, point;
 
         templateString = lang.replace(featuredPlaceItemTemplate, { name : featuredPlace.name });
         featuredPlaceElement = domConstruct.place(domConstruct.toDom(templateString), this.domNode);
+        point = new Point(featuredPlace.geometry.lng, featuredPlace.geometry.lat);
+        featuredPlace.geometry = webMercatorUtils.geographicToWebMercator(point);
         this.featuredPlaceDict[featuredPlace.name] = featuredPlace;
 
         return featuredPlaceElement;

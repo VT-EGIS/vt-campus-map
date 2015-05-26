@@ -5,13 +5,10 @@ define([
   'vtCampusMap/config',
   'dojo/_base/lang',
   'esri/graphic',
-  'esri/geometry/webMercatorUtils',
-  'esri/geometry/Point',
   'dojo/_base/array'
-], function (declare, EsriQuery, QueryTask, config, lang, Graphic,
-             webMercatorUtils, Point, array) {
+], function (declare, EsriQuery, QueryTask, config, lang, Graphic, array) {
   return declare([], {
-    zoomLevel: 18,
+    _zoomLevel: 18,
 
     constructor: function (opts) {
       lang.mixin(this, opts);
@@ -40,14 +37,18 @@ define([
       this.map.graphics.add(new Graphic(geometry, this.markerSymbol));
     },
 
+    /*
+     * Identifies a location on the map by drawing a border around it if it's
+     * a building, positioning a marker image on it, centering the map and
+     * zooming into that location 
+     *
+     * geometry: esri/geometry/Geometry in web mercator units
+     */
     identify: function (geometry) {
-      if(!geometry.type || geometry.type !== 'point') {
-        geometry = webMercatorUtils.geographicToWebMercator(new Point(geometry.lng, geometry.lat));
-      }
       this._getBuildingInfo(geometry).then(lang.hitch(this, function (featureSet) {
         this._addBorderAndMarker(featureSet, geometry);
       }));
-      this.map.centerAndZoom(geometry, this.zoomLevel);
+      this.map.centerAndZoom(geometry, this._zoomLevel);
     },
   });
 });
