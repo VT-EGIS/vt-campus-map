@@ -35,7 +35,8 @@ define([
       this.placeIdentifier = new PlaceIdentifier({
         map: this.map,
         markerSymbol: this.markerSymbol,
-        borderSymbol: this.borderSymbol
+        borderSymbol: this.borderSymbol,
+        layerId: 'Buildings'
       }); 
       this.addMapTypeGallery();
       this.addLegendModal();

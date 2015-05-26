@@ -10,6 +10,13 @@ define([
   return declare([], {
     _zoomLevel: 18,
 
+    /*
+     * options
+     *  map: esri/map
+     *  layerId: string, ID of the layer where the place/building can be searched for 
+     *  borderSymbol: esri/symbols/SimpleFillSymbol
+     *  markerSymbol: esri/symbols/PictureMarkerSymbol
+     */
     constructor: function (opts) {
       lang.mixin(this, opts);
     },
@@ -22,7 +29,7 @@ define([
       query.geometry = geometry;
       query.returnGeometry = true;
 
-      task = new QueryTask(this.map.getLayer('Buildings').url + '/0');
+      task = new QueryTask(this.map.getLayer(this.layerId).url + '/0');
       return task.execute(query);
     },
 
