@@ -5,9 +5,10 @@ define([
   'esri/tasks/IdentifyTask',
   'esri/tasks/IdentifyParameters',
   'esri/InfoTemplate',
-  'dojo/promise/all'
+  'dojo/promise/all',
+  'vtCampusMap/google_analytics_manager'
 ], function (declare, lang, array, IdentifyTask, IdentifyParameters,
-             InfoTemplate, all) {
+             InfoTemplate, all, ga) {
   return declare([], {
     constructor: function (opts) {
       lang.mixin(this, opts);
@@ -84,10 +85,16 @@ define([
 
       array.forEach(results, lang.hitch(this, function (identifyResults) {
         array.forEach(identifyResults, lang.hitch(this, function (result) {
-          var infoTemplate;
+          var infoTemplate, feature;
 
+          feature = result.feature;
           infoTemplate = this.identifiableLayers[result.layerName].infoTemplate;
-          features.push(result.feature.setInfoTemplate(infoTemplate));
+
+          feature.setInfoTemplate(infoTemplate);
+
+          features.push(feature);
+
+          ga.report(ga.actions.SEL_MAP_PLACE, feature.attributes.NAME);
         }));
       }));
 

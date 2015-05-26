@@ -9,11 +9,10 @@ define([
   'dojo/dom-class',
   'dojo/text!./template.html',
   'esri/layers/ArcGISDynamicMapServiceLayer',
-  'dojo/Evented'
-], function (declare, _WidgetBase, domConstruct, query, on, lang, array,
-             domClass, mapTypeGalleryItemTemplate,
-             ArcGISDynamicMapServiceLayer, Evented) {
-  return declare([_WidgetBase, Evented], {
+  'vtCampusMap/google_analytics_manager'
+], function (declare, _WidgetBase, domConstruct, query, on, lang, array, domClass,
+             mapTypeGalleryItemTemplate, ArcGISDynamicMapServiceLayer, ga) {
+  return declare([_WidgetBase], {
 
     constructor : function () {
       this.currentMapTypeIndex = -1;
@@ -51,6 +50,9 @@ define([
         evt.preventDefault();
         id = evt.target.id;
         index = id[id.length - 1];
+        if(this.currentMapTypeIndex !== index) {
+          ga.report(ga.actions.SEL_MAP_TYPE, this.mapTypes[index].label);
+        }
         this.selectMapType(index);
       }));
     },
@@ -73,8 +75,6 @@ define([
 
       mapType = this.mapTypes[index];
       array.forEach(mapType.layers, function (layer) { layer.show(); });
-
-      this.emit('mapTypeChanged', mapType.label);
     },
 
     createGallery : function () {

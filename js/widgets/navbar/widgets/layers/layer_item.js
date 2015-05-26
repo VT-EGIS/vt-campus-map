@@ -6,14 +6,15 @@ define([
   'dojo/_base/lang',
   'dojo/query',
   'dojo/dom-class',
-  'dojo/_base/array'
+  'dojo/_base/array',
+  'vtCampusMap/google_analytics_manager'
 ], function (declare, _WidgetBase, _TemplatedMixin, _Container, lang, 
-             dojoQuery, domClass, array) {
+             dojoQuery, domClass, array, ga) {
   return declare([_WidgetBase, _TemplatedMixin, _Container], {
     templateString: '<li><a href="#">${formattedName}</a></li>', 
 
     postMixInProperties: function () {
-      this.formattedName = this.name;
+      this.formattedName = this.name; //TODO capitalize this
     },
 
     postCreate: function () {
@@ -69,7 +70,13 @@ define([
     },
 
     toggle: function (updateLayerVisibility) {
-      this.active ? this.deactivate(updateLayerVisibility) : this.activate(updateLayerVisibility);
+      if(this.active) {
+        this.deactivate(updateLayerVisibility);
+        ga.report(ga.actions.TURNOFF_LAYER, this.name);
+      } else {
+        this.activate(updateLayerVisibility);
+        ga.report(ga.actions.TURNON_LAYER, this.name);
+      }
     },
 
     updateVisibility: function () {

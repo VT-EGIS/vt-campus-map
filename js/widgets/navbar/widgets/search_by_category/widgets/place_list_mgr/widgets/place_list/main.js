@@ -9,9 +9,10 @@ define([
   './widgets/place',
   'dijit/registry',
   'vtCampusMap/widgets/place_identifier/main',
-  'dojo/query'
+  'dojo/query',
+  'vtCampusMap/google_analytics_manager'
 ], function (declare, _WidgetBase, _TemplatedMixin, _Container, domStyle,
-             array, lang, Place, registry, PlaceIdentifier, query) {
+             array, lang, Place, registry, PlaceIdentifier, query, ga) {
   return declare([_WidgetBase, _TemplatedMixin, _Container], {
     templateString: '<div class="list-group"></div>',
 
@@ -38,6 +39,7 @@ define([
 
         place = registry.byId(query(evt.target).attr('widgetid')[0]);
         this.placeIdentifier.identify(place.geometry);
+        ga.report(ga.actions.SEL_SEARCHCAT_PLACE, place.name);
       }));
     },
 

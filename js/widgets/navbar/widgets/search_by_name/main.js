@@ -7,16 +7,16 @@ define([
   'dojo/_base/array',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
-  'dojo/Evented',
   '../modal/main',
   'vtCampusMap/widgets/place_identifier/main',
   'dojo/query',
   'vtCampusMap/config',
+  'vtCampusMap/google_analytics_manager',
   'dojoBootstrap/Typeahead'
 ], function (declare, dojoQuery, on, template, lang, array, EsriQuery,
-             QueryTask, Evented, Modal, PlaceIdentifier, query, config) {
+             QueryTask, Modal, PlaceIdentifier, query, config, ga) {
 
-  return declare([Modal, Evented], {
+  return declare([Modal], {
     postCreate : function () {
       this.inherited(arguments);
       this.setTitle('Search by Name');
@@ -86,7 +86,7 @@ define([
         this.placeIdentifier.identify(feature.geometry);
       }));
 
-      this.emit('placeSelected', searchText);
+      ga.report(ga.actions.SEL_SEARCHNAME_PLACE, searchText);
       this.close();
     },
 

@@ -9,9 +9,10 @@ define([
   'dojo/_base/array',
   'dojo/Evented',
   'vtCampusMap/widgets/place_identifier/main',
-  'dojo/NodeList-manipulate'
+  'dojo/NodeList-manipulate',
+  'vtCampusMap/google_analytics_manager'
 ], function (declare, _WidgetBase, domConstruct, featuredPlaceItemTemplate, query,
-             on, lang, array, Evented, PlaceIdentifier) {
+             on, lang, array, Evented, PlaceIdentifier, ga) {
   return declare([_WidgetBase, Evented], {
     constructor : function () {
       this.featuredPlaceElements = [];
@@ -35,7 +36,7 @@ define([
         evt.preventDefault();
         name = query(evt.target).text().trim();
         featuredPlace = this.featuredPlaceDict[name];
-        this.emit('featuredPlaceSelected', name);
+        ga.report(ga.actions.SEL_FEATURED_PLACE, name);
         this.placeIdentifier.identify(featuredPlace.geometry);
       })); 
     },

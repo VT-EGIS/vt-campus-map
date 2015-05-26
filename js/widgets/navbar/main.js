@@ -15,12 +15,14 @@ define([
   'dojo/dom-style',
   './widgets/search_by_name/main',
   './widgets/search_by_category/main',
+  'vtCampusMap/google_analytics_manager',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
-             LayersModal, query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget) {
+             LayersModal, query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
+             ga) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -122,7 +124,9 @@ define([
     },
 
     addMapTypeGallery: function () {
-      new MapTypeGallery({
+      var gallery;
+
+      gallery = new MapTypeGallery({
         mapTypes: config.mapTypes,
         map: this.map,
         defaultMapTypeIndex: 0,
@@ -145,6 +149,7 @@ define([
         evt.preventDefault();
         legendModal.open();
         this.hideDropdownNavbar();
+        ga.report(ga.actions.SEL_LEGEND);
       }));
     },
 
@@ -158,6 +163,7 @@ define([
         evt.preventDefault();
         aboutModal.open();
         this.hideDropdownNavbar();
+        ga.report(ga.actions.SEL_ABOUT);
       }));
     },
 

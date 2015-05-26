@@ -6,13 +6,13 @@ define([
   'dojo/_base/lang',
   'dojo/_base/array',
   'dojo/text!./template.html',
-  'dojo/Evented',
   'vtCampusMap/config',
-  './widgets/place_list_mgr/main'
+  './widgets/place_list_mgr/main',
+  'vtCampusMap/google_analytics_manager'
 ], function (declare, Modal, dojoQuery, dojoRequest, lang, array, template,
-             Evented, config, PlaceListMgr) {
+             config, PlaceListMgr, ga) {
   
-  return declare([Modal, Evented], {
+  return declare([Modal], {
 
     postCreate : function () {
       this.inherited(arguments);
@@ -34,7 +34,7 @@ define([
 
     attachEventHandlers : function () {
       dojoQuery(this.selectElem).on('change', lang.hitch(this, function(evt) {
-        this.emit('categorySelected', evt.target.value);
+        ga.report(ga.actions.SEL_SEARCHCAT_CAT, evt.target.value.trim());
         this.placeListMgr.showPlaceListFor(evt.target.value.trim());
       }));
     },
