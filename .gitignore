@@ -7,4 +7,5 @@ node_modules
 
 # test related stuff
 lcov.info
+html-report
 lib

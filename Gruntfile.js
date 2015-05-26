@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         options: {
           runType: 'runner',
           config: 'tests/intern',
-          reporters: ['console', 'lcov']
+          reporters: ['pretty', 'console', 'lcovhtml']
         }
       }
     }
