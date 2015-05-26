@@ -34,8 +34,7 @@ define([
 
         placeList = new PlaceList({
           features: fset.features,
-          map: this.map,
-          markerSymbol: this.markerSymbol
+          placeIdentifier: this.placeIdentifier
         });
         this.categoryLists[categoryName] = placeList;
         this.addChild(placeList);

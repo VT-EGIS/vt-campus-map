@@ -17,7 +17,7 @@ define([
       lang.mixin(this, opts);
     },
 
-    getBuildingInfo: function (geometry) {
+    _getBuildingInfo: function (geometry) {
       var query, task;
 
       query = new EsriQuery();
@@ -29,7 +29,7 @@ define([
       return task.execute(query);
     },
 
-    addBorderAndMarker: function (featureSet, geometry) {
+    _addBorderAndMarker: function (featureSet, geometry) {
       this.map.graphics.clear();
       this.map.infoWindow.hide();
 
@@ -44,8 +44,8 @@ define([
       if(!geometry.type || geometry.type !== 'point') {
         geometry = webMercatorUtils.geographicToWebMercator(new Point(geometry.lng, geometry.lat));
       }
-      this.getBuildingInfo(geometry).then(lang.hitch(this, function (featureSet) {
-        this.addBorderAndMarker(featureSet, geometry);
+      this._getBuildingInfo(geometry).then(lang.hitch(this, function (featureSet) {
+        this._addBorderAndMarker(featureSet, geometry);
       }));
       this.map.centerAndZoom(geometry, this.zoomLevel);
     },

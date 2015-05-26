@@ -8,24 +8,18 @@ define([
   'esri/tasks/query',
   'esri/tasks/QueryTask',
   '../modal/main',
-  'vtCampusMap/widgets/place_identifier/main',
   'dojo/query',
   'vtCampusMap/config',
   'vtCampusMap/google_analytics_manager',
   'dojoBootstrap/Typeahead'
 ], function (declare, dojoQuery, on, template, lang, array, EsriQuery,
-             QueryTask, Modal, PlaceIdentifier, query, config, ga) {
+             QueryTask, Modal, query, config, ga) {
 
   return declare([Modal], {
     postCreate : function () {
       this.inherited(arguments);
       this.setTitle('Search by Name');
       this.setBody(template);
-      this.placeIdentifier = new PlaceIdentifier({
-        map: this.map,
-        markerSymbol: this.markerSymbol,
-        borderSymbol: this.borderSymbol
-      });
       this.inputBox = query('input', this.domNode)[0];
       this.getNames()
         .then(lang.hitch(this, 'initializeTypeahead'))

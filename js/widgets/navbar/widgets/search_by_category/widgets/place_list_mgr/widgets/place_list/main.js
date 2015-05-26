@@ -8,11 +8,10 @@ define([
   'dojo/_base/lang',
   './widgets/place',
   'dijit/registry',
-  'vtCampusMap/widgets/place_identifier/main',
   'dojo/query',
   'vtCampusMap/google_analytics_manager'
 ], function (declare, _WidgetBase, _TemplatedMixin, _Container, domStyle,
-             array, lang, Place, registry, PlaceIdentifier, query, ga) {
+             array, lang, Place, registry, query, ga) {
   return declare([_WidgetBase, _TemplatedMixin, _Container], {
     templateString: '<div class="list-group"></div>',
 
@@ -24,11 +23,6 @@ define([
           geometry: feature.geometry
         }));
       }));
-      this.placeIdentifier = new PlaceIdentifier({
-        map: this.map,
-        markerSymbol: this.markerSymbol,
-        borderSymbol: this.borderSymbol
-      });
       this.hide();
       this.attachEventHandlers();
     },

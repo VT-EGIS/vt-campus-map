@@ -27,8 +27,7 @@ define([
     createPlaceListMgr: function (categoryNames) {
       this.placeListMgr = new PlaceListMgr({
         categoryNames: categoryNames,
-        map: this.map,
-        markerSymbol: this.markerSymbol
+        placeIdentifier: this.placeIdentifier
       }, dojoQuery('#category-items-list', this.domNode)[0]);
     },
 

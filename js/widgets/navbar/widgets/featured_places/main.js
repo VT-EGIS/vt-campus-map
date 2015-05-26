@@ -8,11 +8,10 @@ define([
   'dojo/_base/lang',
   'dojo/_base/array',
   'dojo/Evented',
-  'vtCampusMap/widgets/place_identifier/main',
-  'dojo/NodeList-manipulate',
-  'vtCampusMap/google_analytics_manager'
+  'vtCampusMap/google_analytics_manager',
+  'dojo/NodeList-manipulate'
 ], function (declare, _WidgetBase, domConstruct, featuredPlaceItemTemplate, query,
-             on, lang, array, Evented, PlaceIdentifier, ga) {
+             on, lang, array, Evented, ga) {
   return declare([_WidgetBase, Evented], {
     constructor : function () {
       this.featuredPlaceElements = [];
@@ -20,11 +19,6 @@ define([
     },
 
     postCreate : function () {
-      this.placeIdentifier = new PlaceIdentifier({
-        map: this.map,
-        markerSymbol: this.markerSymbol,
-        borderSymbol: this.borderSymbol
-      });
       this.createFeaturedPlaceList();
       this.attachEventHandlers();
     },

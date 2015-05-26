@@ -15,8 +15,7 @@ define([
     createFeaturedPlaces: function () {
       this.dijit = new FeaturedPlaces({
         featuredPlaces: this.featuredPlaces,
-        map: this.map,
-        markerSymbol: this.markerSymbol
+        placeIdentifier: this.placeIdentifier
       }, this.body);
 
       this.dijit.on('featuredPlaceSelected', lang.hitch(this, function (name) {

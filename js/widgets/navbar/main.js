@@ -16,13 +16,14 @@ define([
   './widgets/search_by_name/main',
   './widgets/search_by_category/main',
   'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/widgets/place_identifier/main',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
              LayersModal, query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
-             ga) {
+             ga, PlaceIdentifier) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -31,6 +32,11 @@ define([
     },
 
     addWidgets: function () {
+      this.placeIdentifier = new PlaceIdentifier({
+        map: this.map,
+        markerSymbol: this.markerSymbol,
+        borderSymbol: this.borderSymbol
+      }); 
       this.addMapTypeGallery();
       this.addLegendModal();
       this.addAboutModal();
@@ -43,11 +49,7 @@ define([
     addSearchByNameWidget: function () {
       var searchByNameWidget;
 
-      searchByNameWidget = new SearchByNameWidget({
-        map: this.map,
-        markerSymbol: this.markerSymbol,
-        borderSymbol: this.borderSymbol
-      });
+      searchByNameWidget = new SearchByNameWidget({ placeIdentifier: this.placeIdentifier });
 
       this.domNode.appendChild(searchByNameWidget.domNode);
 
@@ -68,8 +70,7 @@ define([
 
       searchByCategoryWidget = new SearchByCategoryWidget({
         map: this.map,
-        markerSymbol: this.markerSymbol,
-        borderSymbol: this.borderSymbol,
+        placeIdentifier: this.placeIdentifier,
         id: 'search-by-category-modal'
       });
 
@@ -102,9 +103,7 @@ define([
       if(this.isMobile()) {
         featuredPlacesModal = new FeaturedPlacesModal({
           featuredPlaces: config.featuredPlaces,
-          map: this.map,
-          markerSymbol: this.markerSymbol,
-          borderSymbol: this.borderSymbol
+          placeIdentifier: this.placeIdentifier
         }); 
         this.domNode.appendChild(featuredPlacesModal.domNode);
 
@@ -116,9 +115,7 @@ define([
       } else {
         new FeaturedPlaceWidget({
           featuredPlaces: config.featuredPlaces,
-          map: this.map,
-          markerSymbol: this.markerSymbol,
-          borderSymbol: this.borderSymbol
+          placeIdentifier: this.placeIdentifier
         }, 'featured-places');
       }
     },
