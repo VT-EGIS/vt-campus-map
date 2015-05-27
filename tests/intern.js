@@ -63,7 +63,8 @@ define({
 
 	// Non-functional test suite(s) to run in each browser
 	suites: [
-    'tests/exceptions_test.js'
+    'tests/exceptions_test.js',
+    'tests/widgets/place_identifier/main_test'
   ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
