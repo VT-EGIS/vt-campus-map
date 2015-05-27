@@ -31,11 +31,18 @@ module.exports = function(grunt) {
       }
     },
     intern: {
+      local: {
+        options: {
+          runType: 'runner',
+          config: 'tests/intern_local',
+          reporters: ['console', 'lcovhtml'],
+        }
+      },
       prod: {
         options: {
           runType: 'runner',
-          config: 'tests/intern',
-          reporters: ['console', 'lcovhtml']
+          config: 'tests/intern_prod',
+          reporters: ['console'],
         }
       }
     }
@@ -51,6 +58,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-esri-slurp');
 
   grunt.registerTask('slurp', ['esri_slurp:dev']);
-  grunt.registerTask('test', ['intern']);
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('test', ['jshint', 'intern:local']);
+  grunt.registerTask('default', ['jshint', 'intern:prod']);
 };
