@@ -53,17 +53,20 @@ define({
 		// Packages that should be registered with the loader in each testing environment
 		packages: [
       { name: 'vtCampusMap', location: 'js' },
+      { name: 'bootstrapMap', location: 'vendor/bootstrap-map/js'},
       { name: 'dojoBootstrap', location: 'vendor/Dojo-Bootstrap'},
       { name: 'dojo', location: 'lib/dojo'},
       { name: 'dojox', location: 'lib/dojox'},
       { name: 'dijit', location: 'lib/dijit'},
-      { name: 'esri', location: 'lib/esri'}
+      { name: 'esri', location: 'lib/esri'},
+      { name: 'vendor', location: 'vendor'}
     ]
 	},
 
 	// Non-functional test suite(s) to run in each browser
 	suites: [
     'tests/exceptions_test.js',
+    'tests/main_test.js',
     'tests/widgets/place_identifier/main_test',
     'tests/google_analytics_manager_test.js'
   ],
@@ -72,5 +75,5 @@ define({
 	functionalSuites: [ /* 'myPackage/tests/functional' */ ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:tests|node_modules|lib)\//
+	excludeInstrumentation: /^(?:tests|node_modules|lib|vendor)\//
 });

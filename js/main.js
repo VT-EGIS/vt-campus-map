@@ -77,7 +77,7 @@ define([
     },
 
     addNavbar: function () {
-      new NavBar({
+      this._navbar = new NavBar({
         map: this.map,
         layerInfos: config.layerInfos,
         layers: this.layers,
@@ -87,29 +87,32 @@ define([
     },
 
     addScalebar: function () {
-      new Scalebar({ map: this.map, scalebarUnit: 'dual' });
+      this._scalebar = new Scalebar({ map: this.map, scalebarUnit: 'dual' });
     },
 
     addHomeButton: function () {
-      var homeButton;
-
-      homeButton = new HomeButton({ map: this.map, id: 'home-button' });
-      this.map.root.appendChild(homeButton.domNode);
-
-      homeButton.startup();
+      this._homeButton = new HomeButton({ map: this.map, id: 'home-button' });
+      this.map.root.appendChild(this._homeButton.domNode);
+      this._homeButton.startup();
     },
 
     addLocateButton: function () {
-      var locateButton;
-
-      locateButton = new LocateButton({
+      this._locateButton = new LocateButton({
         map: this.map,
         scale: 7000,
         symbol: this.markerSymbol,
         id: 'locate-button'
       });
 
-      this.map.root.appendChild(locateButton.domNode);
+      this.map.root.appendChild(this._locateButton.domNode);
     },
+
+    destroy: function () {
+      this._homeButton && this._homeButton.destroy();
+      this._locateButton && this._locateButton.destroy();
+      this._scalebar && this._scalebar.destroy();
+      this._navbar && this._navbar.destroy();
+      this.map.destroy();
+    }
   });
 });
