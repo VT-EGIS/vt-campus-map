@@ -67,8 +67,9 @@ define({
 	suites: [
     'tests/exceptions_test.js',
     'tests/main_test.js',
+    'tests/google_analytics_manager_test.js',
     'tests/widgets/place_identifier/main_test',
-    'tests/google_analytics_manager_test.js'
+    'tests/widgets/map_info_manager/main_test'
   ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
@@ -77,3 +78,5 @@ define({
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
 	excludeInstrumentation: /^(?:tests|node_modules|lib|vendor)\//
 });
+//Flag specific to vt campus map
+window.TESTING = true;

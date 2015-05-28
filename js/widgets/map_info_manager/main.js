@@ -29,7 +29,7 @@ define([
 
     setIdentifyParams: function () {
       this.defaultIdentifyParams = new IdentifyParameters();
-      this.defaultIdentifyParams.tolerance = 5;
+      this.defaultIdentifyParams.tolerance = 10;
       this.defaultIdentifyParams.returnGeometry = true;
       this.defaultIdentifyParams.layerOption = IdentifyParameters.LAYER_OPTION_VISIBLE;
       this.defaultIdentifyParams.mapExtent = this.map.extent;
@@ -94,12 +94,29 @@ define([
 
           features.push(feature);
 
-          ga.report(ga.actions.SEL_MAP_PLACE, feature.attributes.NAME);
+          this.sendGaInfo(feature.attributes, result.layerName);
         }));
       }));
 
       this.map.infoWindow.setFeatures(features);
       this.map.infoWindow.show(mapPoint);
+    },
+
+    sendGaInfo: function (attributes, layerName) {
+      var value;
+
+      if(attributes.NAME) {
+        value = attributes.NAME;
+      } else if(attributes.LOT_NAME){
+        value = attributes.LOT_NAME + ' Parking Lot';
+      } else if(attributes.ID) {
+        if(layerName === 'Bus Stops') {
+          value = 'Bus Stop ' + attributes.ID;
+        } else {
+          value = 'Bike Rack ' + attributes.ID;
+        }
+      }
+      ga.report(ga.actions.SEL_MAP_PLACE, value);
     },
 
     getInfoOnClickedPoint: function (evt) {

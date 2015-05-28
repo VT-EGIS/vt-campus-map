@@ -58,6 +58,14 @@ define([
     addEventListeners: function () {
       this.map.on('layers-add-result', lang.hitch(this.map, 'enableScrollWheelZoom')); 
       this.map.on('layers-add-result', lang.hitch(this, 'addWidgets')); 
+      this.map.on('layers-add-result', lang.hitch(this, 'resizeMap')); 
+    },
+
+    //Hack to make map clicks accurate. Seems to be a bug in the bootstrapMap package.
+    resizeMap: function () {
+      if (!window.TESTING) {
+        this.map._smartResizer._setMapDiv(true);
+      }
     },
 
     addLayers: function () {

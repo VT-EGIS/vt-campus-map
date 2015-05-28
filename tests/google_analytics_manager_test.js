@@ -2,7 +2,7 @@ define([
   'intern!object',
   'intern/chai!assert',
   'vtCampusMap/google_analytics_manager',
-    'intern/order!node_modules/sinon/lib/sinon'
+  'intern/order!node_modules/sinon/lib/sinon'
 ], function (registerSuite, assert, ga, sinon) {
   var spy;
 
