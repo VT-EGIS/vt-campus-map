@@ -27,6 +27,10 @@ define([
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
+    postMixInProperties: function () {
+      this.imageUrl = require.toUrl('./imgs/VT-Logo.png');
+    },
+
     postCreate: function () {
       this.addWidgets();
     },
