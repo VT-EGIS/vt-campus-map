@@ -1,10 +1,11 @@
+//TODO remove this widget and create a modal directly in the navbar
+// Create the featured places thing and put it in the body there
 define([
   'dojo/_base/declare',
   '../modal/main',
   '../featured_places/main',
-  'dojo/Evented',
-  'dojo/_base/lang'
-], function (declare, Modal, FeaturedPlaces, Evented, lang) {
+  'dojo/Evented'
+], function (declare, Modal, FeaturedPlaces, Evented) {
   return declare([Modal, Evented], {
     postCreate: function () {
       this.inherited(arguments);
@@ -17,10 +18,6 @@ define([
         featuredPlaces: this.featuredPlaces,
         placeIdentifier: this.placeIdentifier
       }, this.body);
-
-      this.dijit.on('featuredPlaceSelected', lang.hitch(this, function (name) {
-        this.emit('featuredPlaceSelected', name);
-      }));
     },
   });
 });

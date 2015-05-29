@@ -69,9 +69,10 @@ define({
     'tests/main_test.js',
     'tests/google_analytics_manager_test.js',
     'tests/widgets/place_identifier/main_test',
-    'tests/widgets/map_info_manager/main_test',
     'tests/widgets/navbar/main_test',
-    'tests/widgets/navbar/widgets/about/main_test'
+    'tests/widgets/navbar/widgets/about/main_test',
+    'tests/widgets/navbar/widgets/featured_places/main_test',
+    'tests/widgets/map_info_manager/main_test'
   ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed

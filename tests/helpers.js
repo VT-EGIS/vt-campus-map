@@ -8,5 +8,12 @@ define([], function () {
       body.appendChild(div);
       return div;
     },
+    clickEvent: function () {
+      var evt;
+
+      evt = document.createEvent('MouseEvent');
+      evt.initMouseEvent('click', true, false);
+      return evt;
+    }
   };
 });

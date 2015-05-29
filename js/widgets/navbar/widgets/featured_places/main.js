@@ -2,7 +2,6 @@ define([
   'dojo/_base/declare',
   'dijit/_WidgetBase',
   'dojo/dom-construct',
-  'dojo/text!./template.html',
   'dojo/query',
   'dojo/on',
   'dojo/_base/lang',
@@ -12,9 +11,11 @@ define([
   'esri/geometry/webMercatorUtils',
   'esri/geometry/Point',
   'dojo/NodeList-manipulate'
-], function (declare, _WidgetBase, domConstruct, featuredPlaceItemTemplate, query,
+], function (declare, _WidgetBase, domConstruct, query,
              on, lang, array, Evented, ga, webMercatorUtils, Point) {
   return declare([_WidgetBase, Evented], {
+    featuredPlaceItemTemplate: '<li><a href="#" data-dismiss="modal">{name}</a></li>',
+
     constructor : function () {
       this.featuredPlaceElements = [];
       this.featuredPlaceDict = {};
@@ -41,7 +42,7 @@ define([
       this.featuredPlaceElements = array.map(this.featuredPlaces, lang.hitch(this, function (featuredPlace) {
         var featuredPlaceElement, templateString, point;
 
-        templateString = lang.replace(featuredPlaceItemTemplate, { name : featuredPlace.name });
+        templateString = lang.replace(this.featuredPlaceItemTemplate, { name : featuredPlace.name });
         featuredPlaceElement = domConstruct.place(domConstruct.toDom(templateString), this.domNode);
         point = new Point(featuredPlace.geometry.lng, featuredPlace.geometry.lat);
         featuredPlace.geometry = webMercatorUtils.geographicToWebMercator(point);
@@ -49,6 +50,6 @@ define([
 
         return featuredPlaceElement;
       }));
-    } 
+    }
   });
 });
