@@ -1,13 +1,13 @@
 //XXX If any of the setTimeout tests fail try after increasing the timeout
 define([
-    'intern!object',
-    'intern/chai!assert',
-    './helpers',
-    'vtCampusMap',
-    'esri/map',
-    'dojo/query',
-    'dijit/registry',
-    'intern/order!vendor/annyang.min'
+  'intern!object',
+  'intern/chai!assert',
+  './helpers',
+  'vtCampusMap',
+  'esri/map',
+  'dojo/query',
+  'dijit/registry',
+  'intern/order!vendor/annyang.min'
 ], function (registerSuite, assert, helpers, VTCampusMap, Map, dojoQuery, registry) {
   var mapFixture, vtCampusMap, navbarFixture;
 

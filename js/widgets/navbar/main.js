@@ -52,73 +52,69 @@ define([
     },
 
     addSearchByNameWidget: function () {
-      var searchByNameWidget;
+      this.searchByNameWidget = new SearchByNameWidget({
+        placeIdentifier: this.placeIdentifier,
+        id: 'search-by-name-modal'
+      });
 
-      searchByNameWidget = new SearchByNameWidget({ placeIdentifier: this.placeIdentifier });
-
-      this.domNode.appendChild(searchByNameWidget.domNode);
+      this.domNode.appendChild(this.searchByNameWidget.domNode);
 
       query('#search-by-name', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        searchByNameWidget.open();
+        this.searchByNameWidget.open();
         this.hideDropdownNavbar();
       }));
 
-      query('#searchField', this.domNode).on('click', function (evt) {
+      query('#searchField', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        searchByNameWidget.open();
-      });
+        this.searchByNameWidget.open();
+      }));
     },
 
     addSearchByCategoryWidget: function () {
-      var searchByCategoryWidget;
-
-      searchByCategoryWidget = new SearchByCategoryWidget({
+      this.searchByCategoryWidget = new SearchByCategoryWidget({
         map: this.map,
         placeIdentifier: this.placeIdentifier,
         id: 'search-by-category-modal'
       });
 
-      this.domNode.appendChild(searchByCategoryWidget.domNode);
+      this.domNode.appendChild(this.searchByCategoryWidget.domNode);
 
       query('#search-by-category', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        searchByCategoryWidget.open();
+        this.searchByCategoryWidget.open();
         this.hideDropdownNavbar();
       }));
     },
 
     addLayersModal: function () {
-      var layersModal;
+      this.layersModal = new LayersModal({ layers: this.layers, id: 'layers-modal' });
 
-      layersModal = new LayersModal({ layers: this.layers, id: 'layers-modal' });
-
-      this.domNode.appendChild(layersModal.domNode);
+      this.domNode.appendChild(this.layersModal.domNode);
 
       query('#layers-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        layersModal.open();
+        this.layersModal.open();
         this.hideDropdownNavbar();
       }));
     },
 
     addFeaturedPlaceWidget: function () {
-      var featuredPlacesModal;
-
       if(this.isMobile()) {
-        featuredPlacesModal = new FeaturedPlacesModal({
+        this.featuredPlacesModal = new FeaturedPlacesModal({
           featuredPlaces: config.featuredPlaces,
-          placeIdentifier: this.placeIdentifier
+          placeIdentifier: this.placeIdentifier,
+          id: 'featured-places-modal'
         }); 
-        this.domNode.appendChild(featuredPlacesModal.domNode);
+        this.domNode.appendChild(this.featuredPlacesModal.domNode);
 
         query('#featured-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
           evt.preventDefault();
-          featuredPlacesModal.open();
+          this.featuredPlacesModal.open();
           this.hideDropdownNavbar();
         }));
       } else {
-        new FeaturedPlaceWidget({
+        this.featuredPlaces = new FeaturedPlaceWidget({
           featuredPlaces: config.featuredPlaces,
           placeIdentifier: this.placeIdentifier
         }, 'featured-places');
@@ -126,9 +122,7 @@ define([
     },
 
     addMapTypeGallery: function () {
-      var gallery;
-
-      gallery = new MapTypeGallery({
+      this.gallery = new MapTypeGallery({
         mapTypes: config.mapTypes,
         map: this.map,
         defaultMapTypeIndex: 0,
@@ -136,34 +130,31 @@ define([
     },
 
     addLegendModal: function () {
-      var legendModal;
-
-      legendModal = new LegendModal({
+      this.legendModal = new LegendModal({
         map: this.map,
-        layerInfos: this.layerInfos
+        layerInfos: this.layerInfos,
+        id: 'legend-modal'
       });
 
-      this.domNode.appendChild(legendModal.domNode);
+      this.domNode.appendChild(this.legendModal.domNode);
 
-      legendModal.startup();
+      this.legendModal.startup();
 
       query('#legend-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        legendModal.open();
+        this.legendModal.open();
         this.hideDropdownNavbar();
         ga.report(ga.actions.SEL_LEGEND);
       }));
     },
 
     addAboutModal: function () {
-      var aboutModal;
-
-      aboutModal = new AboutModal();
-      this.domNode.appendChild(aboutModal.domNode);
+      this.aboutModal = new AboutModal({ id: 'about-modal' });
+      this.domNode.appendChild(this.aboutModal.domNode);
 
       query('#about-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
-        aboutModal.open();
+        this.aboutModal.open();
         this.hideDropdownNavbar();
         ga.report(ga.actions.SEL_ABOUT);
       }));
@@ -180,6 +171,18 @@ define([
 
       mobileMenuButton = query('.navbar-header button')[0];
       return domStyle.get(mobileMenuButton, 'display') !== 'none';
+    },
+
+    destroy: function () {
+      this.gallery && this.gallery.destroy();
+      this.legendModal && this.legendModal.destroy();
+      this.aboutModal && this.aboutModal.destroy();
+      this.featuredPlaces && this.featuredPlaces.destroy();
+      this.featuredPlacesModal && this.featuredPlacesModal.destroy();
+      this.layersModal && this.layersModal.destroy();
+      this.searchByCategoryWidget && this.searchByCategoryWidget.destroy();
+      this.searchByNameWidget && this.searchByNameWidget.destroy();
+      this.inherited(arguments);
     }
   });
 });
