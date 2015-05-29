@@ -25,6 +25,14 @@ define([
   registerSuite({
     name: 'Map Info Manager',
 
+    setup: function () {
+      window.TESTING = true;
+    },
+
+    teardown: function () {
+      delete window.TESTING;
+    },
+
     beforeEach: function () {
       mapFixture = helpers.createFixture('vt-campus-map');
       navbarFixture = helpers.createFixture('vt-navbar');
@@ -105,6 +113,26 @@ define([
           }, 500);
         },
 
+        'parking lot': function () {
+          var spy, dfd;
+
+          spy = sinon.spy(ga, 'report');
+          dfd = this.async(4000);
+
+          setTimeout(function () {
+            vtCampusMap.map.emit('click', { mapPoint: parkingLotPoint });
+            setTimeout(dfd.callback(function () {
+              var args;
+              assert.isTrue(spy.calledOnce);
+              args = spy.getCall(0).args;
+              assert.lengthOf(args, 2);
+              assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
+              assert.strictEqual(args[1], 'Duck Pond Rd. Parking Lot');
+              spy.restore();
+            }), 2500);
+          }, 500);
+        },
+
         'bike rack': function () {
           var spy, dfd;
 
@@ -127,29 +155,7 @@ define([
             });
             vtCampusMap.map.centerAndZoom(bikeRackPoint, 19);
           }, 200);
-
         },
-
-        'parking lot': function () {
-          var spy, dfd;
-
-          spy = sinon.spy(ga, 'report');
-          dfd = this.async(4000);
-
-          setTimeout(function () {
-            vtCampusMap.map.emit('click', { mapPoint: parkingLotPoint });
-            setTimeout(dfd.callback(function () {
-              var args;
-              assert.isTrue(spy.calledOnce);
-              args = spy.getCall(0).args;
-              assert.lengthOf(args, 2);
-              assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
-              assert.strictEqual(args[1], 'Duck Pond Rd. Parking Lot');
-              spy.restore();
-            }), 2500);
-          }, 500);
-        },
-
       }
     }
   });

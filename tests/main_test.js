@@ -14,6 +14,14 @@ define([
   registerSuite({
     name: 'VTCampusMap',
 
+    setup: function () {
+      window.TESTING = true;
+    },
+
+    teardown: function () {
+      delete window.TESTING;
+    },
+
     beforeEach: function () {
       mapFixture = helpers.createFixture('vt-campus-map');
       navbarFixture = helpers.createFixture('vt-navbar');
