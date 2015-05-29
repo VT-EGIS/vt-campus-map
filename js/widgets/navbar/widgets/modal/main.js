@@ -4,7 +4,8 @@ define([
   'dijit/_TemplatedMixin',
   'dojo/text!./template.html',
   'dojo/html',
-  'dojo/query'
+  'dojo/query',
+  'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, html, query) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
