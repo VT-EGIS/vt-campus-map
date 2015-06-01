@@ -20,10 +20,11 @@ define([
     },
 
     postMixInProperties: function () {
-      this.loadMapTypes();
+      this.defaultMapTypeIndex = this.defaultMapTypeIndex || 0;
     },
 
     postCreate: function() {
+      this.loadMapTypes();
       this.createGallery();
       this.attachEventHandlers();
       this.selectMapType(this.defaultMapTypeIndex);
@@ -31,10 +32,12 @@ define([
 
     loadMapTypes : function () {
       array.forEach(this.mapTypes, lang.hitch(this, function(mapType) {
-        mapType.layers = array.map(mapType.layerUrls, lang.hitch(this, function (url) {
+        mapType.layers = array.map(mapType.layerUrls, lang.hitch(this, function (url, index) {
           var serviceLayer;
 
-          serviceLayer = new ArcGISDynamicMapServiceLayer(url);
+          serviceLayer = new ArcGISDynamicMapServiceLayer(url, {
+            id: mapType.label + index
+          });
           serviceLayer.hide();
           this.map.addLayer(serviceLayer, 1);
 
@@ -49,7 +52,7 @@ define([
 
         evt.preventDefault();
         id = evt.target.id;
-        index = id[id.length - 1];
+        index = parseInt(id[id.length - 1]);
         if(this.currentMapTypeIndex !== index) {
           ga.report(ga.actions.SEL_MAP_TYPE, this.mapTypes[index].label);
         }

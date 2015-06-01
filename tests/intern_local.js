@@ -72,6 +72,7 @@ define({
     'tests/widgets/place_identifier/main_test',
     'tests/widgets/navbar/main_test',
     'tests/widgets/navbar/widgets/about/main_test',
+    'tests/widgets/navbar/widgets/map_type_gallery/main_test',
     'tests/widgets/navbar/widgets/featured_places/main_test',
     'tests/widgets/map_info_manager/main_test'
   ],
