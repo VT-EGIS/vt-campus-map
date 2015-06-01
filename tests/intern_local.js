@@ -59,7 +59,8 @@ define({
       { name: 'dojox', location: 'lib/dojox'},
       { name: 'dijit', location: 'lib/dijit'},
       { name: 'esri', location: 'lib/esri'},
-      { name: 'vendor', location: 'vendor'}
+      { name: 'vendor', location: 'vendor'},
+      { name: 'layersWidget', location: 'vendor/vtegis_layers'},
     ]
 	},
 

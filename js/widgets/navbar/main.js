@@ -8,7 +8,7 @@ define([
   './widgets/legend/main',
   './widgets/about/main',
   './widgets/featured_places/main',
-  './widgets/layers/widget',
+  'layersWidget',
   'dojo/query',
   'dojo/_base/lang',
   'dojo/dom-style',
