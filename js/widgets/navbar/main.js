@@ -5,7 +5,6 @@ define([
   'dojo/text!./template.html',
   './widgets/map_type_gallery/main',
   'vtCampusMap/config',
-  './widgets/legend/main',
   './widgets/about/main',
   './widgets/featured_places/main',
   'layersWidget',
@@ -17,13 +16,14 @@ define([
   'vtCampusMap/google_analytics_manager',
   'vtCampusMap/widgets/place_identifier/main',
   './widgets/modal/main',
+  'esri/dijit/Legend',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
-             config, LegendModal, AboutModal, FeaturedPlaceWidget, Layers,
+             config, AboutModal, FeaturedPlaceWidget, Layers,
              query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
-             ga, PlaceIdentifier, Modal) {
+             ga, PlaceIdentifier, Modal, Legend) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -136,15 +136,17 @@ define([
     },
 
     addLegendModal: function () {
-      this.legendModal = new LegendModal({
-        map: this.map,
-        layerInfos: this.layerInfos,
-        id: 'legend-modal'
-      });
+      this.legendModal = new Modal({ id: 'legend-modal' });
+      this.legendModal.setTitle('Legend');
 
       this.domNode.appendChild(this.legendModal.domNode);
 
-      this.legendModal.startup();
+      this.legend = new Legend({
+        map: this.map,
+        layerInfos: this.layerInfos
+      }, this.legendModal.getBody());
+
+      this.legend.startup();
 
       query('#legend-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
@@ -182,6 +184,7 @@ define([
     destroy: function () {
       this.gallery && this.gallery.destroy();
       this.legendModal && this.legendModal.destroy();
+      this.legend && this.legend.destroy();
       this.aboutModal && this.aboutModal.destroy();
       this.featuredPlaces && this.featuredPlaces.destroy();
       this.featuredPlacesModal && this.featuredPlacesModal.destroy();
