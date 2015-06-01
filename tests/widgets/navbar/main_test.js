@@ -10,9 +10,11 @@ define([
   'dojo/dom-class',
   'intern/order!node_modules/sinon/lib/sinon',
   'vtCampusMap/google_analytics_manager',
-  'intern/order!vendor/annyang.min'
+  'dojo/query',
+  'intern/order!vendor/annyang.min',
+  'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, helpers, VTNavbar, bootstrapMap,
-             config, registry, dom, domClass, sinon, ga) {
+             config, registry, dom, domClass, sinon, ga, dojoQuery) {
   var vtNavbar, navbarFixture, mapFixture, isMobileStub;
 
   registerSuite({
@@ -54,11 +56,20 @@ define([
       },
 
       'legend modal': function () {
-        assert.isDefined(dom.byId('legend-modal'));
+        var modal;
+
+        modal = dom.byId('legend-modal');
+        assert.isDefined(modal);
+        assert.strictEqual(dojoQuery('.modal-title', modal).text(), 'Legend');
+        assert.lengthOf(dojoQuery('#legend', modal), 1);
       },
 
       'about modal': function () {
-        assert.isDefined(dom.byId('about-modal'));
+        var modal;
+
+        modal = dom.byId('about-modal');
+        assert.isDefined(modal);
+        assert.strictEqual(dojoQuery('.modal-title', modal).text(), 'About');
       },
 
       'featured place widget': {
@@ -66,6 +77,8 @@ define([
           assert.isDefined(registry.byId('featured-places'));
         },
         'mobile': function () {
+          var modal;
+
           isMobileStub.restore();
           isMobileStub = sinon.stub(VTNavbar.prototype, 'isMobile', function () {
             return true;
@@ -80,7 +93,9 @@ define([
             markerSymbol: {},
             borderSymbol: {}
           }, 'vt-navbar');
-          assert.isDefined(dom.byId('featured-places-modal'));
+          modal = dom.byId('featured-places-modal');
+          assert.isDefined(modal);
+          assert.strictEqual(dojoQuery('.modal-title', modal).text(), 'Featured Places');
         }
       },
 

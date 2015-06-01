@@ -143,7 +143,8 @@ define([
 
       this.legend = new Legend({
         map: this.map,
-        layerInfos: this.layerInfos
+        layerInfos: this.layerInfos,
+        id: 'legend'
       }, this.legendModal.getBody());
 
       this.legend.startup();
