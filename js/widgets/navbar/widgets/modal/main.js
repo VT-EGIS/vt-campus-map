@@ -28,6 +28,10 @@ define([
       html.set(this.body, value);
     },
 
+    getBody: function () {
+      return this.body;
+    },
+
     open: function () {
       this.modal.modal('show');
     },

@@ -8,8 +8,7 @@ define([
   './widgets/legend/main',
   './widgets/about/main',
   './widgets/featured_places/main',
-  './widgets/featured_places_modal/main',
-  './widgets/layers_modal/main',
+  './widgets/layers/widget',
   'dojo/query',
   'dojo/_base/lang',
   'dojo/dom-style',
@@ -17,13 +16,14 @@ define([
   './widgets/search_by_category/main',
   'vtCampusMap/google_analytics_manager',
   'vtCampusMap/widgets/place_identifier/main',
+  './widgets/modal/main',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
-             config, LegendModal, AboutModal, FeaturedPlaceWidget, FeaturedPlacesModal,
-             LayersModal, query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
-             ga, PlaceIdentifier) {
+             config, LegendModal, AboutModal, FeaturedPlaceWidget, Layers,
+             query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
+             ga, PlaceIdentifier, Modal) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -88,9 +88,15 @@ define([
     },
 
     addLayersModal: function () {
-      this.layersModal = new LayersModal({ layers: this.layers, id: 'layers-modal' });
+      this.layersModal = new Modal({ id: 'layers-modal' });
+      this.layersModal.setTitle('Layers');
 
       this.domNode.appendChild(this.layersModal.domNode);
+
+      this.layersWidget = new Layers({
+        layers: this.layers,
+        'class': 'layers-list'
+      }, this.layersModal.getBody());
 
       query('#layers-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
         evt.preventDefault();
@@ -100,25 +106,25 @@ define([
     },
 
     addFeaturedPlaceWidget: function () {
+      var elt;
+
+      elt = 'featured-places';
       if(this.isMobile()) {
-        this.featuredPlacesModal = new FeaturedPlacesModal({
-          featuredPlaces: config.featuredPlaces,
-          placeIdentifier: this.placeIdentifier,
-          id: 'featured-places-modal'
-        }); 
+        this.featuredPlacesModal = new Modal({ id: 'featured-places-modal' }); 
+        this.featuredPlacesModal.setTitle('Featured Places');
         this.domNode.appendChild(this.featuredPlacesModal.domNode);
+        elt = this.featuredPlacesModal.getBody();
 
         query('#featured-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
           evt.preventDefault();
           this.featuredPlacesModal.open();
           this.hideDropdownNavbar();
         }));
-      } else {
-        this.featuredPlaces = new FeaturedPlaceWidget({
-          featuredPlaces: config.featuredPlaces,
-          placeIdentifier: this.placeIdentifier
-        }, 'featured-places');
       }
+      this.featuredPlaces = new FeaturedPlaceWidget({
+        featuredPlaces: config.featuredPlaces,
+        placeIdentifier: this.placeIdentifier
+      }, elt);
     },
 
     addMapTypeGallery: function () {
