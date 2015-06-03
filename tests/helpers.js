@@ -14,6 +14,13 @@ define([], function () {
       evt = document.createEvent('MouseEvent');
       evt.initMouseEvent('click', true, false);
       return evt;
+    },
+    changeEvent: function () {
+      var evt;
+
+      evt = document.createEvent('HTMLEvents');
+      evt.initEvent('change', true, false);
+      return evt;
     }
   };
 });

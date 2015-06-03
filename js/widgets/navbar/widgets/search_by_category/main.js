@@ -6,11 +6,10 @@ define([
   'dojo/_base/lang',
   'dojo/_base/array',
   'dojo/text!./template.html',
-  'vtCampusMap/config',
   './widgets/place_list_mgr/main',
   'vtCampusMap/google_analytics_manager'
 ], function (declare, Modal, dojoQuery, dojoRequest, lang, array, template,
-             config, PlaceListMgr, ga) {
+             PlaceListMgr, ga) {
   
   return declare([Modal], {
 
@@ -27,7 +26,9 @@ define([
     createPlaceListMgr: function (categoryNames) {
       this.placeListMgr = new PlaceListMgr({
         categoryNames: categoryNames,
-        placeIdentifier: this.placeIdentifier
+        placeIdentifier: this.placeIdentifier,
+        spatialReference: this.spatialReference,
+        gazeteerLayerUrl: this.gazeteerLayerUrl
       }, dojoQuery('#category-items-list', this.domNode)[0]);
     },
 
@@ -39,7 +40,7 @@ define([
     },
 
     loadCategories: function () {
-      return dojoRequest(config.gazeteerLayerUrl, {
+      return dojoRequest(this.gazeteerLayerUrl, {
         handleAs: 'json',
         query: {'f' : 'json'},
         headers: {'X-Requested-With': ''}

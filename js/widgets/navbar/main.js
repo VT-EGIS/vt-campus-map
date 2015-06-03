@@ -73,8 +73,9 @@ define([
 
     addSearchByCategoryWidget: function () {
       this.searchByCategoryWidget = new SearchByCategoryWidget({
-        map: this.map,
+        gazeteerLayerUrl: config.gazeteerLayerUrl,
         placeIdentifier: this.placeIdentifier,
+        spatialReference: config.spatialReference,
         id: 'search-by-category-modal'
       });
 

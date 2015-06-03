@@ -61,7 +61,12 @@ define({
       { name: 'esri', location: 'lib/esri'},
       { name: 'vendor', location: 'vendor'},
       { name: 'layersWidget', location: 'vendor/vtegis_layers'},
-    ]
+    ],
+    map : {
+      'vtCampusMap/widgets/navbar/widgets/search_by_category/main': {
+        'vtCampusMap/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main': 'tests/stubs/place_list_mgr/main'
+      }
+    }
 	},
 
 	// Non-functional test suite(s) to run in each browser
@@ -75,6 +80,8 @@ define({
     'tests/widgets/navbar/widgets/map_type_gallery/main_test',
     'tests/widgets/navbar/widgets/featured_places/main_test',
     'tests/widgets/navbar/widgets/modal/main_test',
+    'tests/widgets/navbar/widgets/search_by_category/main_test',
+    'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main_test',
     'tests/widgets/map_info_manager/main_test'
   ],
 

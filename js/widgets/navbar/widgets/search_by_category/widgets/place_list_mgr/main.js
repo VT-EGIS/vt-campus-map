@@ -6,10 +6,9 @@ define([
   'dojo/_base/lang',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
-  'vtCampusMap/config',
   './widgets/place_list/main'
 ], function (declare, _WidgetBase, _Container, array, lang, EsriQuery,
-             QueryTask, config, PlaceList) {
+             QueryTask, PlaceList) {
   return declare([_WidgetBase, _Container], {
     postCreate: function () {
       array.forEach(this.categoryNames, lang.hitch(this, 'loadPlaces'));
@@ -25,9 +24,9 @@ define([
       query.outFields = ['Name', 'OBJECTID_12'];
       query.where = "Category = '" + categoryName + "'";
       query.orderByFields = ['Name ASC'];
-      query.outSpatialReference = config.spatialReference;
+      query.outSpatialReference = this.spatialReference;
 
-      queryTask = new QueryTask(config.gazeteerLayerUrl);
+      queryTask = new QueryTask(this.gazeteerLayerUrl);
 
       queryTask.execute(query, lang.hitch(this, function(fset) {
         var placeList;
