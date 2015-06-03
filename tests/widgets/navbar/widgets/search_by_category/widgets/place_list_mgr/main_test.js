@@ -56,14 +56,11 @@ define([
       assert.strictEqual(query.where, "Category = 'Department'");
     },
 
-    'it should create a place list for each category initially hidden': function () {
+    'it should create a place list for each category': function () {
       var listGroup;
 
       listGroup = dojoQuery('.list-group', placeListMgr.domNode);
       assert.lengthOf(listGroup, 3);
-      assert.strictEqual(domStyle.get(listGroup[0], 'display'), 'none');
-      assert.strictEqual(domStyle.get(listGroup[1], 'display'), 'none');
-      assert.strictEqual(domStyle.get(listGroup[2], 'display'), 'none');
     },
 
     'showPlaceListFor': {
