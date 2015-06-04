@@ -31,17 +31,10 @@ module.exports = function(grunt) {
       }
     },
     intern: {
-      local: {
-        options: {
-          runType: 'runner',
-          config: 'tests/intern_local',
-          reporters: ['console', 'lcovhtml']
-        }
-      },
       prod: {
         options: {
           runType: 'runner',
-          config: 'tests/intern_prod',
+          config: 'tests/intern',
           reporters: ['console'],
         }
       }
