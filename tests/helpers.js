@@ -21,6 +21,13 @@ define([], function () {
       evt = document.createEvent('HTMLEvents');
       evt.initEvent('change', true, false);
       return evt;
+    },
+    keyupEvent: function () {
+      var evt;
+
+      evt = document.createEvent('KeyboardEvent');
+      evt.initEvent('keyup', true, false);
+      return evt;
     }
   };
 });

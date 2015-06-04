@@ -83,6 +83,7 @@ define({
     'tests/widgets/navbar/widgets/search_by_category/main_test',
     'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main_test',
     'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/widgets/place_list/main_test',
+    'tests/widgets/navbar/widgets/search_by_name/main_test',
     'tests/widgets/map_info_manager/main_test'
   ],
 

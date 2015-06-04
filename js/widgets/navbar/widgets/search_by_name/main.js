@@ -44,7 +44,7 @@ define([
       query.where = '1=1';
       query.outSpatialReference = {'wkid': 102100};
 
-      queryTask = new QueryTask(config.gazeteerLayerUrl);
+      queryTask = new QueryTask(this.gazeteerLayerUrl);
 
       return queryTask.execute(query).then(lang.hitch(this, function(fset) {
         this.features = fset.features;
