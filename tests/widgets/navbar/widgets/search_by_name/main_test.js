@@ -14,7 +14,7 @@ define([
   'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, SearchByName, sinon, helpers, ga, domClass,
              dojoQuery, QueryTask, EsriQuery, Deferred) {
-  var searchByName, placeIdentifier, execute_stub, fset, dfd;
+  var searchByName, placeIdentifier, execute_stub, fset;
 
   registerSuite({
     name: 'Search by name',
@@ -32,7 +32,7 @@ define([
         ]
       };
 
-      execute_stub = sinon.stub(QueryTask.prototype, 'execute', function (query) {
+      execute_stub = sinon.stub(QueryTask.prototype, 'execute', function () {
         var dfd;
 
         dfd = new Deferred();
@@ -92,13 +92,15 @@ define([
         input = dojoQuery('input', searchByName.domNode); 
         input.val('a');
         input[0].dispatchEvent(helpers.keyupEvent());
-        resultsDiv = dojoQuery('.modal-body div', searchByName.domNode);
-        dojoQuery('a', resultsDiv[0])[0].dispatchEvent(helpers.clickEvent());
+        resultsDiv = dojoQuery('.modal-body div', searchByName.domNode)[0];
+        dojoQuery('a', resultsDiv)[0].dispatchEvent(helpers.clickEvent());
         
         assert.isTrue(identify_stub.calledOnce);
         args = identify_stub.getCall(0).args;
         assert.lengthOf(args, 1);
         assert.strictEqual(args[0], fset.features[0].geometry);
+
+        identify_stub.restore();
       },
 
       'it sends info to google analytics': function () {
@@ -109,8 +111,8 @@ define([
         input = dojoQuery('input', searchByName.domNode); 
         input.val('a');
         input[0].dispatchEvent(helpers.keyupEvent());
-        resultsDiv = dojoQuery('.modal-body div', searchByName.domNode);
-        dojoQuery('a', resultsDiv[0])[0].dispatchEvent(helpers.clickEvent());
+        resultsDiv = dojoQuery('.modal-body div', searchByName.domNode)[0];
+        dojoQuery('a', resultsDiv)[0].dispatchEvent(helpers.clickEvent());
 
         assert.isTrue(ga_stub.calledOnce);
         args = ga_stub.getCall(0).args;
