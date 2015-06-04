@@ -52,7 +52,7 @@ define([
       'shows an info box with relevant results': function () {
         var dfd, popup;
 
-        dfd = this.async(4000);
+        dfd = this.async(15000);
 
         setTimeout(function () {
           popup = dojoQuery('.esriPopupMobile')[0];
@@ -61,8 +61,8 @@ define([
           setTimeout(dfd.callback(function () {
             assert.strictEqual(domStyle.get(popup, 'display'), 'block');
             assert.include(dojoQuery(popup).text(), 'Duck Pond Rd. Parking Lot');
-          }), 2500);
-        }, 500);
+          }), 13000);
+        }, 1500);
       },
 
       'sends information to google analytics': {
@@ -70,7 +70,7 @@ define([
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(4000);
+          dfd = this.async(11000);
 
           setTimeout(function () {
             vtCampusMap.map.emit('click', { mapPoint: buildingPoint });
@@ -86,15 +86,15 @@ define([
               assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
               assert.strictEqual(args[1], 'McBryde Hall');
               spy.restore();
-            }), 2500);
-          }, 500);
+            }), 9000);
+          }, 800);
         },
         
         'bus stop': function () {
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(4000);
+          dfd = this.async(11000);
 
           setTimeout(function () {
             vtCampusMap.map.on('zoom-end', function () {
@@ -107,17 +107,17 @@ define([
                 assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
                 assert.strictEqual(args[1], 'Bus Stop 1126');
                 spy.restore();
-              }), 2500);
+              }), 9000);
             });
             vtCampusMap.map.centerAndZoom(busStopPoint, 19);
-          }, 500);
+          }, 800);
         },
 
         'parking lot': function () {
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(4000);
+          dfd = this.async(11000);
 
           setTimeout(function () {
             vtCampusMap.map.emit('click', { mapPoint: parkingLotPoint });
@@ -129,15 +129,15 @@ define([
               assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
               assert.strictEqual(args[1], 'Duck Pond Rd. Parking Lot');
               spy.restore();
-            }), 2500);
-          }, 500);
+            }), 9000);
+          }, 800);
         },
 
         'bike rack': function () {
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(4000);
+          dfd = this.async(11000);
 
           setTimeout(function () {
             vtCampusMap.map.on('zoom-end', function () {
@@ -151,10 +151,10 @@ define([
                 assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
                 assert.strictEqual(args[1], 'Bike Rack 145');
                 spy.restore();
-              }), 2500);
+              }), 9000);
             });
             vtCampusMap.map.centerAndZoom(bikeRackPoint, 19);
-          }, 200);
+          }, 800);
         },
       }
     }

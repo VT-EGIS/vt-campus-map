@@ -8,15 +8,26 @@ define([
   'dojo/query',
   'tests/stubs/place_list_mgr/main',
   'vtCampusMap/google_analytics_manager',
+	'dojo/aspect',
   'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, SearchByCategory, helpers, sinon,
-             config, dojoQuery, PlaceListMgr, ga) {
+             config, dojoQuery, PlaceListMgr, ga, aspect) {
   var searchByCategory, show_stub, ga_stub;
 
   registerSuite({
     name: 'Search by Category',
 
     setup: function () {
+      // This needs to be done otherwise intern-runner hangs when doing
+      // fake xhr
+      aspect.after(sinon, 'useFakeXMLHttpRequest', function (xhr) {
+        xhr.useFilters = true;
+        xhr.addFilter(function (method, url) {
+          return url.indexOf('/__intern') === 0;
+        });
+        return xhr;
+      });
+
       window.__gaTracker = function () {};
 
       this.xhrResponseData = JSON.stringify({
