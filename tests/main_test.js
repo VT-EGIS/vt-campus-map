@@ -58,7 +58,7 @@ define([
 
       setTimeout(dfd.callback(function () {
         assert.isTrue(vtCampusMap.map.isScrollWheelZoom);
-      }), 500);
+      }), 900);
     },
 
     'has all the required widgets': {

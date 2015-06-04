@@ -54,6 +54,7 @@ define([
     addSearchByNameWidget: function () {
       this.searchByNameWidget = new SearchByNameWidget({
         placeIdentifier: this.placeIdentifier,
+        gazeteerLayerUrl: config.gazeteerLayerUrl,
         id: 'search-by-name-modal'
       });
 

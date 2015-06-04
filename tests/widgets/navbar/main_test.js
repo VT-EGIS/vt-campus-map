@@ -37,6 +37,7 @@ define([
       vtNavbar = new VTNavbar({
         map: bootstrapMap.create('vt-campus-map', config.map),
         layerInfos: config.layerInfos,
+        gazeteerLayerUrl: config.gazeteerLayerUrl,
         layers: [],
         markerSymbol: {},
         borderSymbol: {}
