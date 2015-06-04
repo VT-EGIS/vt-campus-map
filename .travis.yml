@@ -5,6 +5,7 @@ before_script:
   - npm install -g grunt-cli
   - npm install -g bower
   - bower install
+  - grunt slurp
 env:
   global:
     - secure: brhXajkFWvndb7DsZchzROfXy14KiDDjtHy6cwdJiYXTF7wE38mRJYTg1hHLxkvDR5lmiVYSAa9BMZk1PU2Rp7EUJw9NtK3qoQoV7hYurXklX/V5eFRe3s769JDwWg9TSXJmVAoxIw8Xujxf0kMFl9C9Y9QIpJwdzWdgJMMmnik=
