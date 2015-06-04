@@ -1,0 +1,9 @@
+{
+  "name": "vtgameday",
+  "version": "0.1.0",
+  "dependencies": {
+    "dijit": "#1.10.0",
+    "dojo": "#1.10.0",
+    "dojox": "#1.10.0"
+  }
+}

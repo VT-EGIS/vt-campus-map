@@ -1,0 +1,88 @@
+/* Navigation bar styles */
+#vt-logo {
+  padding: 0px 10px 10px 10px;
+}
+
+#vt-navbar .navbar {
+  margin-bottom: 0px;
+}
+
+.navbar-default .navbar-nav li a {
+  color: #D8D8BC !important;
+  background-color: #660000 !important;
+}
+
+.navbar-default .navbar-nav li a:hover, .navbar-default .navbar-nav li a:focus{
+  color: #FF6600 !important;
+  background-color: #660000 !important;
+}
+
+.navbar-header button {
+  color: #D8D8BC !important;
+}
+
+.navbar-header button:hover, .navbar-header button:focus {
+  background-color: #4C0000 !important;
+}
+/* End Navigation bar styles */
+
+/* Map Type Styles */
+.mapType-item {
+  text-align: center;
+  padding-top: 7px;
+}
+
+a:hover .mapType-img {
+  border: 1px solid blue;
+}
+
+.mapType-selected .mapType-img{
+  border: 1px solid blue;
+}
+
+.mapType-selected .mapType-caption{
+  color: #FF6600;
+}
+/* End Map Type Styles */
+
+/* Modal Styles */
+.modal-short.modal-body, .short {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+/* End Modal Styles */
+
+/* Layers Styles */
+
+#layers-modal .modal-dialog{
+  line-height: 1.7em;
+}
+
+#layers-modal ul {
+  padding-left: 20px;
+}
+
+.layers-list {
+  list-style-type: none;
+}
+
+.hidden-layer, .hidden-layer:active, .hidden-layer:visited{
+  color: #888;
+}
+
+#layers-modal a:hover {
+  text-decoration: none;
+}
+/* End Layers Styles */
+
+/* Search by Category */
+#search-by-category-modal .modal-body {
+  max-height: 300px;
+  overflow-y: hidden;
+}
+
+#category-items-list {
+  overflow-y: scroll;
+  max-height: 250px;
+}
+/* End Search by Category */

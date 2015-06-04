@@ -41,10 +41,10 @@ define([
             items: 8,
             menu: '<ul class="typeahead dropdown-menu"></ul>',
             item: '<li><a href="#"></a></li>',
-            container: document.body,
             minLength: 1,
-            elQueryString: 'li',
-            autocomplete: false
+            autocomplete: false,
+            container: document.body,
+            eltQueryStr: 'li'
         },
         constructor: function (element, options) {
             this.options = lang.mixin(lang.clone(this.defaultOptions), (options || {}));
@@ -59,14 +59,17 @@ define([
             this.menuNode = domConstruct.toDom(this.options.menu);
             this.source = this.options.source;
             this.container = this.options.container;
-            this.elQueryString = this.options.elQueryString;
+            this.eltQueryStr = this.options.eltQueryStr;
             this.shown = false;
             this.listen();
         },
         select: function () {
             var li = query('.active', this.menuNode)[0];
             this.domNode.value = this.updater(domAttr.get(li, 'data-value'));
-            on.emit(this.domNode, 'change', { bubbles:true, cancelable:true });
+            /* Need to have an event name that is different from the normal
+             * DOM event name 'change'
+             */
+            on.emit(this.domNode, 'changed', { bubbles:true, cancelable:true });
             return this.hide();
         },
         updater: function (item) {
@@ -146,7 +149,7 @@ define([
             var next = active.next();
 
             if (!next.length) {
-                next = query(this.elQueryString, this.menuNode).first();
+                next = query(this.eltQueryStr, this.menuNode).first();
             }
             next.addClass('active');
         },
@@ -156,19 +159,19 @@ define([
             var prev = active.prev();
 
             if (!prev.length) {
-                prev = query(this.elQueryString, this.menuNode).last();
+                prev = query(this.eltQueryStr, this.menuNode).last();
             }
             prev.addClass('active');
         },
         listen: function () {
-            on(this.domNode, 'blur', lang.hitch(this, this.blurHandler));
-            on(this.domNode, 'keypress', lang.hitch(this, this.keypressHandler));
-            on(this.domNode, 'keyup', lang.hitch(this, this.keyupHandler));
+            on(this.domNode, 'blur', lang.hitch(this, 'blur'));
+            on(this.domNode, 'keypress', lang.hitch(this, this.keypress));
+            on(this.domNode, 'keyup', lang.hitch(this, this.keyup));
             if(support.eventSupported(this.domNode, "keydown")) {
-                on(this.domNode, 'keydown', lang.hitch(this, this.keydownHandler));
+                on(this.domNode, 'keydown', lang.hitch(this, 'keydown'));
             }
-            on(this.menuNode, 'click', lang.hitch(this, this.clickHandler));
-            on(this.menuNode, on.selector(this.elQueryString, 'mouseover'), lang.hitch(this, this.mouseenterHandler));
+            on(this.menuNode, 'click', lang.hitch(this, 'click'));
+            on(this.menuNode, on.selector(this.eltQueryStr, 'mouseover'), lang.hitch(this, 'mouseenter'));
         },
         move: function (e) {
             if (!this.shown) { return; }
@@ -193,7 +196,7 @@ define([
 
             e.stopPropagation();
         },
-        keyupHandler: function (e) {
+        keyup: function (e) {
             var code = e.charCode || e.keyCode;
             switch(code) {
                 case 40: // down arrow
@@ -218,27 +221,29 @@ define([
                 default:
                     this.lookup();
             }
+            e.stopPropagation();
             e.preventDefault();
         },
-        keydownHandler: function (e) {
+        keydown: function (e) {
             var code = e.charCode || e.keyCode;
             this.suppressKeyPressRepeat = array.indexOf([40,38,9,13,27], code) >= 0;
             this.move(e);
         },
-        keypressHandler: function (e) {
+        keypress: function (e) {
             if (this.suppressKeyPressRepeat) { return; }
             this.move(e);
         },
-        blurHandler: function () {
+        blur: function () {
             var _this = this;
             setTimeout(function () { _this.hide(); }, 150);
         },
-        clickHandler: function (e) {
+        click: function (e) {
+            e.stopPropagation();
             e.preventDefault();
             this.select();
         },
-        mouseenterHandler: function (e) {
-            var li = query(e.target).closest(this.elQueryString);
+        mouseenter: function (e) {
+            var li = query(e.target).closest(this.eltQueryStr);
             query('.active', this.menuNode).removeClass('active');
             li.addClass('active');
         }

@@ -12,11 +12,6 @@ TODO List
   This will be under the 'help' navigation dropdown along with the 'about'
   link.
 3. Use [Intern](http://theintern.io/) as the testing framework.
-4. Finalize the architecture and deployment procedure.
-5. Make the Layers widget in-house.
-6. Update the analytics as per discussion.
-7. Add lavery hall in the buildings layer and CRC in the category list.
-8. Add roads in the gazeteer layer.
-9. Add documentation.
-10. Formulate an API.
-11. Move legend and layer widgets into navigation bar.
+4. Add lavery hall in the buildings layer and CRC in the category list.
+5. Add roads in the gazeteer layer.
+6. Add documentation.
