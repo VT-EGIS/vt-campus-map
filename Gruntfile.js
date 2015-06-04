@@ -58,6 +58,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-esri-slurp');
 
   grunt.registerTask('slurp', ['esri_slurp:dev']);
-  grunt.registerTask('test', ['jshint', 'intern:local']);
-  grunt.registerTask('default', ['jshint', 'intern:prod']);
+  grunt.registerTask('test', ['jshint', 'intern:prod']);
+  grunt.registerTask('default', ['jshint', 'test']);
 };
