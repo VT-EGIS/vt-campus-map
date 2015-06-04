@@ -22,23 +22,20 @@ define({
 	// OnDemand. Options that will be permutated are browserName, version, platform, and platformVersion; any other
 	// capabilities options specified for an environment will be copied as-is
 	environments: [
-    { browserName: 'phantomjs' }
-    /*
 		{ browserName: 'internet explorer', version: '11', platform: 'Windows 8.1' },
 		{ browserName: 'internet explorer', version: '10', platform: 'Windows 8' },
-		{ browserName: 'internet explorer', version: '9', platform: 'Windows 7' },
+		//{ browserName: 'internet explorer', version: '9', platform: 'Windows 7' },
 		{ browserName: 'firefox', version: '28', platform: [ 'OS X 10.9', 'Windows 7', 'Linux' ] },
 		{ browserName: 'chrome', version: '34', platform: [ 'OS X 10.9', 'Windows 7', 'Linux' ] },
 		{ browserName: 'safari', version: '6', platform: 'OS X 10.8' },
 		{ browserName: 'safari', version: '7', platform: 'OS X 10.9' }
-    */
 	],
 
 	// Maximum number of simultaneous integration tests that should be executed on the remote WebDriver service
 	maxConcurrency: 3,
 
 	// Name of the tunnel class to use for WebDriver tests
-	tunnel: 'NullTunnel',
+	tunnel: 'SauceLabsTunnel',
 
 	// The desired AMD loader to use when running unit tests (client.html/client.js). Omit to use the default Dojo
 	// loader
@@ -53,23 +50,43 @@ define({
 		// Packages that should be registered with the loader in each testing environment
 		packages: [
       { name: 'vtCampusMap', location: 'js' },
+      { name: 'bootstrapMap', location: 'vendor/bootstrap-map/js'},
       { name: 'dojoBootstrap', location: 'vendor/Dojo-Bootstrap'},
       { name: 'dojo', location: 'lib/dojo'},
       { name: 'dojox', location: 'lib/dojox'},
       { name: 'dijit', location: 'lib/dijit'},
-      { name: 'esri', location: 'lib/esri'}
-    ]
+      { name: 'esri', location: 'lib/esri'},
+      { name: 'vendor', location: 'vendor'},
+      { name: 'layersWidget', location: 'vendor/vtegis_layers'},
+    ],
+    map : {
+      'vtCampusMap/widgets/navbar/widgets/search_by_category/main': {
+        'vtCampusMap/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main': 'tests/stubs/place_list_mgr/main'
+      }
+    }
 	},
 
 	// Non-functional test suite(s) to run in each browser
 	suites: [
     'tests/exceptions_test.js',
-    'tests/widgets/place_identifier/main_test'
+    'tests/main_test.js',
+    'tests/google_analytics_manager_test.js',
+    'tests/widgets/place_identifier/main_test',
+    'tests/widgets/navbar/main_test',
+    'tests/widgets/navbar/widgets/about/main_test',
+    'tests/widgets/navbar/widgets/map_type_gallery/main_test',
+    'tests/widgets/navbar/widgets/featured_places/main_test',
+    'tests/widgets/navbar/widgets/modal/main_test',
+    'tests/widgets/navbar/widgets/search_by_category/main_test',
+    'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main_test',
+    'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/widgets/place_list/main_test',
+    'tests/widgets/navbar/widgets/search_by_name/main_test',
+    'tests/widgets/map_info_manager/main_test'
   ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
 	functionalSuites: [ /* 'myPackage/tests/functional' */ ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:tests|node_modules|lib)\//
+	excludeInstrumentation: /^(?:tests|node_modules|lib|vendor)\//
 });

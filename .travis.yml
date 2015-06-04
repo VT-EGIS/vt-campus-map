@@ -3,3 +3,7 @@ node_js:
   - "0.11"
 before_script:
   - npm install -g grunt-cli
+env:
+  global:
+    - secure: brhXajkFWvndb7DsZchzROfXy14KiDDjtHy6cwdJiYXTF7wE38mRJYTg1hHLxkvDR5lmiVYSAa9BMZk1PU2Rp7EUJw9NtK3qoQoV7hYurXklX/V5eFRe3s769JDwWg9TSXJmVAoxIw8Xujxf0kMFl9C9Y9QIpJwdzWdgJMMmnik=
+    - secure: TPHXsGiBBmU/rSa/a1lgWf+x2WvKeUKfbGmYva/yYn3WPAKBhIsVtFfcmD0NFj/WIlcrIeczxogE5wTxGEWXaiHiKilVLXFsvpCiP7+3S35Oel8WQYbt/71SUXLAq4iPPBZXsxJOeYpoEmUxJYxarLag2OEUr34AG1dyRxMslco=
