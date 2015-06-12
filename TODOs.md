@@ -11,7 +11,6 @@ TODO List
   the many helpful features provided by the VT Interactive Map.
   This will be under the 'help' navigation dropdown along with the 'about'
   link.
-3. Use [Intern](http://theintern.io/) as the testing framework.
-4. Add lavery hall in the buildings layer and CRC in the category list.
-5. Add roads in the gazeteer layer.
-6. Add documentation.
+3. Add lavery hall in the buildings layer and CRC in the category list.
+4. Add roads in the gazeteer layer.
+5. Add documentation.
