@@ -20,20 +20,27 @@ define([
     },
 
     processLayer: function (layer) {
-      var visited, visibilityCtrl;
+      var visited, visibilityCtrl, visibility;
 
       // A dynamic map service
       if(layer.layerInfos) {
         visited = [];
         visibilityCtrl = new DSVisibilityCtrl(layer);
+        visibility = layer.hideOnStartup === true ? false : undefined;
         array.forEach(layer.layerInfos, lang.hitch(this, function (layerInfo, index) {
-          this.traverseLayerHierarchy(layer.layerInfos, index, visited, this, visibilityCtrl);
+          this.traverseLayerHierarchy(layer.layerInfos,
+                                      index,
+                                      visited,
+                                      this,
+                                      visibilityCtrl,
+                                      visibility);
         }));
       // A feature layer
       } else {
+        if(layer.hideOnStartup) { layer.hide(); }
         this.addChild(new LayerItem({
           name: layer.id,
-          active: layer.defaultVisibility,
+          active: layer.hideOnStartup ? false : layer.defaultVisibility,
           visibilityCtrl: new FLVisibilityCtrl(layer)
         }));
       }
@@ -57,7 +64,7 @@ define([
 
       // If the group layer is visible then hide it and
       // make all of its children visible instead
-      if(isGroupLayer) {
+      if(isGroupLayer || parentVisibility === false) {
         active = false;
         visibilityCtrl.hideLayer({ layerId: layerInfo.id });
       } else if(parentVisibility === true) {
@@ -83,7 +90,13 @@ define([
         subList = new LayerList({ 'class': this['class'] });
         newListItem.addChild(subList);
 
-        visibility = parentVisibility ? true : layerInfo.defaultVisibility;
+        if(parentVisibility === true) {
+          visibility = true;
+        } else if (parentVisibility === false) {
+          visibility = false;
+        } else {
+          visibility = layerInfo.defaultVisibility;
+        }
 
         array.forEach(layerInfo.subLayerIds, function (id, index) {
           this.traverseLayerHierarchy(layerInfos, layerInfo.subLayerIds[index],
