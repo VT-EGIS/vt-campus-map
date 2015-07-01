@@ -71,6 +71,7 @@ define([
     addLayers: function () {
       this.layers = array.map(config.layerInfos, function (layerInfo) {
         layerInfo.layer = new ArcGISDynamicMapServiceLayer(layerInfo.url, layerInfo);
+        layerInfo.layer.hideOnStartup = layerInfo.hideOnStartup;
         return layerInfo.layer;
       });
       this.map.addLayers(this.layers);

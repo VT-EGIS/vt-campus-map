@@ -35,6 +35,7 @@ define([], function () {
       {
         url:'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
         id: 'VT Campus Grid',
+        hideOnStartup: true
       },
       {
         url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer',
@@ -79,7 +80,8 @@ define([], function () {
       },
       {
         url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer',
-        id: 'Athletic Parking Lots'
+        id: 'Athletic Parking Lots',
+        hideOnStartup: true,
       },
       {
         url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
