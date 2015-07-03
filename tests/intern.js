@@ -50,6 +50,7 @@ define({
 	loader: {
 		// Packages that should be registered with the loader in each testing environment
 		packages: [
+      { name: 'layersWidget', location: 'vendor/arcgis-layers-widget/src' },
       { name: 'vtCampusMap', location: 'js' },
       { name: 'bootstrapMap', location: 'vendor/bootstrap-map/js'},
       { name: 'dojoBootstrap', location: 'vendor/Dojo-Bootstrap'},
@@ -57,8 +58,7 @@ define({
       { name: 'dojox', location: 'lib/dojox'},
       { name: 'dijit', location: 'lib/dijit'},
       { name: 'esri', location: 'lib/esri'},
-      { name: 'vendor', location: 'vendor'},
-      { name: 'layersWidget', location: 'vendor/arcgis-layers-widget/src' }
+      { name: 'vendor', location: 'vendor'}
     ],
     map : {
       'vtCampusMap/widgets/navbar/widgets/search_by_category/main': {
