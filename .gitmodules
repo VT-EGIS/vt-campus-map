@@ -1,0 +1,3 @@
+[submodule "vendor/arcgis-layers-widget"]
+	path = vendor/arcgis-layers-widget
+	url = https://github.com/VT-EGIS/arcgis-layers-widget
