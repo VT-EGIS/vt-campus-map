@@ -97,7 +97,13 @@ define([
 
       this.layersWidget = new Layers({
         layers: this.layers,
-        'class': 'layers-list'
+        'class': 'layers-list',
+        onLayerOn: function (name) {
+          ga.report(ga.actions.TURNON_LAYER, name);
+        },
+        onLayerOff: function (name) {
+          ga.report(ga.actions.TURNOFF_LAYER, name);
+        },
       }, this.layersModal.getBody());
 
       query('#layers-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
