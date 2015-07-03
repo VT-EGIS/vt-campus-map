@@ -58,7 +58,7 @@ define({
       { name: 'dijit', location: 'lib/dijit'},
       { name: 'esri', location: 'lib/esri'},
       { name: 'vendor', location: 'vendor'},
-      { name: 'layersWidget', location: 'vendor/vtegis_layers'},
+      { name: 'layersWidget', location: 'vendor/arcgis-layers-widget/src' }
     ],
     map : {
       'vtCampusMap/widgets/navbar/widgets/search_by_category/main': {
