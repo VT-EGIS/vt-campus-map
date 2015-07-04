@@ -64,6 +64,9 @@ define({
     map : {
       'vtCampusMap/widgets/navbar/widgets/search_by_category/main': {
         'vtCampusMap/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main': 'tests/stubs/place_list_mgr/main'
+      },
+      '*': {
+        'esri/layers/FeatureLayer': 'tests/stubs/esri/layers/FeatureLayer'
       }
     }
 	},

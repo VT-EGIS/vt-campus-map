@@ -150,6 +150,7 @@ define([
 
       this.featuredPlaces.on('place-selected', lang.hitch(this, function (name) {
         this.placeIdentifier.identify(config.featuredPlaces[name].mercatorGeometry);
+        ga.report(ga.actions.SEL_FEATURED_PLACE, name);
       }));
     },
 

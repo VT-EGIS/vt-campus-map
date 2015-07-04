@@ -11,10 +11,13 @@ define([
   'intern/order!node_modules/sinon/lib/sinon',
   'vtCampusMap/google_analytics_manager',
   'dojo/query',
+  'vtCampusMap/widgets/place_identifier/main',
+  'esri/layers/FeatureLayer',
   'intern/order!vendor/annyang.min',
   'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, helpers, VTNavbar, bootstrapMap,
-             config, registry, dom, domClass, sinon, ga, dojoQuery) {
+             config, registry, dom, domClass, sinon, ga, dojoQuery,
+             PlaceIdentifier, FeatureLayer) {
   var vtNavbar, navbarFixture, mapFixture, isMobileStub;
 
   registerSuite({
@@ -29,6 +32,11 @@ define([
     },
 
     beforeEach: function () {
+      var layer1, layer2;
+
+      layer1 = new FeatureLayer({ id: 'layer1' });
+      layer1.hideOnStartup = true;
+      layer2 = new FeatureLayer({ id: 'layer2' });
       navbarFixture = helpers.createFixture('vt-navbar');
       mapFixture = helpers.createFixture('vt-campus-map');
       isMobileStub = sinon.stub(VTNavbar.prototype, 'isMobile', function () {
@@ -38,7 +46,7 @@ define([
         map: bootstrapMap.create('vt-campus-map', config.map),
         layerInfos: config.layerInfos,
         gazeteerLayerUrl: config.gazeteerLayerUrl,
-        layers: [],
+        layers: [layer1, layer2],
         markerSymbol: {},
         borderSymbol: {}
       }, 'vt-navbar');
@@ -222,6 +230,68 @@ define([
         args = ga_stub.getCall(0).args;
         assert.lengthOf(args, 1);
         assert.strictEqual(args[0], ga.actions.SEL_LEGEND);
+        ga_stub.restore();
+      }), 100);
+    },
+
+    'selecting a featured place identifies the place and sends info to google analytics': function () {
+      var dfd, ga_stub, identify_stub;
+
+      ga_stub = sinon.stub(ga, 'report');
+      identify_stub = sinon.stub(PlaceIdentifier.prototype, 'identify');
+      dfd = this.async(1000);
+      dojoQuery('#featured-places a')[0].dispatchEvent(helpers.clickEvent());
+      setTimeout(dfd.callback(function () {
+        var args;
+
+        assert.isTrue(ga_stub.calledOnce);
+        args = ga_stub.getCall(0).args;
+        assert.lengthOf(args, 2);
+        assert.strictEqual(args[0], ga.actions.SEL_FEATURED_PLACE);
+        assert.strictEqual(args[1], 'Ag Quad');
+        ga_stub.restore();
+
+        assert.isTrue(identify_stub.calledOnce);
+        args = identify_stub.getCall(0).args;
+        assert.lengthOf(args, 1);
+        assert.strictEqual(args[0].type, 'point');
+        assert.strictEqual(args[0].spatialReference.wkid, 102100);
+        identify_stub.restore();
+      }), 100);
+    },
+
+    'turning a layer on sends info to google analytics': function () {
+      var dfd, ga_stub;
+
+      ga_stub = sinon.stub(ga, 'report');
+      dfd = this.async(1000);
+      dojoQuery('#layers-modal a')[0].dispatchEvent(helpers.clickEvent());
+      setTimeout(dfd.callback(function () {
+        var args;
+
+        assert.isTrue(ga_stub.calledOnce);
+        args = ga_stub.getCall(0).args;
+        assert.lengthOf(args, 2);
+        assert.strictEqual(args[0], ga.actions.TURNON_LAYER);
+        assert.strictEqual(args[1], 'layer1');
+        ga_stub.restore();
+      }), 100);
+    },
+
+    'turning a layer off sends info to google analytics': function () {
+      var dfd, ga_stub;
+
+      ga_stub = sinon.stub(ga, 'report');
+      dfd = this.async(1000);
+      dojoQuery('#layers-modal a')[1].dispatchEvent(helpers.clickEvent());
+      setTimeout(dfd.callback(function () {
+        var args;
+
+        assert.isTrue(ga_stub.calledOnce);
+        args = ga_stub.getCall(0).args;
+        assert.lengthOf(args, 2);
+        assert.strictEqual(args[0], ga.actions.TURNOFF_LAYER);
+        assert.strictEqual(args[1], 'layer2');
         ga_stub.restore();
       }), 100);
     }
