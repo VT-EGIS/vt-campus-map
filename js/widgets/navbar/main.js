@@ -6,7 +6,7 @@ define([
   './widgets/map_type_gallery/main',
   'vtCampusMap/config',
   './widgets/about/main',
-  './widgets/featured_places/main',
+  'featuredPlacesWidget',
   'layersWidget',
   'dojo/query',
   'dojo/_base/lang',
@@ -17,13 +17,15 @@ define([
   'vtCampusMap/widgets/place_identifier/main',
   './widgets/modal/main',
   'esri/dijit/Legend',
+  'esri/geometry/Point',
+  'esri/geometry/webMercatorUtils',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, AboutModal, FeaturedPlaceWidget, Layers,
              query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
-             ga, PlaceIdentifier, Modal, Legend) {
+             ga, PlaceIdentifier, Modal, Legend, Point, webMercatorUtils) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -114,9 +116,16 @@ define([
     },
 
     addFeaturedPlaceWidget: function () {
-      var elt;
+      var elt, point, place;
 
       elt = 'featured-places';
+
+      for(var name in config.featuredPlaces) {
+        place = config.featuredPlaces[name];
+        point = new Point(place.geometry.lng, place.geometry.lat);
+        place.mercatorGeometry = webMercatorUtils.geographicToWebMercator(point);
+      }
+
       if(this.isMobile()) {
         this.featuredPlacesModal = new Modal({ id: 'featured-places-modal' }); 
         this.featuredPlacesModal.setTitle('Featured Places');
@@ -128,11 +137,20 @@ define([
           this.featuredPlacesModal.open();
           this.hideDropdownNavbar();
         }));
+        this.featuredPlaces = new FeaturedPlaceWidget({
+          featuredPlaces: config.featuredPlaces,
+          itemOpts: { 'data-dismiss': 'modal' }
+        }, elt);
+      } else {
+        this.featuredPlaces = new FeaturedPlaceWidget({
+          featuredPlaces: config.featuredPlaces,
+          class: 'dropdown-menu vt-background-color'
+        }, elt);
       }
-      this.featuredPlaces = new FeaturedPlaceWidget({
-        featuredPlaces: config.featuredPlaces,
-        placeIdentifier: this.placeIdentifier
-      }, elt);
+
+      this.featuredPlaces.on('place-selected', lang.hitch(this, function (name) {
+        this.placeIdentifier.identify(config.featuredPlaces[name].mercatorGeometry);
+      }));
     },
 
     addMapTypeGallery: function () {

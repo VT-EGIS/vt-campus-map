@@ -1,3 +1,6 @@
 [submodule "vendor/arcgis-layers-widget"]
 	path = vendor/arcgis-layers-widget
 	url = https://github.com/VT-EGIS/arcgis-layers-widget
+[submodule "vendor/featured-places-widget"]
+	path = vendor/featured-places-widget
+	url = https://github.com/VT-EGIS/featured-places-widget
