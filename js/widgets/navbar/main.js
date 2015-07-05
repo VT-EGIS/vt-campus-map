@@ -3,9 +3,9 @@ define([
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'dojo/text!./template.html',
+  'dojo/text!./about.html',
   'mapTypeGalleryWidget',
   'vtCampusMap/config',
-  './widgets/about/main',
   'featuredPlacesWidget',
   'layersWidget',
   'dojo/query',
@@ -23,8 +23,8 @@ define([
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
-], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
-             config, AboutModal, FeaturedPlaceWidget, Layers,
+], function (declare, _WidgetBase, _TemplatedMixin, template, aboutContent, MapTypeGallery,
+             config, FeaturedPlaceWidget, Layers,
              query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
              ga, PlaceIdentifier, Modal, Legend, Point, webMercatorUtils, domClass) {
   return declare([_WidgetBase, _TemplatedMixin], {
@@ -196,7 +196,9 @@ define([
     },
 
     addAboutModal: function () {
-      this.aboutModal = new AboutModal({ id: 'about-modal' });
+      this.aboutModal = new Modal({ id: 'about-modal' });
+      this.aboutModal.setTitle('About');
+      this.aboutModal.setBody(aboutContent); 
       this.domNode.appendChild(this.aboutModal.domNode);
 
       query('#about-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
