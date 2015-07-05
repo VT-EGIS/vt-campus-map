@@ -79,7 +79,6 @@ define({
     'tests/google_analytics_manager_test.js',
     'tests/widgets/place_identifier/main_test',
     'tests/widgets/navbar/main_test',
-    'tests/widgets/navbar/widgets/about/main_test',
     'tests/widgets/navbar/widgets/modal/main_test',
     'tests/widgets/navbar/widgets/search_by_category/main_test',
     'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main_test',
