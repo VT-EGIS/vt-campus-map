@@ -11,9 +11,10 @@ define([
   'dojo/query',
   'vtCampusMap/config',
   'vtCampusMap/google_analytics_manager',
+  'dojo/dom-attr',
   'dojoBootstrap/Typeahead'
 ], function (declare, dojoQuery, on, template, lang, array, EsriQuery,
-             QueryTask, Modal, query, config, ga) {
+             QueryTask, Modal, query, config, ga, domAttr) {
 
   return declare([Modal], {
     postCreate : function () {
@@ -21,6 +22,11 @@ define([
       this.setTitle('Search by Name');
       this.setBody(template);
       this.inputBox = query('input', this.domNode)[0];
+      if(annyang) {
+        domAttr.set(this.inputBox, 'placeholder', 'Enter name or say "Show name "');
+      } else {
+        domAttr.set(this.inputBox, 'placeholder', 'Enter name');
+      }
       this.getNames()
         .then(lang.hitch(this, 'initializeTypeahead'))
         .then(lang.hitch(this, 'attachEventHandlers'));
