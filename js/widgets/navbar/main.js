@@ -168,6 +168,9 @@ define([
       query('#mapType-gallery img').forEach(function (img) {
         domClass.add(img, 'img-thumbnail');
       });
+      this.gallery.on('basemap-changed', function (name) {
+        ga.report(ga.actions.SEL_MAP_TYPE, name);
+      });
     },
 
     addLegendModal: function () {

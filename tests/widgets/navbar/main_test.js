@@ -294,6 +294,24 @@ define([
         assert.strictEqual(args[1], 'layer2');
         ga_stub.restore();
       }), 100);
+    },
+
+    'changing the basemap sends info to google analytics': function () {
+      var dfd, ga_stub;
+
+      ga_stub = sinon.stub(ga, 'report');
+      dfd = this.async(1000);
+      dojoQuery('#mapType-gallery img')[1].dispatchEvent(helpers.clickEvent());
+      setTimeout(dfd.callback(function () {
+        var args;
+
+        assert.isTrue(ga_stub.calledOnce);
+        args = ga_stub.getCall(0).args;
+        assert.lengthOf(args, 2);
+        assert.strictEqual(args[0], ga.actions.SEL_MAP_TYPE);
+        assert.strictEqual(args[1], 'Aerial Photo');
+        ga_stub.restore();
+      }), 100);
     }
   });
 }); 
