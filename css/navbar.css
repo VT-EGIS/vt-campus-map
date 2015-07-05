@@ -32,15 +32,15 @@
   padding-top: 7px;
 }
 
-a:hover .mapType-img {
+.maptType-item a:hover img {
   border: 1px solid blue;
 }
 
-.mapType-selected .mapType-img{
+.mapType-selected img {
   border: 1px solid blue;
 }
 
-.mapType-selected .mapType-caption{
+.mapType-selected div {
   color: #FF6600;
 }
 /* End Map Type Styles */

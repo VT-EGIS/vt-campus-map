@@ -3,7 +3,7 @@ define([
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'dojo/text!./template.html',
-  './widgets/map_type_gallery/main',
+  'mapTypeGalleryWidget',
   'vtCampusMap/config',
   './widgets/about/main',
   'featuredPlacesWidget',
@@ -19,13 +19,14 @@ define([
   'esri/dijit/Legend',
   'esri/geometry/Point',
   'esri/geometry/webMercatorUtils',
+  'dojo/dom-class',
   'dojoBootstrap/Collapse',
   'dojoBootstrap/Dropdown',
   'dojoBootstrap/Modal'
 ], function (declare, _WidgetBase, _TemplatedMixin, template, MapTypeGallery,
              config, AboutModal, FeaturedPlaceWidget, Layers,
              query, lang, domStyle, SearchByNameWidget, SearchByCategoryWidget,
-             ga, PlaceIdentifier, Modal, Legend, Point, webMercatorUtils) {
+             ga, PlaceIdentifier, Modal, Legend, Point, webMercatorUtils, domClass) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -159,7 +160,14 @@ define([
         mapTypes: config.mapTypes,
         map: this.map,
         defaultMapTypeIndex: 0,
+        'class': 'list-unstyled row'
       }, 'mapType-gallery');
+      query('#mapType-gallery li').forEach(function (li) {
+        domClass.add(li, 'col-md-12 col-xs-6');
+      });
+      query('#mapType-gallery img').forEach(function (img) {
+        domClass.add(img, 'img-thumbnail');
+      });
     },
 
     addLegendModal: function () {

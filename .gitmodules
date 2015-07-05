@@ -4,3 +4,6 @@
 [submodule "vendor/featured-places-widget"]
 	path = vendor/featured-places-widget
 	url = https://github.com/VT-EGIS/featured-places-widget
+[submodule "vendor/arcgis-map-type-gallery"]
+	path = vendor/arcgis-map-type-gallery
+	url = https://github.com/VT-EGIS/arcgis-map-type-gallery
