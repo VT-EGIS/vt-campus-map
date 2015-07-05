@@ -52,6 +52,7 @@ define({
 		packages: [
       { name: 'layersWidget', location: 'vendor/arcgis-layers-widget/src' },
       { name: 'featuredPlacesWidget', location: 'vendor/featured-places-widget/src' },
+      { name: 'mapTypeGalleryWidget', location: 'vendor/arcgis-map-type-widget/src' },
       { name: 'vtCampusMap', location: 'js' },
       { name: 'bootstrapMap', location: 'vendor/bootstrap-map/js'},
       { name: 'dojoBootstrap', location: 'vendor/Dojo-Bootstrap'},
@@ -79,7 +80,6 @@ define({
     'tests/widgets/place_identifier/main_test',
     'tests/widgets/navbar/main_test',
     'tests/widgets/navbar/widgets/about/main_test',
-    'tests/widgets/navbar/widgets/map_type_gallery/main_test',
     'tests/widgets/navbar/widgets/modal/main_test',
     'tests/widgets/navbar/widgets/search_by_category/main_test',
     'tests/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/main_test',
