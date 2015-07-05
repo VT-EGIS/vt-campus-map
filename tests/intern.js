@@ -52,7 +52,7 @@ define({
 		packages: [
       { name: 'layersWidget', location: 'vendor/arcgis-layers-widget/src' },
       { name: 'featuredPlacesWidget', location: 'vendor/featured-places-widget/src' },
-      { name: 'mapTypeGalleryWidget', location: 'vendor/arcgis-map-type-widget/src' },
+      { name: 'mapTypeGalleryWidget', location: 'vendor/arcgis-map-type-gallery/src' },
       { name: 'vtCampusMap', location: 'js' },
       { name: 'bootstrapMap', location: 'vendor/bootstrap-map/js'},
       { name: 'dojoBootstrap', location: 'vendor/Dojo-Bootstrap'},
