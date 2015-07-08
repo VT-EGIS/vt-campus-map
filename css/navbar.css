@@ -66,12 +66,25 @@
   list-style-type: none;
 }
 
-.hidden-layer, .hidden-layer:active, .hidden-layer:visited{
-  color: #888;
+.hidden-layer, .hidden-layer:active, .hidden-layer:visited .hidden-layer:focus{
+  color: #888 !important;
 }
 
-#layers-modal a:hover {
-  text-decoration: none;
+.hidden-layer:before {
+  font-family: 'Glyphicons Halflings';
+  content: '\e014\00a0';
+}
+
+.visible-layer:before {
+  font-family: 'Glyphicons Halflings';
+  content: '\e013\00a0';
+}
+
+#layers-modal a:focus,
+#layers-modal a:hover,
+#layers-modal a:visited,
+#layers-modal a:active{
+  text-decoration: none !important;
 }
 /* End Layers Styles */
 
