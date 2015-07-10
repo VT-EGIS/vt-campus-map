@@ -5,8 +5,10 @@ define([
   'dojo/text!./template.html',
   'dojo/html',
   'dojo/query',
+  'dojo/dnd/Moveable',
   'dojoBootstrap/Modal'
-], function (declare, _WidgetBase, _TemplatedMixin, template, html, query) {
+], function (declare, _WidgetBase, _TemplatedMixin, template, html, query,
+             Moveable) {
   return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
@@ -18,6 +20,7 @@ define([
         show: false,
         backdrop: false 
       });
+      new Moveable(this.domNode);
     },
     
     setTitle: function (value) {
@@ -29,7 +32,7 @@ define([
     },
 
     getBody: function () {
-      return this.body;
+      return query('div', this.body)[0];
     },
 
     open: function () {
