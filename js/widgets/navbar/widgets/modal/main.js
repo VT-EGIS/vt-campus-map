@@ -20,7 +20,9 @@ define([
         show: false,
         backdrop: false 
       });
-      new Moveable(this.domNode);
+      if(!this.unmoveable) {
+        new Moveable(this.domNode);
+      }
     },
     
     setTitle: function (value) {
