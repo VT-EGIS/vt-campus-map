@@ -31,13 +31,13 @@ define([
     },
 
     'setBody': function () {
-      assert.strictEqual(dojoQuery('.modal-body', modal.domNode).html(), '');
+      assert.strictEqual(dojoQuery('.modal-body', modal.domNode).html().trim(), '<div></div>');
       modal.setBody('<p> This is a paragraph </p>');
-      assert.strictEqual(dojoQuery('.modal-body', modal.domNode).html(), '<p> This is a paragraph </p>');
+      assert.strictEqual(dojoQuery('.modal-body', modal.domNode).html().trim(), '<p> This is a paragraph </p>');
     },
 
     'getBody': function () {
-      assert.strictEqual(dojoQuery('.modal-body', modal.domNode)[0], modal.getBody());
+      assert.strictEqual(dojoQuery('.modal-body div', modal.domNode)[0], modal.getBody());
     },
 
     'open': function () {
