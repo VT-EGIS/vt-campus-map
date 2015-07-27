@@ -58,7 +58,8 @@ define([
       this.searchByNameWidget = new SearchByNameWidget({
         placeIdentifier: this.placeIdentifier,
         gazeteerLayerUrl: config.gazeteerLayerUrl,
-        id: 'search-by-name-modal'
+        id: 'search-by-name-modal',
+        unmoveable: true
       });
 
       this.domNode.appendChild(this.searchByNameWidget.domNode);
@@ -80,7 +81,8 @@ define([
         gazeteerLayerUrl: config.gazeteerLayerUrl,
         placeIdentifier: this.placeIdentifier,
         spatialReference: config.spatialReference,
-        id: 'search-by-category-modal'
+        id: 'search-by-category-modal',
+        unmoveable: true
       });
 
       this.domNode.appendChild(this.searchByCategoryWidget.domNode);
