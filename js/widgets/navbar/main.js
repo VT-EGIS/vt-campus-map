@@ -95,7 +95,10 @@ define([
     },
 
     addLayersModal: function () {
-      this.layersModal = new Modal({ id: 'layers-modal' });
+      this.layersModal = new Modal({
+        id: 'layers-modal',
+        unmoveable: true
+      });
       this.layersModal.setTitle('Layers');
 
       this.domNode.appendChild(this.layersModal.domNode);
@@ -130,7 +133,10 @@ define([
       }
 
       if(this.isMobile()) {
-        this.featuredPlacesModal = new Modal({ id: 'featured-places-modal' }); 
+        this.featuredPlacesModal = new Modal({
+          id: 'featured-places-modal',
+          unmoveable: true
+        }); 
         this.featuredPlacesModal.setTitle('Featured Places');
         this.domNode.appendChild(this.featuredPlacesModal.domNode);
         elt = this.featuredPlacesModal.getBody();
@@ -176,7 +182,10 @@ define([
     },
 
     addLegendModal: function () {
-      this.legendModal = new Modal({ id: 'legend-modal' });
+      this.legendModal = new Modal({
+        id: 'legend-modal',
+        unmoveable: true
+      });
       this.legendModal.setTitle('Legend');
 
       this.domNode.appendChild(this.legendModal.domNode);
