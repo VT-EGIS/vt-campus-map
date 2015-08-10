@@ -7,9 +7,10 @@ View the live map [here](http://maps.vt.edu/interactive).
 
 Setup Instructions
 ------------------
-1. Clone this repository into the place where your webserver can pick it up and serve it.   
+1. Clone this repository (along with the submodules)
+   into the place where your webserver can pick it up and serve it.   
    For example, put it in `/var/www` for apache to detect it.    
-   `git clone git@github.com:VT-EGIS/vt-campus-map` 
+   `git clone --recursive git@github.com:VT-EGIS/vt-campus-map` 
 2. Open http://your-domain-name/vt-campus-map in your web browser.
 
 **Note** : If you can not clone into your web server directly, and you have to
