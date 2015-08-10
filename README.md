@@ -105,3 +105,23 @@ There are 2 steps to testing locally before pushing your changes to Github.
    http://your-domain-name/vt-campus-map/node\_modules/intern/client.html?config=tests/intern. 
 2. If all tests pass in the browser, lint the JS and run the tests in the
    SauceLabs cloud environment using the command `grunt test`.
+
+Features
+--------
+
+**Map**
+
+1. Map Info Manager - Clicking on the map provides information about the place(s) at that point.
+2. Panning the map using click and drag.
+3. Zooming in/out using scrollwheel and zoom buttons on top left.
+4. Centering on the original map position using the home button on the top left.
+5. Finding your location using the locator button on the top left below the home button.
+
+**Navigation Bar**
+
+1. Changing background map type.
+2. Finding places by name (supports searching by speech and text).
+3. Finding places by category.
+4. Set of featured places or bookmarks.
+5. Toggling layer visibility.
+6. Map legend. 
