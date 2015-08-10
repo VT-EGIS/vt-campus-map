@@ -8,7 +8,7 @@ View the live map [here](http://maps.vt.edu/interactive).
 Setup Instructions
 ------------------
 1. Clone this repository into the place where your webserver can pick it up and serve it.   
-   I usually put it in `/var/www` for apache to detect it.    
+   For example, put it in `/var/www` for apache to detect it.    
    `git clone git@github.com:VT-EGIS/vt-campus-map` 
 2. Open http://your-domain-name/vt-campus-map in your web browser.
 
@@ -18,9 +18,26 @@ to a folder on the webserver.
 
 * `js`
 * `css`
-* `components`
+* `vendor`
 * `imgs`
 * `index.html`
+
+Getting Started
+---------------
+VT Campus Maps is a JavaScript-based project and uses the
+[Dojo Toolkit](http://dojotoolkit.org/) along with the
+[ArcGIS JS API](https://developers.arcgis.com/javascript/).
+The JavaScript source of the project lies in the `js` folder.
+A good starting point would be reading the `js/main.js` file
+along with the `index.html` file.
+The `js/config.js` file contains configuration details only and
+no business logic.
+All the widgets are arranged in a hierarchical directory structure,
+within the `js/widgets` directory,
+with a one-to-one correspondence with how they appear in the map.
+For example, the navigation bar contains the two search widgets and
+so their source code can be found in `js/widgets/navbar/widgets/search_by_name/main.js`
+and `js/widgets/navbar/widgets/search_by_category/main.js`
 
 Contributing
 ------------
@@ -33,7 +50,8 @@ A common routine would go like this.
   `git pull`
 2. Next, you create a new branch for your feature.    
   `git checkout -b add_widget_X`
-3. You make the code changes necessary for widget X to work along with the corresponding test cases.    
+3. You make the code changes necessary for widget X to work along with the corresponding test cases
+   written using the [Intern](https://theintern.github.io/) framework.    
   `change some files ...`     
   `...`     
   `git commit`     
@@ -63,8 +81,22 @@ A common routine would go like this.
 
 Testing Locally
 ---------------
-`grunt test` or simply `grunt` will lint all the JavaScript and run all the tests.     
-The tests when run using grunt, execute in a headless browser called [PhantomJS](http://phantomjs.org/).
-To know more about a failure, it is better to run the tests in a normal browser like Chrome or
-Firefox. This can be done by opening http://your-domain-name/vt-campus-map/SpecRunner.html
-in your browser.
+Before running the tests, all the dependencies need to be installed on your machine.
+
+1. Run `npm install` to install the node.js modules.
+2. Run `bower install` to install the dojo libraries.
+3. Run `grunt slurp` to download the arcgis javascript library.
+4. Install [grunt-cli](http://gruntjs.com/getting-started#installing-the-cli).
+
+In order to be able to run the tests, you will need
+
+1. A web server.
+2. A Sauce Labs sub-account.
+3. A Travis CI account linked to your Github account.
+
+There are 2 steps to testing locally before pushing your changes to Github.
+
+1. Run the intern tests in the browser by visiting the url
+   http://your-domain-name/vt-campus-map/node\_modules/intern/client.html?config=tests/intern. 
+2. If all tests pass in the browser, lint the JS and run the tests in the
+   SauceLabs cloud environment using the command `grunt test`.

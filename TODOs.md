@@ -13,4 +13,3 @@ TODO List
   link.
 3. Add lavery hall in the buildings layer and CRC in the category list.
 4. Add roads in the gazeteer layer.
-5. Add documentation.
