@@ -27,11 +27,15 @@ Getting Started
 VT Campus Maps is a JavaScript-based project and uses the
 [Dojo Toolkit](http://dojotoolkit.org/) along with the
 [ArcGIS JS API](https://developers.arcgis.com/javascript/).
+
 The JavaScript source of the project lies in the `js` folder.
+
 A good starting point would be reading the `js/main.js` file
 along with the `index.html` file.
+
 The `js/config.js` file contains configuration details only and
 no business logic.
+
 All the widgets are arranged in a hierarchical directory structure,
 within the `js/widgets` directory,
 with a one-to-one correspondence with how they appear in the map.
