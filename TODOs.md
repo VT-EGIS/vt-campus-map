@@ -13,3 +13,6 @@ TODO List
   link.
 3. Add lavery hall in the buildings layer and CRC in the category list.
 4. Add roads in the gazeteer layer.
+5. Explore use of VT-CNS instance of selenium.
+6. Enable tests for other browsers in tests/intern.js
+7. Add docs for SauceLabs config and node.js
