@@ -207,7 +207,10 @@ define([
     },
 
     addAboutModal: function () {
-      this.aboutModal = new Modal({ id: 'about-modal' });
+      this.aboutModal = new Modal({
+        id: 'about-modal',
+        unmoveable: true
+      });
       this.aboutModal.setTitle('About');
       this.aboutModal.setBody(aboutContent); 
       this.domNode.appendChild(this.aboutModal.domNode);
