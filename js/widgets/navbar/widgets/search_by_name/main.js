@@ -11,10 +11,9 @@ define([
   'dojo/query',
   'vtCampusMap/config',
   'vtCampusMap/google_analytics_manager',
-  'dojo/dom-attr',
   'dojoBootstrap/Typeahead'
 ], function (declare, dojoQuery, on, template, lang, array, EsriQuery,
-             QueryTask, Modal, query, config, ga, domAttr) {
+             QueryTask, Modal, query, config, ga) {
 
   return declare([Modal], {
     postCreate : function () {
