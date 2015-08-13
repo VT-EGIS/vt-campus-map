@@ -45,7 +45,6 @@ define([
       this.layers = [];
       this.addEventListeners();
       this.addLayers();
-      annyang && annyang.start();
     },
 
     addMapInfoMgr: function () {
