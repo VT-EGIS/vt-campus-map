@@ -94,7 +94,7 @@ define([
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(11000);
+          dfd = this.async(16000);
 
           setTimeout(function () {
             vtCampusMap.map.on('zoom-end', function () {
@@ -107,7 +107,7 @@ define([
                 assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
                 assert.strictEqual(args[1], 'Bus Stop 1126');
                 spy.restore();
-              }), 9000);
+              }), 13000);
             });
             vtCampusMap.map.centerAndZoom(busStopPoint, 19);
           }, 800);
@@ -117,7 +117,7 @@ define([
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(11000);
+          dfd = this.async(16000);
 
           setTimeout(function () {
             vtCampusMap.map.emit('click', { mapPoint: parkingLotPoint });
@@ -129,7 +129,7 @@ define([
               assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
               assert.strictEqual(args[1], 'Duck Pond Rd. Parking Lot');
               spy.restore();
-            }), 9000);
+            }), 13000);
           }, 800);
         },
 
@@ -137,7 +137,7 @@ define([
           var spy, dfd;
 
           spy = sinon.spy(ga, 'report');
-          dfd = this.async(11000);
+          dfd = this.async(16000);
 
           setTimeout(function () {
             vtCampusMap.map.on('zoom-end', function () {
@@ -151,7 +151,7 @@ define([
                 assert.strictEqual(args[0], ga.actions.SEL_MAP_PLACE);
                 assert.strictEqual(args[1], 'Bike Rack 145');
                 spy.restore();
-              }), 9000);
+              }), 13000);
             });
             vtCampusMap.map.centerAndZoom(bikeRackPoint, 19);
           }, 800);
