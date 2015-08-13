@@ -13,12 +13,10 @@
       <div class='collapse navbar-collapse'>
         <ul class='nav navbar-nav push-right'>
           <li class='dropdown'>
-            <a href='#' class='dropdown-toggle' id='map-type-nav' data-toggle='dropdown'>
-              Map Type <b class='caret'></b>
+            <a href='#' class='dropdown-toggle' id='featured-nav' data-toggle='dropdown'>
+              Featured <span class='caret hidden-xs'></span>
             </a>
-            <ul class='dropdown-menu vt-background-color' role='menu'> 
-              <div class='row' id='mapType-gallery'>
-              </div>
+            <ul class='dropdown-menu vt-background-color hidden-xs short' id='featured-places'> 
             </ul>
           </li>
           <li class='dropdown'>
@@ -43,10 +41,24 @@
             </ul>
           </li>
           <li class='dropdown'>
-            <a href='#' class='dropdown-toggle' id='featured-nav' data-toggle='dropdown'>
-              Featured <span class='caret hidden-xs'></span>
+            <a href='#' id='layers-nav'>
+                Layers
+                <i class='glyphicon glyphicon-new-window hidden-xs'></i>
             </a>
-            <ul class='dropdown-menu vt-background-color hidden-xs short' id='featured-places'> 
+          </li>
+          <li class='dropdown'>
+            <a href='#' id='legend-nav'>
+              Legend
+              <i class='glyphicon glyphicon-new-window hidden-xs'></i>
+            </a>
+          </li>
+          <li class='dropdown'>
+            <a href='#' class='dropdown-toggle' id='map-type-nav' data-toggle='dropdown'>
+              Map Type <b class='caret'></b>
+            </a>
+            <ul class='dropdown-menu vt-background-color' role='menu'> 
+              <div class='row' id='mapType-gallery'>
+              </div>
             </ul>
           </li>
           <li class='dropdown'>
@@ -61,18 +73,6 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <li class='dropdown'>
-            <a href='#' id='layers-nav'>
-                Layers
-                <i class='glyphicon glyphicon-new-window hidden-xs'></i>
-            </a>
-          </li>
-          <li class='dropdown'>
-            <a href='#' id='legend-nav'>
-              Legend
-              <i class='glyphicon glyphicon-new-window hidden-xs'></i>
-            </a>
           </li>
         </ul>
       </div>
