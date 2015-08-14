@@ -12,6 +12,8 @@ Setup Instructions
    For example, put it in `/var/www` for apache to detect it.    
    `git clone --recursive git@github.com:VT-EGIS/vt-campus-map` 
 2. Open http://your-domain-name/vt-campus-map in your web browser.
+3. If installing on the production machine, update the google analytics
+   key appropriately.
 
 **Note** : If you can not clone into your web server directly, and you have to
 manually copy the files, then it is sufficient to copy the following files/folders
@@ -59,10 +61,12 @@ A common routine would go like this.
    written using the [Intern](https://theintern.github.io/) framework.    
   `change some files ...`     
   `...`     
+  `git add .`
   `git commit`     
   `change some more files`     
   `...`     
   `...`     
+  `git add .`
   `git commit`     
   `...`     
   `and so on ...`     
@@ -82,10 +86,20 @@ A common routine would go like this.
     * It helps maintain the quality of the code through code review comments.
 10. Fix your code based on the code review comments.
 11. After at least 1 team member has approved your code, you can finally merge your changes
-  to master by clicking on the merge button.
+  to master by clicking on the merge button. 
+12. After a successful merge, the feature branch should be deleted.
 
 Testing Locally
 ---------------
+The tests are guaranteed to run on Chrome Version 44.0.2403.155 (64-bit).
+
+In order to be able to run the tests, you will need
+
+1. Node.js
+2. A web server.
+3. A Sauce Labs sub-account.
+4. A Travis CI account linked to your Github account.
+
 Before running the tests, all the dependencies need to be installed on your machine.
 
 1. Run `npm install` to install the node.js modules.
@@ -93,18 +107,22 @@ Before running the tests, all the dependencies need to be installed on your mach
 3. Run `grunt slurp` to download the arcgis javascript library.
 4. Install [grunt-cli](http://gruntjs.com/getting-started#installing-the-cli).
 
-In order to be able to run the tests, you will need
-
-1. A web server.
-2. A Sauce Labs sub-account.
-3. A Travis CI account linked to your Github account.
-
 There are 2 steps to testing locally before pushing your changes to Github.
 
 1. Run the intern tests in the browser by visiting the url
    http://your-domain-name/vt-campus-map/node\_modules/intern/client.html?config=tests/intern. 
 2. If all tests pass in the browser, lint the JS and run the tests in the
    SauceLabs cloud environment using the command `grunt test`.
+   In order to be able to connect to sauce labs, you must first define the 
+   SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables appropriately
+   On a machine with a shell, this can be done using the commands
+   `export SAUCE_USERNAME=<your username>` and
+   `export SAUCE_ACCESS_KEY=<your access key>`.
+3. If you're having issues running the tests then you can download the Travis CI
+   logs and follow the steps in it. To do this, visit the
+   [Travis CI page](https://travis-ci.org/VT-EGIS/vt-campus-map) corresponding
+   to the VT Campus Map project and click on the `Download Log` link on the top right of
+   the console. 
 
 Features
 --------
