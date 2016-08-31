@@ -133,7 +133,7 @@ define([], function () {
         label : 'Aerial Photo',
         thumbnail : 'http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg',
         layerUrls : [
-          'http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2013/MapServer'
+          'http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2015_cached_web_mercator/MapServer'
         ]
       }
     ],

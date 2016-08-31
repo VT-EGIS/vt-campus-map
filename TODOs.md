@@ -16,3 +16,4 @@ TODO List
 5. Explore use of VT-CNS instance of selenium.
 6. Enable tests for other browsers in tests/intern.js
 7. Add docs for SauceLabs config and node.js
+8. Update Google Analytics tracking cookie UA-54936711-1 when code is running in the production environment.
