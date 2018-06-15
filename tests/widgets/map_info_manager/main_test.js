@@ -8,7 +8,7 @@ define([
   'dojo/dom-style',
   'dojo/query',
   'intern/order!node_modules/sinon/lib/sinon',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
   'intern/order!vendor/annyang.min',
   'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, helpers, VTCampusMap, Point,

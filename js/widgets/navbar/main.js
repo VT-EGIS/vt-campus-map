@@ -13,7 +13,7 @@ define([
   'dojo/dom-style',
   './widgets/search_by_name/main',
   './widgets/search_by_category/main',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
   'vtCampusMap/widgets/place_identifier/main',
   './widgets/modal/main',
   'esri/dijit/Legend',

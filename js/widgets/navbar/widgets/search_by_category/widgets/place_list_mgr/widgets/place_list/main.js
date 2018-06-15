@@ -9,7 +9,7 @@ define([
   './widgets/place',
   'dijit/registry',
   'dojo/query',
-  'vtCampusMap/google_analytics_manager'
+  'vtCampusMap/vt_campus_map_rpts'
 ], function (declare, _WidgetBase, _TemplatedMixin, _Container, domStyle,
              array, lang, Place, registry, query, ga) {
   return declare([_WidgetBase, _TemplatedMixin, _Container], {

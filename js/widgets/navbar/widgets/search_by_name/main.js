@@ -10,7 +10,7 @@ define([
   '../modal/main',
   'dojo/query',
   'vtCampusMap/config',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
   'dojoBootstrap/Typeahead'
 ], function (declare, dojoQuery, on, template, lang, array, EsriQuery,
              QueryTask, Modal, query, config, ga) {

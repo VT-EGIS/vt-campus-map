@@ -6,7 +6,7 @@ define([
   'vtCampusMap/widgets/navbar/widgets/search_by_category/widgets/place_list_mgr/widgets/place_list/main',
   'dojo/query',
   'dojo/dom-style',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
   'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, helpers, sinon, PlaceList, dojoQuery,
              domStyle, ga) {

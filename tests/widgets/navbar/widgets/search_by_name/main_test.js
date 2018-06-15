@@ -4,7 +4,7 @@ define([
   'vtCampusMap/widgets/navbar/widgets/search_by_name/main',
   'intern/order!node_modules/sinon/lib/sinon',
   'tests/helpers',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
   'dojo/dom-class',
   'dojo/query',
   'esri/tasks/QueryTask',

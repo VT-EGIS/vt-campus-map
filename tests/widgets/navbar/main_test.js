@@ -9,7 +9,7 @@ define([
   'dojo/dom',
   'dojo/dom-class',
   'intern/order!node_modules/sinon/lib/sinon',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
   'dojo/query',
   'vtCampusMap/widgets/place_identifier/main',
   'esri/layers/FeatureLayer',

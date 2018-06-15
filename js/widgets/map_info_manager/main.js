@@ -6,7 +6,7 @@ define([
   'esri/tasks/IdentifyParameters',
   'esri/InfoTemplate',
   'dojo/promise/all',
-  'vtCampusMap/google_analytics_manager'
+  'vtCampusMap/vt_campus_map_rpts'
 ], function (declare, lang, array, IdentifyTask, IdentifyParameters,
              InfoTemplate, all, ga) {
   return declare([], {

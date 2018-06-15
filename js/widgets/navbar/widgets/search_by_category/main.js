@@ -7,7 +7,7 @@ define([
   'dojo/_base/array',
   'dojo/text!./template.html',
   './widgets/place_list_mgr/main',
-  'vtCampusMap/google_analytics_manager'
+  'vtCampusMap/vt_campus_map_rpts'
 ], function (declare, Modal, dojoQuery, dojoRequest, lang, array, template,
              PlaceListMgr, ga) {
   

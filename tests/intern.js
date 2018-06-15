@@ -76,7 +76,7 @@ define({
 	suites: [
     'tests/exceptions_test.js',
     'tests/main_test.js',
-    'tests/google_analytics_manager_test.js',
+    'tests/vt_campus_map_rpts_test.js',
     'tests/widgets/place_identifier/main_test',
     'tests/widgets/navbar/main_test',
     'tests/widgets/navbar/widgets/modal/main_test',

@@ -7,7 +7,7 @@ define([
   'vtCampusMap/config',
   'dojo/query',
   'tests/stubs/place_list_mgr/main',
-  'vtCampusMap/google_analytics_manager',
+  'vtCampusMap/vt_campus_map_rpts',
 	'dojo/aspect',
   'dojo/NodeList-manipulate'
 ], function (registerSuite, assert, SearchByCategory, helpers, sinon,
