@@ -23,11 +23,11 @@
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
-    
+
     // Use the appropriate GA tracker depending on test/prod
     var hostURL = window.location.hostname;
     console.log(hostURL);
-    
+
     __gaTracker('create', 'UA-54936711-1', 'auto');  //NOTE: use UA-54936711-2 in production!! TODO: do this automatically.
     __gaTracker('send', 'pageview');
     </script>
@@ -41,8 +41,17 @@
       <div id='home-button'></div>
       <div id='locate-button'></div>
     </div>
-    <script>
-      (function() {
+
+		<noscript>
+			<div>
+			The VT Interactive Campus Map is a JavaScript application.
+			If you prefer not to enable JavaScript in your browser, try the PDF map on the
+			<a href="http://maps.vt.edu/">Maps and Locations</a> page.
+			</div>
+		</noscript>
+
+		<script>
+			(function() {
         var packagePath = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
 
         window.dojoConfig = {
