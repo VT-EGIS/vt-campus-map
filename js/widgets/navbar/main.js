@@ -31,7 +31,7 @@ define([
     templateString: template,
 
     postMixInProperties: function () {
-      this.imageUrl = require.toUrl('./imgs/VT-Logo.png');
+      this.imageUrl = require.toUrl('https://www.assets.cms.vt.edu/images/HorizontalStacked/HorizontalStacked_RGB_whiteorange.svg');
     },
 
     postCreate: function () {
@@ -44,7 +44,7 @@ define([
         markerSymbol: this.markerSymbol,
         borderSymbol: this.borderSymbol,
         layerId: 'Buildings'
-      }); 
+      });
       this.addMapTypeGallery();
       this.addLegendModal();
       this.addAboutModal();
@@ -136,7 +136,7 @@ define([
         this.featuredPlacesModal = new Modal({
           id: 'featured-places-modal',
           unmoveable: true
-        }); 
+        });
         this.featuredPlacesModal.setTitle('Featured Places');
         this.domNode.appendChild(this.featuredPlacesModal.domNode);
         elt = this.featuredPlacesModal.getBody();
@@ -212,7 +212,7 @@ define([
         unmoveable: true
       });
       this.aboutModal.setTitle('About');
-      this.aboutModal.setBody(aboutContent); 
+      this.aboutModal.setBody(aboutContent);
       this.domNode.appendChild(this.aboutModal.domNode);
 
       query('#about-nav', this.domNode).on('click', lang.hitch(this, function (evt) {
