@@ -19,9 +19,9 @@ define([
     loadPlaces: function (categoryName) {
       var query, queryTask;
 
-      query = new EsriQuery();  
-      query.returnGeometry = true; 
-      query.outFields = ['Name', 'OBJECTID_12'];
+      query = new EsriQuery();
+      query.returnGeometry = true;
+      query.outFields = ['Name', 'objectid_12'];
       query.where = "Category = '" + categoryName + "'";
       query.orderByFields = ['Name ASC'];
       query.outSpatialReference = this.spatialReference;

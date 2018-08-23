@@ -48,7 +48,7 @@ define([
       return queryTask.execute(query).then(lang.hitch(this, function(fset) {
         this.features = fset.features;
         this.names = array.map(fset.features, function(feature) {
-          return feature.attributes.NAME;
+          return feature.attributes.name;
         });
       }));
     },
@@ -72,7 +72,7 @@ define([
       this.inputBox.value = '';
 
       features = array.filter(this.features, function (feature) {
-        return (feature.attributes.NAME === searchText);
+        return (feature.attributes.name === searchText);
       });
 
       array.forEach(features, lang.hitch(this, function (feature) {
@@ -82,5 +82,5 @@ define([
       ga.report(ga.actions.SEL_SEARCHNAME_PLACE, searchText);
       this.close();
     },
-  }); 
+  });
 });

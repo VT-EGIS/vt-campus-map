@@ -25,10 +25,10 @@ define([
 
       fset = {
         features: [
-          { attributes: { NAME: 'feature1' }, geometry: {} },
-          { attributes: { NAME: 'feature2' }, geometry: {} },
-          { attributes: { NAME: 'feature3' }, geometry: {} },
-          { attributes: { NAME: 'feature4' }, geometry: {} }
+          { attributes: { name: 'feature1' }, geometry: {} },
+          { attributes: { name: 'feature2' }, geometry: {} },
+          { attributes: { name: 'feature3' }, geometry: {} },
+          { attributes: { name: 'feature4' }, geometry: {} }
         ]
       };
 
@@ -71,7 +71,7 @@ define([
     'it shows a list of matching places when something is typed in the input box': function () {
       var input, resultsDiv;
 
-      input = dojoQuery('input', searchByName.domNode); 
+      input = dojoQuery('input', searchByName.domNode);
       input.val('a');
       input[0].dispatchEvent(helpers.keyupEvent());
       resultsDiv = dojoQuery('.modal-body div', searchByName.domNode);
@@ -89,12 +89,12 @@ define([
 
         identify_stub = sinon.stub(placeIdentifier, 'identify');
 
-        input = dojoQuery('input', searchByName.domNode); 
+        input = dojoQuery('input', searchByName.domNode);
         input.val('a');
         input[0].dispatchEvent(helpers.keyupEvent());
         resultsDiv = dojoQuery('.modal-body div', searchByName.domNode)[0];
         dojoQuery('a', resultsDiv)[0].dispatchEvent(helpers.clickEvent());
-        
+
         assert.isTrue(identify_stub.calledOnce);
         args = identify_stub.getCall(0).args;
         assert.lengthOf(args, 1);
@@ -108,7 +108,7 @@ define([
 
         ga_stub = sinon.stub(ga, 'report');
 
-        input = dojoQuery('input', searchByName.domNode); 
+        input = dojoQuery('input', searchByName.domNode);
         input.val('a');
         input[0].dispatchEvent(helpers.keyupEvent());
         resultsDiv = dojoQuery('.modal-body div', searchByName.domNode)[0];

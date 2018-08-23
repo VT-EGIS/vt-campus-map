@@ -46,10 +46,10 @@ define([], function () {
         id: 'Parking Lots',
         identifyLayers: [
           {
-            infoTemplateTitle: '${LOT_NAME} Parking Lot',
+            infoTemplateTitle: '${lot_name} Parking Lot',
             infoTemplateFields: [
-              { title: 'Lot Name', value: '${LOT_NAME}' },
-              { title: 'Lot Number', value: '${LOT_NUMBER}' }
+              { title: 'Lot Name', value: '${lot_name}' },
+              { title: 'Lot Number', value: '${lot_number}' }
             ]
           }
         ],
@@ -67,13 +67,13 @@ define([], function () {
         id: 'Buildings',
         identifyLayers: [
           {
-            infoTemplateTitle: '${NAME}',
+            infoTemplateTitle: '${name}',
             infoTemplateFields: [
-              { title: 'Building Use', value: '${BLDG_USE}' },
-              { title: 'Building Name', value: '${NAME}' },
-              { title: 'Building Number', value: '${BLDG_NUM}' },
-              { title: 'Address', value: '${STNUM} ${STPREDIR} ${STNAME} ${STSUFFIX} ${STPOSTDIR}' },
-              { title: 'URL', value: '<a href="${URL}" target = "_blank" > ${URL} </a>' }
+              { title: 'Building Use', value: '${bldg_use}' },
+              { title: 'Building Name', value: '${name}' },
+              { title: 'Building Number', value: '${bldg_num}' },
+              { title: 'Address', value: '${stnum} ${stpredir} ${stname} ${stsuffix} ${stpostdir}' },
+              { title: 'URL', value: '<a href="${url}" target = "_blank" > ${url} </a>' }
             ]
           }
         ]
@@ -89,28 +89,28 @@ define([], function () {
         identifyLayers: [
           {
             layerName: 'Bus Stops',
-            infoTemplateTitle: 'Bus Stop ${ID}',
+            infoTemplateTitle: 'Bus Stop ${id}',
             infoTemplateFields: [
-              { title: 'ID', value: '${ID}' },
-              { title: 'Bench', value: '${BENCH}' },
-              { title: 'Bench Count', value: '${BENCHCOUNT}' },
-              { title: 'Have Shelter', value: '${SHELTER}' },
-              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
+              { title: 'ID', value: '${id}' },
+              { title: 'Bench', value: '${bench}' },
+              { title: 'Bench Count', value: '${benchcount}' },
+              { title: 'Have Shelter', value: '${shelter}' },
+              { title: 'Image', value: '<img src="${url}" width="200px" height="200px" />' }
             ]
           },
           {
             layerName: 'Bike Racks',
-            infoTemplateTitle: 'Bike Rack ${ID}',
+            infoTemplateTitle: 'Bike Rack ${id}',
             infoTemplateFields: [
-              { title: 'ID', value: '${ID}' },
-              { title: 'Condition', value: '${CONDITION}' },
-              { title: 'Covered', value: '${COVERED}' },
-              { title: 'Max Park Size', value: '${MAXPARK}' },
-              { title: 'Number of Bikes', value: '${NUMBIKES}' },
-              { title: 'Rack Style', value: '${RACKSTYLE}' },
-              { title: 'Number of Racks', value: '${RACKS}' },
-              { title: 'Rack Type', value: '${RACKTYPE}' },
-              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
+              { title: 'ID', value: '${id}' },
+              { title: 'Condition', value: '${condition}' },
+              { title: 'Covered', value: '${covered}' },
+              { title: 'Max Park Size', value: '${maxpark}' },
+              { title: 'Number of Bikes', value: '${numbikes}' },
+              { title: 'Rack Style', value: '${rackstyle}' },
+              { title: 'Number of Racks', value: '${racks}' },
+              { title: 'Rack Type', value: '${racktype}' },
+              { title: 'Image', value: '<img src="${url}" width="200px" height="200px" />' }
             ]
           }
         ]

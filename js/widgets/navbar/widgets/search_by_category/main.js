@@ -10,7 +10,7 @@ define([
   'vtCampusMap/vt_campus_map_rpts'
 ], function (declare, Modal, dojoQuery, dojoRequest, lang, array, template,
              PlaceListMgr, ga) {
-  
+
   return declare([Modal], {
 
     postCreate : function () {
@@ -48,7 +48,7 @@ define([
         var categories;
 
         categories = array.filter(data.fields, function (field) {
-          return field.name === 'CATEGORY';
+          return field.name === 'category';
         })[0].domain.codedValues;
 
         categories.sort(function (a, b) {
@@ -59,7 +59,7 @@ define([
           this.selectElem.add(new Option(category.name, category.name));
           return category.name;
         }));
-      })); 
+      }));
     },
   });
 });

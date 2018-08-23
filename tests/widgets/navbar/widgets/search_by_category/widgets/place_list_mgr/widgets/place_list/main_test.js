@@ -19,12 +19,12 @@ define([
       window.__gaTracker = function () {};
       placeIdentifier = { identify: function () {} };
       features = [
-        { attributes: { NAME: 'feature1', OBJECTID_12: 1 }, geometry: {} },
-        { attributes: { NAME: 'feature2', OBJECTID_12: 2 }, geometry: {} },
-        { attributes: { NAME: 'feature3', OBJECTID_12: 3 }, geometry: {} },
+        { attributes: { NAME: 'feature1', objectid_12: 1 }, geometry: {} },
+        { attributes: { NAME: 'feature2', objectid_12: 2 }, geometry: {} },
+        { attributes: { NAME: 'feature3', objectid_12: 3 }, geometry: {} },
       ];
     },
-    
+
     teardown: function () {
       delete window.__gaTracker;
     },
@@ -96,4 +96,4 @@ define([
       assert.strictEqual(domStyle.get(placeList.domNode, 'display'), 'block');
     }
   });
-}); 
+});
