@@ -3,7 +3,7 @@ The Interactive VT Campus Map
 
 [![Build Status](https://travis-ci.org/VT-EGIS/vt-campus-map.svg?branch=master)](https://travis-ci.org/VT-EGIS/vt-campus-map)
 
-View the live map [here](http://www.maps.vt.edu/interactive).
+View the live map [here](https://www.maps.vt.edu/interactive/).
 
 Setup Instructions
 ------------------
