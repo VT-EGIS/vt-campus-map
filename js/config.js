@@ -31,6 +31,15 @@ define([], function () {
         { level : 20, resolution : 0.14929107082380833, scale : 564.248588 }
       ]
     },
+
+    /* 1808 VT-EGIS - Note on layer names
+    The ArcGIS REST API "identify?" operation returns results labeled with field
+    aliases, if they are defined, instead of field names. (Other operations may
+    behave differently.) If you are working with a server version >=10.5, a new
+    "returnFieldName" flag can be used to force field name labeling.
+    See: https://developers.arcgis.com/rest/services-reference/identify-map-service-.htm
+    */
+
     layerInfos: [
       {
         url:'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
@@ -46,10 +55,10 @@ define([], function () {
         id: 'Parking Lots',
         identifyLayers: [
           {
-            infoTemplateTitle: '${lot_name} Parking Lot',
+            infoTemplateTitle: '${LOT_NAME} Parking Lot',
             infoTemplateFields: [
-              { title: 'Lot Name', value: '${lot_name}' },
-              { title: 'Lot Number', value: '${lot_number}' }
+              { title: 'Lot Name', value: '${LOT_NAME}' },
+              { title: 'Lot Number', value: '${LOT_NUMBER}' }
             ]
           }
         ],
@@ -67,13 +76,13 @@ define([], function () {
         id: 'Buildings',
         identifyLayers: [
           {
-            infoTemplateTitle: '${name}',
+            infoTemplateTitle: '${NAME}',
             infoTemplateFields: [
-              { title: 'Building Use', value: '${bldg_use}' },
-              { title: 'Building Name', value: '${name}' },
-              { title: 'Building Number', value: '${bldg_num}' },
-              { title: 'Address', value: '${stnum} ${stpredir} ${stname} ${stsuffix} ${stpostdir}' },
-              { title: 'URL', value: '<a href="${url}" target = "_blank" > ${url} </a>' }
+              { title: 'Building Use', value: '${BLDG_USE}' },
+              { title: 'Building Name', value: '${NAME}' },
+              { title: 'Building Number', value: '${BLDG_NUM}' },
+              { title: 'Address', value: '${STNUM} ${STPREDIR} ${STNAME} ${STSUFFIX} ${STPOSTDIR}' },
+              { title: 'URL', value: '<a href="${URL}" target = "_blank" > ${URL} </a>' }
             ]
           }
         ]
@@ -89,28 +98,28 @@ define([], function () {
         identifyLayers: [
           {
             layerName: 'Bus Stops',
-            infoTemplateTitle: 'Bus Stop ${id}',
+            infoTemplateTitle: 'Bus Stop ${ID}',
             infoTemplateFields: [
-              { title: 'ID', value: '${id}' },
-              { title: 'Bench', value: '${bench}' },
-              { title: 'Bench Count', value: '${benchcount}' },
-              { title: 'Have Shelter', value: '${shelter}' },
-              { title: 'Image', value: '<img src="${url}" width="200px" height="200px" />' }
+              { title: 'ID', value: '${ID}' },
+              { title: 'Bench', value: '${BENCH}' },
+              { title: 'Bench Count', value: '${BENCHCOUNT}' },
+              { title: 'Have Shelter', value: '${SHELTER}' },
+              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
             ]
           },
           {
             layerName: 'Bike Racks',
-            infoTemplateTitle: 'Bike Rack ${id}',
+            infoTemplateTitle: 'Bike Rack ${ID}',
             infoTemplateFields: [
-              { title: 'ID', value: '${id}' },
-              { title: 'Condition', value: '${condition}' },
-              { title: 'Covered', value: '${covered}' },
-              { title: 'Max Park Size', value: '${maxpark}' },
-              { title: 'Number of Bikes', value: '${numbikes}' },
-              { title: 'Rack Style', value: '${rackstyle}' },
-              { title: 'Number of Racks', value: '${racks}' },
-              { title: 'Rack Type', value: '${racktype}' },
-              { title: 'Image', value: '<img src="${url}" width="200px" height="200px" />' }
+              { title: 'ID', value: '${ID}' },
+              { title: 'Condition', value: '${CONDITION}' },
+              { title: 'Covered', value: '${COVERED}' },
+              { title: 'Max Park Size', value: '${MAXPARK}' },
+              { title: 'Number of Bikes', value: '${NUMBIKES}' },
+              { title: 'Rack Style', value: '${RACKSTYLE}' },
+              { title: 'Number of Racks', value: '${RACKS}' },
+              { title: 'Rack Type', value: '${RACKTYPE}' },
+              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
             ]
           }
         ]

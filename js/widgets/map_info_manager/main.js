@@ -105,15 +105,15 @@ define([
     sendGaInfo: function (attributes, layerName) {
       var value;
 
-      if(attributes.name) {
-        value = attributes.name;
-      } else if(attributes.lot_name){
-        value = attributes.lot_name + ' Parking Lot';
-      } else if(attributes.id) {
+      if(attributes.NAME) {
+        value = attributes.NAME;
+      } else if(attributes.LOT_NAME){
+        value = attributes.LOT_NAME + ' Parking Lot';
+      } else if(attributes.ID) {
         if(layerName === 'Bus Stops') {
-          value = 'Bus Stop ' + attributes.id;
+          value = 'Bus Stop ' + attributes.ID;
         } else {
-          value = 'Bike Rack ' + attributes.id;
+          value = 'Bike Rack ' + attributes.ID;
         }
       }
       ga.report(ga.actions.SEL_MAP_PLACE, value);
