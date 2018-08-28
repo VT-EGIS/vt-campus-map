@@ -109,17 +109,18 @@ define([], function () {
           },
           {
             layerName: 'Bike Racks',
-            infoTemplateTitle: 'Bike Rack ${ID}',
+            infoTemplateTitle: 'Bike Rack ${OBJECTID}',
             infoTemplateFields: [
-              { title: 'ID', value: '${ID}' },
+              { title: 'ID', value: '${OBJECTID}' },
               { title: 'Condition', value: '${CONDITION}' },
               { title: 'Covered', value: '${COVERED}' },
               { title: 'Max Park Size', value: '${MAXPARK}' },
               { title: 'Number of Bikes', value: '${NUMBIKES}' },
               { title: 'Rack Style', value: '${RACKSTYLE}' },
               { title: 'Number of Racks', value: '${RACKS}' },
-              { title: 'Rack Type', value: '${RACKTYPE}' },
-              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
+              { title: 'Rack Type', value: '${RACKTYPE}' }
+              // ,
+              // { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
             ]
           }
         ]
