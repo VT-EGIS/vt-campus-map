@@ -51,7 +51,7 @@ define([], function () {
         id: 'Roads'
       },
       {
-        url: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
         id: 'Parking Lots',
         identifyLayers: [
           {
@@ -72,7 +72,7 @@ define([], function () {
         id: 'Emergency Phones'
       },
       {
-        url: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
         id: 'Buildings',
         identifyLayers: [
           {
@@ -93,7 +93,7 @@ define([], function () {
         hideOnStartup: true,
       },
       {
-        url: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
+        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
         id: 'Alternate Transportation',
         identifyLayers: [
           {
@@ -179,6 +179,6 @@ define([], function () {
       'Veterinary Teaching Hospital': { geometry : { lat : 37.217624, lng : -80.427927 } },
     },
     spatialReference: { wkid: 102100 },
-    gazeteerLayerUrl: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer/0'
+    gazeteerLayerUrl: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer/0'
   };
 });
