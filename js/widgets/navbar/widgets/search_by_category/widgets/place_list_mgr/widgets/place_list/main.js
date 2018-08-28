@@ -18,8 +18,8 @@ define([
     postCreate: function () {
       array.forEach(this.features, lang.hitch(this, function (feature) {
         this.addChild(new Place({
-          id: 'place-' + feature.attributes.OBJECTID_12,
-          name : feature.attributes.NAME,
+          id: 'place-' + feature.attributes.objectid_12,
+          name : feature.attributes.name,
           geometry: feature.geometry
         }));
       }));
