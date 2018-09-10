@@ -135,9 +135,10 @@ define([], function () {
         label : 'Schematic',
         thumbnail : 'imgs/basemap-thumbnail-vt.jpg',
 
-        // 180831 LW: No apparent https access to gisservices.blacksburg.gov/.../BASE_Map
         layerUrls : [
-          'http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer',
+          // 180910 LW: No HTTPS access to gisservices.blacksburg.gov; use alt site with HTTPS.
+          // 'http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer',
+          'https://www.webgis.net/arcgis/rest/services/VA/Blacksburg_WebGIS1/MapServer',
           'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer'
         ]
       },
