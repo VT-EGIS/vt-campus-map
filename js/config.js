@@ -42,16 +42,16 @@ define([], function () {
 
     layerInfos: [
       {
-        url:'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/UniRelGrid/MapServer',
         id: 'VT Campus Grid',
         hideOnStartup: true
       },
       {
-        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Roads/MapServer',
         id: 'Roads'
       },
       {
-        url: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingLots/MapServer',
         id: 'Parking Lots',
         identifyLayers: [
           {
@@ -64,15 +64,15 @@ define([], function () {
         ],
       },
       {
-        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/ParkingSpaces/MapServer',
         id: 'Parking Spaces'
       },
       {
-        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/EmergencyPhones/MapServer',
         id: 'Emergency Phones'
       },
       {
-        url: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer',
         id: 'Buildings',
         identifyLayers: [
           {
@@ -88,12 +88,12 @@ define([], function () {
         ]
       },
       {
-        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AthleticLots/MapServer',
         id: 'Athletic Parking Lots',
         hideOnStartup: true,
       },
       {
-        url: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
         id: 'Alternate Transportation',
         identifyLayers: [
           {
@@ -126,24 +126,26 @@ define([], function () {
         ]
       },
       {
-        url: 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer',
+        url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Accessibility/MapServer',
         id: 'Accessibility'
       }
     ],
     mapTypes: [
       {
         label : 'Schematic',
-        thumbnail : 'http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-vt.jpg',
+        thumbnail : 'imgs/basemap-thumbnail-vt.jpg',
+
+        // 180831 LW: No apparent https access to gisservices.blacksburg.gov/.../BASE_Map
         layerUrls : [
           'http://gisservices.blacksburg.gov/arcgis/rest/services/Map_Services/BASE_Map/MapServer',
-          'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer'
+          'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Basemap/MapServer'
         ]
       },
       {
         label : 'Aerial Photo',
-        thumbnail : 'http://web.gis.vt.edu/vtcampusmap/images/basemap-thumbnail-imagery.jpg',
+        thumbnail : 'imgs/basemap-thumbnail-imagery.jpg',
         layerUrls : [
-          'http://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2015_cached_web_mercator/MapServer'
+          'https://birdseye.gis.vt.edu/arcgis/rest/services/pictometry2015_cached_web_mercator/MapServer'
         ]
       }
     ],
@@ -179,6 +181,6 @@ define([], function () {
       'Veterinary Teaching Hospital': { geometry : { lat : 37.217624, lng : -80.427927 } },
     },
     spatialReference: { wkid: 102100 },
-    gazeteerLayerUrl: 'http://arcgis-dev.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer/0'
+    gazeteerLayerUrl: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/VTPlaceNames/MapServer/0'
   };
 });
