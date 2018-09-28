@@ -33,7 +33,7 @@ define([
       this.xhrResponseData = JSON.stringify({
         fields: [
           {
-            name: 'CATEGORY',
+            name: 'category',
             domain: {
               codedValues: [
                 { name: 'Building' },
@@ -82,12 +82,12 @@ define([
       options = dojoQuery('select option', searchByCategory.domNode);
 
       assert.lengthOf(options, 6);
-      assert.strictEqual(options.at(0).text(), 'Select Category'); 
-      assert.strictEqual(options.at(1).text(), 'Agricultural Facility'); 
-      assert.strictEqual(options.at(2).text(), 'Building'); 
-      assert.strictEqual(options.at(3).text(), 'Department'); 
-      assert.strictEqual(options.at(4).text(), 'Parking'); 
-      assert.strictEqual(options.at(5).text(), 'Research Center'); 
+      assert.strictEqual(options.at(0).text(), 'Select Category');
+      assert.strictEqual(options.at(1).text(), 'Agricultural Facility');
+      assert.strictEqual(options.at(2).text(), 'Building');
+      assert.strictEqual(options.at(3).text(), 'Department');
+      assert.strictEqual(options.at(4).text(), 'Parking');
+      assert.strictEqual(options.at(5).text(), 'Research Center');
     },
 
     'when a select element is changed': {
@@ -121,4 +121,4 @@ define([
       },
     }
   });
-}); 
+});

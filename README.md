@@ -3,14 +3,14 @@ The Interactive VT Campus Map
 
 [![Build Status](https://travis-ci.org/VT-EGIS/vt-campus-map.svg?branch=master)](https://travis-ci.org/VT-EGIS/vt-campus-map)
 
-View the live map [here](http://maps.vt.edu/interactive).
+View the live map [here](https://www.maps.vt.edu/interactive/).
 
 Setup Instructions
 ------------------
 1. Clone this repository (along with the submodules)
-   into the place where your webserver can pick it up and serve it.   
-   For example, put it in `/var/www` for apache to detect it.    
-   `git clone --recursive git@github.com:VT-EGIS/vt-campus-map` 
+   into the place where your webserver can pick it up and serve it.
+   For example, put it in `/var/www` for apache to detect it.
+   `git clone --recursive git@github.com:VT-EGIS/vt-campus-map`
 2. Open http://your-domain-name/vt-campus-map in your web browser.
 3. If installing on the production machine, update the google analytics
    key appropriately.
@@ -52,28 +52,28 @@ We follow the [Feature Branch Workflow](https://www.atlassian.com/git/workflows#
 A common routine would go like this.
 
 1. You are going to start working on feature "add widget X to the map".
-  First, you update your master branch by pulling in all the latest changes.    
-  `git checkout master`    
+  First, you update your master branch by pulling in all the latest changes.
+  `git checkout master`
   `git pull`
-2. Next, you create a new branch for your feature.    
+2. Next, you create a new branch for your feature.
   `git checkout -b add_widget_X`
 3. You make the code changes necessary for widget X to work along with the corresponding test cases
-   written using the [Intern](https://theintern.github.io/) framework.    
-  `change some files ...`     
-  `...`     
+   written using the [Intern](https://theintern.github.io/) framework.
+  `change some files ...`
+  `...`
   `git add .`
-  `git commit`     
-  `change some more files`     
-  `...`     
-  `...`     
+  `git commit`
+  `change some more files`
+  `...`
+  `...`
   `git add .`
-  `git commit`     
-  `...`     
-  `and so on ...`     
-4. Once you're done with your changes. Run all the tests [locally](#testing-locally) to see if you broke anything.    
+  `git commit`
+  `...`
+  `and so on ...`
+4. Once you're done with your changes. Run all the tests [locally](#testing-locally) to see if you broke anything.
 5. Fix all the broken tests.
-6. Push your branch upstream to Github.     
-  `git push origin add_widget_X`     
+6. Push your branch upstream to Github.
+  `git push origin add_widget_X`
 7. On Github, [create a new pull request](https://help.github.com/articles/creating-a-pull-request)
   for your branch.
   **Do not click on the merge button**.
@@ -86,7 +86,7 @@ A common routine would go like this.
     * It helps maintain the quality of the code through code review comments.
 10. Fix your code based on the code review comments.
 11. After at least 1 team member has approved your code, you can finally merge your changes
-  to master by clicking on the merge button. 
+  to master by clicking on the merge button.
 12. After a successful merge, the feature branch should be deleted.
 
 Testing Locally
@@ -110,10 +110,10 @@ Before running the tests, all the dependencies need to be installed on your mach
 There are 2 steps to testing locally before pushing your changes to Github.
 
 1. Run the intern tests in the browser by visiting the url
-   http://your-domain-name/vt-campus-map/node\_modules/intern/client.html?config=tests/intern. 
+   http://your-domain-name/vt-campus-map/node\_modules/intern/client.html?config=tests/intern.
 2. If all tests pass in the browser, lint the JS and run the tests in the
    SauceLabs cloud environment using the command `grunt test`.
-   In order to be able to connect to sauce labs, you must first define the 
+   In order to be able to connect to sauce labs, you must first define the
    SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables appropriately
    On a machine with a shell, this can be done using the commands
    `export SAUCE_USERNAME=<your username>` and
@@ -122,7 +122,7 @@ There are 2 steps to testing locally before pushing your changes to Github.
    logs and follow the steps in it. To do this, visit the
    [Travis CI page](https://travis-ci.org/VT-EGIS/vt-campus-map) corresponding
    to the VT Campus Map project and click on the `Download Log` link on the top right of
-   the console. 
+   the console.
 
 Features
 --------
@@ -142,4 +142,4 @@ Features
 3. Finding places by category.
 4. Set of featured places or bookmarks.
 5. Toggling layer visibility.
-6. Map legend. 
+6. Map legend.
