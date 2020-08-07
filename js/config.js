@@ -32,7 +32,7 @@ define([], function () {
       ]
     },
 
-    /* 1808 VT-EGIS - Note on layer names
+    /* 2018-08 VT-EGIS - Note on layer names
     The ArcGIS REST API "identify?" operation returns results labeled with field
     aliases, if they are defined, instead of field names. (Other operations may
     behave differently.) If you are working with a server version >=10.5, a new
@@ -55,10 +55,14 @@ define([], function () {
         id: 'Parking Lots',
         identifyLayers: [
           {
-            infoTemplateTitle: '${LOT_NAME} Parking Lot',
+            /* 2020-08 VT-EGIS - new aliases:
+            lot_name instead of LOT_NAME
+            lot_number instead of LOT_NUMBER
+            */
+            infoTemplateTitle: '${lot_name} Parking Lot',
             infoTemplateFields: [
-              { title: 'Lot Name', value: '${LOT_NAME}' },
-              { title: 'Lot Number', value: '${LOT_NUMBER}' }
+              { title: 'Lot Name', value: '${lot_name}' },
+              { title: 'Lot Number', value: '${lot_number}' }
             ]
           }
         ],
@@ -76,12 +80,22 @@ define([], function () {
         id: 'Buildings',
         identifyLayers: [
           {
-            infoTemplateTitle: '${NAME}',
+            /* 2020-08 VT-EGIS - new aliases:
+            'Building Name' instead of NAME
+            'Building Use' instead of BLDG_USE
+            'Building Number' instead of BLDG_NUM
+            'Street Number' instead of STNUM
+            'Street Pre-Direction' instead of STPREDIR
+            'Street Name' instead of STNAME
+            'Street Suffix' instead of STSUFFIX
+            'Street Post-Direction' instead of STPOSTDIR
+            */
+            infoTemplateTitle: '${Building Name}',
             infoTemplateFields: [
-              { title: 'Building Use', value: '${BLDG_USE}' },
-              { title: 'Building Name', value: '${NAME}' },
-              { title: 'Building Number', value: '${BLDG_NUM}' },
-              { title: 'Address', value: '${STNUM} ${STPREDIR} ${STNAME} ${STSUFFIX} ${STPOSTDIR}' },
+              { title: 'Building Use', value: '${Building Use}' },
+              { title: 'Building Name', value: '${Building Name}' },
+              { title: 'Building Number', value: '${Building Number}' },
+              { title: 'Address', value: '${Street Number} ${Street Pre-Direction} ${Street Name} ${Street Suffix} ${Street Post-Direction}' },
               { title: 'URL', value: '<a href="${URL}" target = "_blank" > ${URL} </a>' }
             ]
           }
@@ -95,29 +109,44 @@ define([], function () {
       {
         url: 'https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/AlternateTransportation/MapServer',
         id: 'Alternate Transportation',
+        hideOnStartup: true,
         identifyLayers: [
           {
-            layerName: 'Bus Stops',
-            infoTemplateTitle: 'Bus Stop ${ID}',
+            /* 2020-08 VT-EGIS - new layer name:
+            'Blacksburg Transit Stops' instead of 'Bus Stops'
+            - new aliases:
+            id instead of ID
+            bench instead of BENCH
+            benchcount instead of BENCHCOUNT
+            shelter instead of SHELTER
+            url instead of URL
+            */
+            layerName: 'Blacksburg Transit Stops',
+            infoTemplateTitle: 'Blacksburg Transit Stop ${id}',
             infoTemplateFields: [
-              { title: 'ID', value: '${ID}' },
-              { title: 'Bench', value: '${BENCH}' },
-              { title: 'Bench Count', value: '${BENCHCOUNT}' },
-              { title: 'Have Shelter', value: '${SHELTER}' },
-              { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
+              { title: 'ID', value: '${id}' },
+              { title: 'Bench', value: '${bench}' },
+              { title: 'Bench Count', value: '${benchcount}' },
+              { title: 'Have Shelter', value: '${shelter}' },
+              { title: 'Image', value: '<img src="${url}" width="200px" height="200px" />' }
             ]
           },
           {
             layerName: 'Bike Racks',
+            /* 2020-08 VT-EGIS - new aliases:
+            absent: NUMBIKES
+            absent: RACKSTYLE
+            Loops instead of RACKS
+            */
             infoTemplateTitle: 'Bike Rack ${OBJECTID}',
             infoTemplateFields: [
               { title: 'ID', value: '${OBJECTID}' },
               { title: 'Condition', value: '${CONDITION}' },
               { title: 'Covered', value: '${COVERED}' },
               { title: 'Max Park Size', value: '${MAXPARK}' },
-              { title: 'Number of Bikes', value: '${NUMBIKES}' },
-              { title: 'Rack Style', value: '${RACKSTYLE}' },
-              { title: 'Number of Racks', value: '${RACKS}' },
+              /* { title: 'Number of Bikes', value: '${NUMBIKES}' }, */
+              /* { title: 'Rack Style', value: '${RACKSTYLE}' }, */
+              { title: 'Number of Racks', value: '${Loops}' },
               { title: 'Rack Type', value: '${RACKTYPE}' }
               // ,
               // { title: 'Image', value: '<img src="${URL}" width="200px" height="200px" />' }
